@@ -1,24 +1,27 @@
-import logo from './logo.svg';
 import './App.css';
+import { HashRouter as Router , Switch , Route} from 'react-router-dom';
+import { bookingRoutes } from './routes'
+import Frame from './components/Frame/index'
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Frame>
+      <Switch>
+        {bookingRoutes.map(route=>{
+          return(
+            <Route 
+              key={route.path} 
+              exact={route.exact} 
+              path={route.path} 
+              render={routeProps=>{
+                return <route.component{...routeProps} />
+              }}
+            />
+          )
+        })}
+      </Switch>
+    </Frame>
+      
   );
 }
 
