@@ -1,10 +1,11 @@
 import './App.css';
-import { HashRouter as Router , Switch , Route} from 'react-router-dom';
+import { HashRouter as Router , Switch , Route, Redirect} from 'react-router-dom';
 import { bookingRoutes } from './routes'
 import Frame from './components/Frame/index'
+import { isLogined } from './utils/auth';
 
 function App() {
-  return (
+  return isLogined()?(
     <Frame>
       <Switch>
         {bookingRoutes.map(route=>{
@@ -19,9 +20,12 @@ function App() {
             />
           )
         })}
+        <Redirect to='/404' />
       </Switch>
     </Frame>
       
+  ):(
+  <Redirect to='/login' />
   );
 }
 
