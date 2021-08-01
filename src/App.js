@@ -23,10 +23,9 @@ function App() {
         <Redirect to='/404' />
       </Switch>
     </Frame>
-      
-  ):(
-  <Redirect to='/login' />
-  );
+  ) : (
+    <Redirect to='/login' />
+  )
 }
 
 export default App;

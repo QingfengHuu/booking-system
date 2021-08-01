@@ -1,14 +1,29 @@
-import { Layout, Menu, Breadcrumb } from 'antd';
+import { Layout, Menu, Breadcrumb, Dropdown, message } from 'antd';
 import MenuItem from 'antd/lib/menu/MenuItem';
 import { withRouter } from 'react-router-dom';
+import { clearToken } from '../../utils/auth';
+import './frame.css';
 
 import { bookingRoutes } from '../../routes';
 const routes = bookingRoutes.filter(route=>route.isShow);
 
 const { Header, Content, Sider } = Layout;
 
-
 function index(props) {
+    const onClick = ({ key }) => {
+        if(key==='logout'){
+            clearToken();
+            props.history.push('/login');
+        }
+      };
+      
+    const menu = (
+        <Menu onClick={onClick}>
+        <Menu.Item key="1">1st menu item</Menu.Item>
+        <Menu.Item key="2">2nd menu item</Menu.Item>
+        <Menu.Item key="logout">Log out</Menu.Item>
+        </Menu>
+    );
     return (
         <Layout>
             <Header className="header">
@@ -18,6 +33,11 @@ function index(props) {
                 <Menu.Item key="2">nav 2</Menu.Item>
                 <Menu.Item key="3">nav 3</Menu.Item>
             </Menu> */}
+            <Dropdown overlay={menu} trigger={['click']}>
+                <a style={{color:'white'}} onClick={e => e.preventDefault()}>
+                    User
+                </a>
+            </Dropdown>
             </Header>
             <Layout>
             <Sider width={200} className="site-layout-background">

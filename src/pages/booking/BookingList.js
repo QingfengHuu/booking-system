@@ -14,7 +14,7 @@ const dataSource = [{
   end_date: '7/20'
 }]
 
-const BookingList= () => {
+const BookingList= (props) => {
 
   const [isModalVisible, setIsModalVisible] = useState(false);
 
@@ -92,7 +92,7 @@ const BookingList= () => {
         </Button>
       }
     >
-      <Table columns={colomns} bordered dataSource={dataSource}/>
+      <Table rowKey='index' columns={colomns} bordered dataSource={dataSource}/>
     </Card>
   )
 }

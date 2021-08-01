@@ -1,14 +1,21 @@
 import React from 'react'
 import { Form, Input, Button, Checkbox, Card } from 'antd';
 import { UserOutlined, LockOutlined } from '@ant-design/icons';
+import { setToken,isLogined } from '../utils/auth';
 import './login.css';
+import { Redirect } from 'react-router-dom';
 
-const Login = () => {
+const Login = (props) => {
   const onFinish = (values) => {
     console.log('Received values of form: ', values);
+    setToken(values.username);
+    console.log(values.username);
+    props.history.push('/booking');
   };
 
-  return (
+  return isLogined()?(
+    <Redirect to='/booking' />
+):(
       <Card className='login_card' title='DELL EMC'>
         <Form 
             name="normal_login"
@@ -57,7 +64,7 @@ const Login = () => {
             </Form.Item>
         </Form>
     </Card>
-  );
+  )
 };
 
 export default Login
