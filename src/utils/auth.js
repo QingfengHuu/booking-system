@@ -7,7 +7,7 @@ export function setToken(token){
 }
 
 export function clearToken() {
-    localStorage.removeItem("token");
+    localStorage.removeItem("token")
 }
 
 export function isLogined(){

@@ -1,7 +1,5 @@
-import { Form, Input, DatePicker, Button, Card, Table, Popconfirm, Modal } from 'antd';
+import { Button, Card, Table, Popconfirm, Modal } from 'antd'
 import React, { useState } from 'react'
-
-const {RangePicker} = DatePicker;
 
 const dataSource = [{
   index: 1,
@@ -16,7 +14,7 @@ const dataSource = [{
   end_date: '7/20'
 }]
 
-const BookingList= (props) => {
+const Account= (props) => {
 
   const [isModalVisible, setIsModalVisible] = useState(false);
 
@@ -30,24 +28,6 @@ const BookingList= (props) => {
 
   const handleCancel = () => {
     setIsModalVisible(false);
-  };
-
-  const onFinish = (values) => {
-    console.log('Success:', values);
-  };
-
-  const onFinishFailed = (errorInfo) => {
-    console.log('Failed:', errorInfo);
-  };
-
-  const rangeConfig = {
-    rules: [
-      {
-        type: 'array',
-        required: true,
-        message: 'Please select time!',
-      },
-    ],
   };
 
   const colomns = [{
@@ -88,40 +68,9 @@ const BookingList= (props) => {
       return(<div>
         <Button type='primary' size='small' onClick={showModal}>Reserve</Button>
         <Modal title="Basic Modal" visible={isModalVisible} onOk={handleOk} onCancel={handleCancel}>
-          <Form
-            name="basic"
-            labelCol={{ span: 8 }}
-            wrapperCol={{ span: 16 }}
-            initialValues={{ remember: true }}
-            onFinish={onFinish}
-            onFinishFailed={onFinishFailed}
-          >
-            <Form.Item
-              label="Username"
-              name="username"
-              rules={[{ required: true, message: 'Please input your username!' }]}
-            >
-              <Input />
-            </Form.Item>
-
-            <Form.Item
-              label="Password"
-              name="password"
-              rules={[{ required: true, message: 'Please input your password!' }]}
-            >
-              <Input.Password />
-            </Form.Item>
-
-            <Form.Item name="range-picker" label="RangePicker" {...rangeConfig}>
-              <RangePicker />
-            </Form.Item>
-
-            <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
-              <Button type="primary" htmlType="submit">
-                Submit
-              </Button>
-            </Form.Item>
-          </Form>
+          <p>Some contents...</p>
+          <p>Some contents...</p>
+          <p>Some contents...</p>
         </Modal>
         <Popconfirm title= 'Sure delay?'>
         <Button type='primary' size='small' style={{margin:"0 1rem"}}>Delay</Button>
@@ -136,17 +85,30 @@ const BookingList= (props) => {
 ]
 
   return (
-    <Card title='BookingList' 
+    <Card title='Account' 
       extra={
         <Button type='primary'>
-          Additional Operation
+          Change password
         </Button>
       }
     >
-      <Table rowKey='index' columns={colomns} bordered dataSource={dataSource}/>
+        <Card type='inner' title='Reserving terminal'extra={
+            <Button type='primary'>
+            Additional Operation
+            </Button>
+        }>
+            <Table rowKey='index' columns={colomns} bordered dataSource={dataSource}/>
+        </Card>
+        <Card type='inner' title='Reservation history'extra={
+            <Button type='primary'>
+            Additional Operation
+            </Button>
+        }>
+            <Table rowKey='index' columns={colomns} bordered dataSource={dataSource}/>
+        </Card>
     </Card>
   )
 }
 
-export default BookingList
+export default Account
 
