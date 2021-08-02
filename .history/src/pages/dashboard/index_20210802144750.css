@@ -1,0 +1,21 @@
+/* .ant-card ant-card-bordered{
+    color: aqua;
+} */
+
+/* .ant-card-boardered{
+    border: 10px;
+} */
+.UsageCard{
+    padding-top: 2%;
+}
+
+.Usage_image{
+    width: 140px;
+    display: inline-block;
+}
+
+.Usage_data{
+    padding-left: 2%;
+    display: inline-block;
+}
+.

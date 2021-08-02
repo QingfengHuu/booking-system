@@ -1,0 +1,49 @@
+/* .ant-card ant-card-bordered{
+    color: aqua;
+} */
+
+/* .ant-card-boardered{
+    border: 10px;
+} */
+.UsageCard{
+    padding-top: 2%;
+}
+
+.Usage_image{
+    
+    display: inline-block;
+    
+}
+.dataGroupA{
+    float: right;
+    margin-right: 10px;
+    display: inline-block;
+}
+.data_shown{
+    float: right;
+    margin-right: 5px;
+    /* padding-left: 75%; */
+}
+
+.AE_image{
+    
+    display: inline-block;
+    
+}
+.dataGroupB{
+    float: right;
+    margin-right: 10px;
+    display: inline-block;
+}
+.AE_data_shown{
+    float: right;
+    margin-right: 5px;
+}
+
+.Usage_image{
+    
+    display: inline-block;
+    
+}
+
+
