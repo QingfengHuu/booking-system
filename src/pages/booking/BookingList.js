@@ -1,5 +1,6 @@
 import { Form, Input, DatePicker, Button, Card, Table, Popconfirm, Modal } from 'antd';
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
+import { listApi } from '../../services/terminal';
 
 const {RangePicker} = DatePicker;
 
@@ -19,6 +20,22 @@ const dataSource = [{
 const BookingList= (props) => {
 
   const [isModalVisible, setIsModalVisible] = useState(false);
+  const [dataSource1, setDataSource1] = useState([]);
+  const [total,setTotal] = useState(0);
+
+  useEffect(() => {
+    listApi().then(res =>{
+      setDataSource1(res.terminal);
+      setTotal(res.totalCount);
+    })
+  }, [])
+
+  const loadData = (page) =>{
+    listApi(page).then(res =>{
+      setDataSource1(res.terminal);
+      setTotal(res.totalCount);
+    })
+  }
 
   const showModal = () => {
     setIsModalVisible(true);
@@ -83,6 +100,9 @@ const BookingList= (props) => {
     title: 'End Date',
     dataIndex: 'end_date'
   },{
+    title: 'haha',
+    dataIndex: 'haha'
+  },{
     title: 'Operation',
     render: (txt,record,index) => {
       return(<div>
@@ -143,7 +163,13 @@ const BookingList= (props) => {
         </Button>
       }
     >
-      <Table rowKey='index' columns={colomns} bordered dataSource={dataSource}/>
+      <Table 
+        rowKey='index' 
+        pagination={{total,defaultPageSize:10, onChange: loadData}} 
+        columns={colomns} 
+        bordered 
+        dataSource={dataSource}
+      />
     </Card>
   )
 }
