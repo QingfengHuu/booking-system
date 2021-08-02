@@ -1,14 +1,33 @@
-import { Layout, Menu, Breadcrumb } from 'antd';
+import { Layout, Menu, Breadcrumb, Dropdown, message } from 'antd';
 import MenuItem from 'antd/lib/menu/MenuItem';
 import { withRouter } from 'react-router-dom';
+import { clearToken } from '../../utils/auth';
+import './frame.css';
 
-import { bookingRoutes } from '../../routes';
+import { adminRoutes, bookingRoutes } from '../../routes';
 const routes = bookingRoutes.filter(route=>route.isShow);
+const routesAdmin =adminRoutes.filter(routes=>routes.isShow);
 
+const { SubMenu } = Menu;
 const { Header, Content, Sider } = Layout;
 
-
 function index(props) {
+    const onClick = ({ key }) => {
+        if(key==='logout'){
+            clearToken();
+            props.history.push('/login');
+        }else if(key==='account'){
+            props.history.push('/user/account');
+        }
+      };
+      
+    const menu = (
+        <Menu onClick={onClick}>
+        <Menu.Item key="account">My Account</Menu.Item>
+        <Menu.Item key="2">2nd menu item</Menu.Item>
+        <Menu.Item key="logout">Log out</Menu.Item>
+        </Menu>
+    );
     return (
         <Layout>
             <Header className="header">
@@ -18,9 +37,14 @@ function index(props) {
                 <Menu.Item key="2">nav 2</Menu.Item>
                 <Menu.Item key="3">nav 3</Menu.Item>
             </Menu> */}
+            <Dropdown overlay={menu} trigger={['click']}>
+                <a style={{color:'white'}} onClick={e => e.preventDefault()}>
+                    User
+                </a>
+            </Dropdown>
             </Header>
             <Layout>
-            <Sider width={200} className="site-layout-background">
+            <Sider width={200} className="site-layout-background" >
                 <Menu
                 mode="inline"
                 defaultSelectedKeys={['1']}
@@ -34,21 +58,27 @@ function index(props) {
                         </MenuItem>
                     )
                 })}
+                    <SubMenu key="admin" title="Admin">
+                        {routesAdmin.map(route=>{
+                            return(
+                                <MenuItem key={route.path} onClick={p=>props.history.push(p.key)}>
+                                    {route.title}
+                                </MenuItem>
+                            )
+                        })}
+                    </SubMenu>
                 </Menu>
             </Sider>
-            <Layout style={{ padding: '0 24px 24px' }}>
-                <Breadcrumb style={{ margin: '12px 0' }}>
-                {/* <Breadcrumb.Item>Home</Breadcrumb.Item>
+            <Layout >
+                {/* <Breadcrumb style={{ margin: '12px 0' }}>
+                <Breadcrumb.Item>Home</Breadcrumb.Item>
                 <Breadcrumb.Item>List</Breadcrumb.Item>
-                <Breadcrumb.Item>App</Breadcrumb.Item> */}
-                </Breadcrumb>
+                <Breadcrumb.Item>App</Breadcrumb.Item>
+                </Breadcrumb> */}
                 <Content
                 className="site-layout-background"
                 style={{
                     background: '#fff',
-                    padding: 24,
-                    margin: 0,
-                    minHeight: 280,
                 }}
                 >
                 {props.children}

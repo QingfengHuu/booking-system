@@ -1,14 +1,43 @@
 import React from 'react'
-import { Form, Input, Button, Checkbox, Card } from 'antd';
+import { Form, Input, Button, Checkbox, Card, message } from 'antd';
 import { UserOutlined, LockOutlined } from '@ant-design/icons';
+import { setToken,isLogined } from '../utils/auth';
 import './login.css';
+import { Redirect } from 'react-router-dom';
 
-const Login = () => {
+import { loginApi } from '../services/auth';
+
+
+const Login = (props) => {
   const onFinish = (values) => {
     console.log('Received values of form: ', values);
-  };
+    setToken(values.username);
+    console.log(values.username);
+    props.history.push('/booking');
+  }
+//     loginApi({
+//         username=values.username,
+//         password=values.password
+//     })
+//     .then(res=>{
+//         if(res.code==='success'){
+//             message.success("Login successfully!")
+//             setToken(res.token)
+//             props.history.push('/dashboard')
+//         }else{
+//             message.info(res.message)
+//         }
+//         console.log(res)
+//     })
+//     .catch(err=>{
+//         console.log(err)
+//         message.info("Account doesn't exit!");
+//     })
+//   };
 
-  return (
+  return isLogined()?(
+    <Redirect to='/booking' />
+  ):(
       <Card className='login_card' title='DELL EMC'>
         <Form 
             name="normal_login"
@@ -57,7 +86,7 @@ const Login = () => {
             </Form.Item>
         </Form>
     </Card>
-  );
-};
+  )
+}
 
 export default Login

@@ -1,3 +1,6 @@
+import Account from "../pages/Account";
+import TerminalList from "../pages/admin/terminal/TerminalList";
+import UserList from "../pages/admin/user/UserList";
 import BookingList from "../pages/booking/BookingList";
 import Detail from "../pages/booking/Detail";
 import Index from "../pages/dashboard/";
@@ -10,6 +13,27 @@ export const mainRoutes = [{
 },{
     path: '/404',
     component: PageNotFound
+}]
+
+export const userRoutes=[{
+    path: '/user/account',
+    component: Account,
+    exact: true,
+    isShow: true,
+}]
+
+export const adminRoutes=[{
+    path: '/admin/terminal',
+    component: TerminalList,
+    exact: true,
+    isShow: true,
+    title: 'Terminal Manage'
+},{
+    path: '/admin/user',
+    component: UserList,
+    exact: true,
+    isShow: true,
+    title: 'User Manager'
 }]
 
 export const bookingRoutes = [{
