@@ -15,24 +15,24 @@ const Login = (props) => {
     console.log(values.username);
     props.history.push('/booking');
   }
-//     loginApi({
-//         username=values.username,
-//         password=values.password
-//     })
-//     .then(res=>{
-//         if(res.code==='success'){
-//             message.success("Login successfully!")
-//             setToken(res.token)
-//             props.history.push('/dashboard')
-//         }else{
-//             message.info(res.message)
-//         }
-//         console.log(res)
-//     })
-//     .catch(err=>{
-//         console.log(err)
-//         message.info("Account doesn't exit!");
-//     })
+    // loginApi({
+    //     username=values.username,
+    //     password=values.password
+    // })
+    // .then(res=>{
+    //     if(res.code==='success'){
+    //         message.success("Login successfully!")
+    //         setToken(res.token)
+    //         props.history.push('/dashboard')
+    //     }else{
+    //         message.info(res.message)
+    //     }
+    //     console.log(res)
+    // })
+    // .catch(err=>{
+    //     console.log(err)
+    //     message.info("Account doesn't exit!");
+    // })
 //   };
 
   return isLogined()?(
