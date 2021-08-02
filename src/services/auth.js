@@ -7,5 +7,5 @@ import { post } from "../utils/request";
  * password
  */
 export function loginApi(user){
-    return post('',user)
+    return post("",user)
 }
