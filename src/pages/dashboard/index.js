@@ -1,65 +1,72 @@
+// yet another comment for testing git
+// lorem ipsum dolore et ...
 // import React from 'react'
 import React, { useState, useEffect } from 'react';
 import { Card, Col, Row } from 'antd';
 import { Liquid } from '@ant-design/charts';
 // import Test from 'NODE_PATH=./src/components/charts.js';
 import { Line } from '@ant-design/charts';
+import './index.css';
+import { Typography } from 'antd';
 
-// import {
-//     HomeOutlined,
-//     SettingFilled,
-//     SmileOutlined,
-//     SyncOutlined,
+import {
+    DashboardOutlined,
+    SyncOutlined,
+    ScheduleOutlined,
     
-//   } from '@ant-design/icons';
+    } from '@ant-design/icons';
 
 const Index = () => {
+
+    // var a, b, c, d, e, f, g, h;
+    // var varibleList = [a, b, c, d, e, f, g, h];
+    var datelist = ['21/07/21', '21/07/22', '21/07/23', '21/07/24', '21/07/25', '21/07/26', '21/07/27', '21/07/28', '21/07/29', '21/07/30'];
     
     var data = [
         {
-            dates: '1991',
+            date: datelist[0],
             value: 3,
-            },
-            {
-            dates: '1992',
+        },
+        {
+            date: datelist[1],
             value: 4,
-            },
-            {
-            dates: '1993',
+        },
+        {
+            date: datelist[2],
             value: 3,
-            },
-            {
-            dates: '1994',
+        },
+        {
+            date: datelist[3],
             value: 5,
-            },
-            {
-            dates: '1995',
-            value: 9,
-            },
-            {
-            dates: '1996',
+        },
+        {
+            date: datelist[4],
+            value: 4,
+        },
+        {
+            date: datelist[5],
             value: 6,
-            },
-            {
-            dates: '1997',
+        },
+        {
+            date: datelist[6],
             value: 7,
-            },
-            {
-            dates: '1998',
+        },
+        {
+            date: datelist[7],
             value: 9,
-            },
-            {
-            dates: '1999',
-            value: 13,
-            },
-            {
-            dates: '1999',
+        },
+        {
+            date: datelist[8],
+            value: 90,
+        },
+        {
+            date: datelist[9],
             value: 8,
         },
       ];
       var config = {
         data: data,
-        xField: 'year',
+        xField: 'date',
         yField: 'value',
         stepType: 'vh',
       };
@@ -67,74 +74,103 @@ const Index = () => {
       const waterFlowconfig = {
         title: {
           visible: true,
-          text: '水波图',
+          //text: '水波图',
+        },
+        description: {
+          visible: true,
+          //text: '水波图 - 百分比显示',
         },
         min: 0,
         max: 10000,
         value: 5639,
+        statistic: { formatter: (value) => ((100 * value) / 10000).toFixed(1) + '%' },
       };
+
+      const { Title } = Typography;
     //   waterflow chart config
     return (
         
         
         
         <div className="site-card-wrapper">
-        <Row gutter={16}>
+        <Row className = "UsageCard" gutter={16}>
         <Col span={8}>
-            <Card title="All Equipment usage" bordered={false}>
-                <div className = "Usage image">
-                {/* <div className="icons-list">
-                    <SyncOutlined spin />
-                </div> */}
-                    <image>
-                        <img className={['centered']} src='https://www.ashdowngroup.com/wp-content/uploads/2019/06/Dell_EMC_logo.svg.png' width='140px'/>
-                    </image> 
+            <Card  title="All Equipment usage" bordered={true}
+            headStyle={{backgroundColor: '#a0a0a0', border: 0 }}
+            >
+                <div className = "Usage_image">
+                    <div className="icons-list">
+                        <DashboardOutlined style={{ fontSize: '400%'}}/>
+                    </div>
                 </div>
         
-                <div className = "Usage data">
-                    The current usage is
+                <div className = "dataGroupA">
+                    <div className = "Usage_data">
+                        <Title level={3}>Current Usage </Title>
+                    </div>
+                    <div className = "data_shown">
+                        <Title level={2}>120 </Title>
+                    </div>
                 </div>
-                <div className = "data_shown">
-                    60
-                </div>
+                
 
             </Card>
         </Col>
         <Col span={8}>
-            <Card title="Available Equipments" bordered={false}>
-            <div className = "AE image">
-                    <image>
-                        <img className={['centered']} src='https://www.ashdowngroup.com/wp-content/uploads/2019/06/Dell_EMC_logo.svg.png' width='140px'/>
-                    </image> 
+            <Card title="Available Equipments" bordered={true}
+            headStyle={{backgroundColor: '#a0a0a0', border: 0 }}
+            >
+                <div className = "AE_image">
+                    <div className="icons-list">
+                        <ScheduleOutlined style={{ fontSize: '400%'}}/>
+                    </div>
                 </div>
-        
-                <div className = "AE_data">
-                    The current usage is
+                <div className = "dataGroupB">
+                    <div className = "AE_data">
+                        <Title level={3}>Equipments Available </Title>
+                    </div>
+                    <div className = "AE_data_shown">
+                        <Title level={2}>60 </Title>
+                    </div>
                 </div>
-                <div className = "AE_data_shown">
-                    60
-                </div>
+                
+                
             </Card>
         </Col>
         <Col span={8}>
-            <Card title="Occupied Equipments" bordered={false}>
-            <div className = "OE_Usage image">
-                    <image>
-                        <img className={['centered']} src='https://www.ashdowngroup.com/wp-content/uploads/2019/06/Dell_EMC_logo.svg.png' width='140px'/>
-                    </image> 
+            <Card title="Occupied Equipments" bordered={true}
+            headStyle={{backgroundColor: '#a0a0a0', border: 0 }}
+            >
+            <div className = "OE_Usage_image">
+                    <div className="icons-list">
+                        <SyncOutlined spin style={{ fontSize: '400%'}}/>
+                    </div>
                 </div>
-        
-                <div className = "OE_Usage data">
-                    The current usage is
+
+                <div className="dataGroupC">
+                    <div className = "OE_Usage_data">
+                        <Title level={3}>Equipments Occupied: </Title>
+                    </div>
+                    <div className = "OE_data_shown">
+                        <Title level={2}>60 </Title>
+                    </div>
                 </div>
-                <div className = "OE_data_shown">
-                    60
-                </div>
+                
             </Card>
         </Col>
         </Row>
-        <Line {...config} />
-        <Liquid {...waterFlowconfig} />
+        <div className = "cardWrapperA">
+            <Card className = "line_chart_space" style={{ width: 1100 }}>
+                <Line className = "line_chart" {...config} />
+            </Card>
+        </div>
+        
+        <div className = "cardWrapperB">
+            <Card className = "flow_chart_space" style={{ width: 560 }}>
+                <Liquid {...waterFlowconfig} />
+            </Card>
+        </div>
+        
         </div>
         
     )

@@ -3,6 +3,8 @@ import MenuItem from 'antd/lib/menu/MenuItem';
 import { withRouter } from 'react-router-dom';
 import { clearToken } from '../../utils/auth';
 import './frame.css';
+import React from 'react'
+
 
 import { adminRoutes, bookingRoutes } from '../../routes';
 const routes = bookingRoutes.filter(route=>route.isShow);
@@ -31,7 +33,10 @@ function index(props) {
     return (
         <Layout>
             <Header className="header">
-            <h1 style={{color:'white'}}>DELL EMC</h1>
+            {/* <h1 style={{color:'white'}}>DELL EMC</h1> */}
+            <div className="white p2 flex a-center" >
+                <img className={['centered']} src='https://www.ashdowngroup.com/wp-content/uploads/2019/06/Dell_EMC_logo.svg.png' width='140px' />
+            </div>
             {/* <Menu theme="dark" mode="horizontal" defaultSelectedKeys={['2']}>
                 <Menu.Item key="1">nav 1</Menu.Item>
                 <Menu.Item key="2">nav 2</Menu.Item>
