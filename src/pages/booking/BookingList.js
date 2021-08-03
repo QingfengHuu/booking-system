@@ -104,14 +104,14 @@ const BookingList= (props) => {
             >
               <Input />
             </Form.Item>
-//test
+
             <Form.Item
               name="radio-button"
               label="Renter"
               rules={[{ required: true, message: 'Please pick an item!' }]}
             >
               <Radio.Group>
-                <Radio.Button value="a">Username</Radio.Button>
+                <Radio.Button value="a" onClick={handleChange}>Username</Radio.Button>
                 <Radio.Button value="b">Book for other?</Radio.Button>
               </Radio.Group>
             </Form.Item>
