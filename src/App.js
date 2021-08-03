@@ -3,6 +3,8 @@ import { HashRouter as Router , Switch , Route, Redirect} from 'react-router-dom
 import { bookingRoutes,adminRoutes, userRoutes } from './routes'
 import Frame from './components/Frame/index'
 import { isLogined } from './utils/auth';
+import React from 'react'
+
 
 function App() {
   return isLogined()?(

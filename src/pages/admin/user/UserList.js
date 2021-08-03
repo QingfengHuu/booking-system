@@ -2,17 +2,26 @@ import React, { useState } from 'react'
 
 import { Drawer, Form, Button, Col, Row, Input, Select, Card, Table, Popconfirm, Modal, Space, Divider, Descriptions } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
+import { UserCreateApi, UserDelApi, UserModifyApi } from '../../../services/user';
 
 const { Option } = Select;
 
 // Account DataSource: due to the disconnection with the backend
 const dataSource = [{
-  index: 1,
-  name: 'Javis Huang',
+  id:'1',
+  password:'********',
+  last_login:'2021/07/30',
+  is_superuser:'false',
+  username:'Javis',
+  first_name:'Javis',
+  last_name:'Huang',
   email:'javis_huang@dell.com',
-  group: 'VxRail Day0 Team',
+  is_staff:'false',
+  is_active:'true',
+  date_joined:'2021/07/01',
+  group_name: 'VxRail Day0 Team',
   location: 'Wu Jiao Chang',
-  role: 'User',
+
   approver: 'Tom Liu'
 }]
 
@@ -43,69 +52,73 @@ const UserList=() => {
       setIsModalVisible(false);
     };
 
-    // Description List Setting
-
-
+    const handleSubmit = e =>{
+      console.log(e)
+      e.preventDefault()
+    }
 
     // Table Collection Data
     const colomns = [{
-      title: 'Index',
-      key: 'index',
-      align: 'center',
-      render: (txt,record,index) => index+1
+      title: 'ID',
+      dataIndex: 'id'
     },{
-      title: 'Name',
-      dataIndex: 'name'
+      title: 'User Name',
+      dataIndex: 'username'
     },{
-      title: 'Email Address',
+      title: 'Email',
       dataIndex: 'email',
     },{
       title: 'Group',
-      dataIndex: 'group'
-    },{
-      title: 'Location',
-      dataIndex: 'location'
-    },{
-      title: 'Role',
-      dataIndex: 'role'
-    },{
-      title: 'Approver',
-      dataIndex: 'approver'
+      dataIndex: 'group_name'
     },{
       title: 'Operation',
       render: (txt,record,index) => {
         return(
           <div>
             <Space split={<Divider type="vertical" />}>
-              <Button type='primary' size='small' onClick={showModal}>Edit</Button>
+              <Popconfirm title= 'Sure Reset?'>
+              <Button type='primary' size='small' onClick={()=>{
+                UserModifyApi(record.name).then(res=>{
+                  console.log(record.name+' modified!')
+                })
+              }}>Reset</Button>
+              </Popconfirm>
               <Popconfirm title= 'Sure Delete?'>
-                <Button type='primary' danger size='small'> Delete </Button>
+                <Button type='primary' danger size='small' onClick={(e)=>{
+
+                UserDelApi(record.name).then(res=>{
+                  console.log(record.name+' deleted!')
+                })
+              }}> Delete </Button>
               </Popconfirm>
             </Space>
 
-            <Modal title="User Detail" visible={isModalVisible} onOk={handleOk} onCancel={handleCancel}>
+            {/* <Modal title="User Detail" width={800} visible={isModalVisible} onOk={handleOk} onCancel={handleCancel}>
               <Descriptions
                 bordered
                 extra={<Button type="primary">Edit</Button>}
               >
-                <Descriptions.Item label="Name"> Javis Huang </Descriptions.Item>
+                <Descriptions.Item label="ID"> 1 </Descriptions.Item>
+                <Descriptions.Item label="User Name"> Javis </Descriptions.Item>
+                <Descriptions.Item label="First Name"> Javis </Descriptions.Item>
+                <Descriptions.Item label="Last Name"> Huang </Descriptions.Item>
                 <Descriptions.Item label="Email Address"> javis_huang@dell.com </Descriptions.Item>
                 <Descriptions.Item label="Group"> VxRail Day0 Team </Descriptions.Item>
-                <Descriptions.Item label="Location"> Wu Jiao Chang </Descriptions.Item>
-                <Descriptions.Item label="Role"> User </Descriptions.Item>
+                <Descriptions.Item label="Is Active"> True </Descriptions.Item>
+                <Descriptions.Item label="Is Staff"> false </Descriptions.Item>
+                <Descriptions.Item label="Is Superuser"> false </Descriptions.Item>
+                <Descriptions.Item label="Last Login"> 2021/07/30 </Descriptions.Item>
                 <Descriptions.Item label="Approver"> Tom Liu </Descriptions.Item>
-                <Descriptions.Item label="Comment">
-                  None
-                </Descriptions.Item>
+                <Descriptions.Item label="Password"> ******** </Descriptions.Item>
               </Descriptions>
-            </Modal>
+            </Modal> */}
           </div>
           
         )
       }
     }
   ]
-
+  
 
     return (
         <div>
@@ -136,18 +149,18 @@ const UserList=() => {
               <Button onClick={onClose} style={{ marginRight: 8 }}>
                 Cancel
               </Button>
-              <Button onClick={onClose} type="primary">
+              <Button htmlType='submit' onClick={onClose} type="primary" >
                 Submit
               </Button>
             </div>
           }
         >
-          <Form layout="vertical" hideRequiredMark>
+          <Form layout="vertical"  hideRequiredMark onSubmit={e=>handleSubmit(e)} >
             <Row gutter={16}>
               <Col span={12}>
                 <Form.Item
-                  name="name"
-                  label="Name"
+                  name="username"
+                  label="User Name"
                   rules={[{ required: true, message: 'Please enter user name' }]}
                 >
                   <Input placeholder="Please enter user name" />
@@ -182,64 +195,6 @@ const UserList=() => {
                     <Option value="vxRail_day1_team"> VxRail Day1 Team </Option>
                     <Option value="vxRail_day2_team"> VxRail Day2 Team </Option>
                   </Select>
-                </Form.Item>
-              </Col>
-              <Col span={12}>
-                <Form.Item
-                  name="location"
-                  label="Location"
-                  rules={[{ required: true, message: 'Please select the location' }]}
-                >
-                  <Select placeholder="Please select the loation">
-                    <Option value="wujiaochang"> Wu Jiao Chang </Option>
-                    <Option value="zizhu"> Zi Zhu </Option>
-                  </Select>
-                </Form.Item>
-              </Col>
-
-            </Row>
-
-            <Row gutter={16}>
-              <Col span={12}>
-                <Form.Item
-                  name="role"
-                  label="Role"
-                  rules={[{ required: true, message: 'Please choose the role type' }]}
-                >
-                  <Select placeholder="Please choose the role type">
-                    <Option value="admin"> Admin </Option>
-                    <Option value="user"> User </Option>
-                  </Select>
-                </Form.Item>
-              </Col>
-
-              <Col span={12}>
-                <Form.Item
-                  name="approver"
-                  label="Approver"
-                  rules={[{ required: true, message: 'Please choose the approver' }]}
-                >
-                  <Select placeholder="Please choose the approver">
-                    <Option value="jack"> Jack Ma </Option>
-                    <Option value="tom"> Tom Liu </Option>
-                  </Select>
-                </Form.Item>
-              </Col>
-            </Row>
-
-            <Row gutter={16}>
-              <Col span={24}>
-                <Form.Item
-                  name="comment"
-                  label="Comment"
-                  rules={[
-                    {
-                      required: true,
-                      message: 'please enter comment about this user',
-                    },
-                  ]}
-                >
-                  <Input.TextArea rows={4} placeholder="please enter comment about this user" />
                 </Form.Item>
               </Col>
             </Row>

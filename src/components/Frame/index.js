@@ -3,6 +3,8 @@ import MenuItem from 'antd/lib/menu/MenuItem';
 import { withRouter } from 'react-router-dom';
 import { clearToken } from '../../utils/auth';
 import './frame.css';
+import React from 'react'
+
 
 import { adminRoutes, bookingRoutes } from '../../routes';
 const routes = bookingRoutes.filter(route=>route.isShow);
@@ -50,7 +52,7 @@ function index(props) {
             <Sider width={200} className="site-layout-background" >
                 <Menu
                 mode="inline"
-                defaultSelectedKeys={['1']}
+                defaultSelectedKeys={[{}]}
                 defaultOpenKeys={['sub1']}
                 style={{ height: '100%', color: "#ffffff", background: 'rgb(49 48 48 / 64%)', borderRight: 0 }}
                 >
