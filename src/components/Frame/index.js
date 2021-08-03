@@ -52,7 +52,7 @@ function index(props) {
             <Sider width={200} className="site-layout-background" >
                 <Menu
                 mode="inline"
-                defaultSelectedKeys={['1']}
+                defaultSelectedKeys={[{}]}
                 defaultOpenKeys={['sub1']}
                 style={{ height: '100%', borderRight: 0 }}
                 >
