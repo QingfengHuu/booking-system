@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 
 import { Drawer, Form, Button, Col, Row, Input, Select, Card, Table, Popconfirm, Modal, Space, Divider, Descriptions } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
+import { UserCreateApi, UserDelApi, UserModifyApi } from '../../../services/user';
 
 const { Option } = Select;
 
@@ -51,6 +52,11 @@ const UserList=() => {
       setIsModalVisible(false);
     };
 
+    const handleSubmit = e =>{
+      console.log(e)
+      e.preventDefault()
+    }
+
     // Table Collection Data
     const colomns = [{
       title: 'ID',
@@ -65,27 +71,29 @@ const UserList=() => {
       title: 'Group',
       dataIndex: 'group_name'
     },{
-      title: 'Staff Access',
-      dataIndex: 'is_staff'
-    },{
-      title: 'Superuser Access',
-      dataIndex: 'is_superuser'
-    },{
-      title: 'Approver',
-      dataIndex: 'approver'
-    },{
       title: 'Operation',
       render: (txt,record,index) => {
         return(
           <div>
             <Space split={<Divider type="vertical" />}>
-              <Button type='primary' size='small' onClick={showModal}>Edit</Button>
+              <Popconfirm title= 'Sure Reset?'>
+              <Button type='primary' size='small' onClick={()=>{
+                UserModifyApi(record.name).then(res=>{
+                  console.log(record.name+' modified!')
+                })
+              }}>Reset</Button>
+              </Popconfirm>
               <Popconfirm title= 'Sure Delete?'>
-                <Button type='primary' danger size='small'> Delete </Button>
+                <Button type='primary' danger size='small' onClick={(e)=>{
+
+                UserDelApi(record.name).then(res=>{
+                  console.log(record.name+' deleted!')
+                })
+              }}> Delete </Button>
               </Popconfirm>
             </Space>
 
-            <Modal title="User Detail" width={800} visible={isModalVisible} onOk={handleOk} onCancel={handleCancel}>
+            {/* <Modal title="User Detail" width={800} visible={isModalVisible} onOk={handleOk} onCancel={handleCancel}>
               <Descriptions
                 bordered
                 extra={<Button type="primary">Edit</Button>}
@@ -103,14 +111,14 @@ const UserList=() => {
                 <Descriptions.Item label="Approver"> Tom Liu </Descriptions.Item>
                 <Descriptions.Item label="Password"> ******** </Descriptions.Item>
               </Descriptions>
-            </Modal>
+            </Modal> */}
           </div>
           
         )
       }
     }
   ]
-
+  
 
     return (
         <div>
@@ -141,13 +149,13 @@ const UserList=() => {
               <Button onClick={onClose} style={{ marginRight: 8 }}>
                 Cancel
               </Button>
-              <Button onClick={onClose} type="primary">
+              <Button htmlType='submit' onClick={onClose} type="primary" >
                 Submit
               </Button>
             </div>
           }
         >
-          <Form layout="vertical" hideRequiredMark>
+          <Form layout="vertical"  hideRequiredMark onSubmit={e=>handleSubmit(e)} >
             <Row gutter={16}>
               <Col span={12}>
                 <Form.Item
@@ -189,47 +197,6 @@ const UserList=() => {
                   </Select>
                 </Form.Item>
               </Col>
-              <Col span={12}>
-                <Form.Item
-                  name="approver"
-                  label="Approver"
-                  rules={[{ required: true, message: 'Please choose the approver' }]}
-                >
-                  <Select placeholder="Please choose the approver">
-                    <Option value="jack"> Jack Ma </Option>
-                    <Option value="tom"> Tom Liu </Option>
-                  </Select>
-                </Form.Item>
-              </Col>
-            </Row>
-
-            <Row gutter={16}>
-              <Col span={12}>
-                <Form.Item
-                  name="is_staff"
-                  label="Is Staff"
-                  rules={[{ required: true, message: 'Please select the staff access' }]}
-                >
-                  <Select placeholder="Please select the staff access">
-                    <Option value="ture"> Ture </Option>
-                    <Option value="false"> False </Option>
-                  </Select>
-                </Form.Item>
-              </Col>
-              <Col span={12}>
-                <Form.Item
-                  name="is_superuser"
-                  label="Is Superuser"
-                  rules={[{ required: true, message: 'Please select the superuser access' }]}
-                >
-                  <Select placeholder="Please select the superuser access">
-                    <Option value="ture"> Ture </Option>
-                    <Option value="false"> False </Option>
-                  </Select>
-                </Form.Item>
-              </Col>
-
-
             </Row>
           </Form>
         </Drawer>

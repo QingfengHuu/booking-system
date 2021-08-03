@@ -7,13 +7,13 @@ const { Option } = Select;
 
 // Terminal DataSource: due to the disconnection with the backend
 const dataSource = [{
-  index: 1,
-  team: 'HWSS',
-  group: 'DELL 13G',
-  title: '13G R630',
-  location: 'DELL Server10',
-  idrac_ip: '20.12.131.24',
-  server_tag: 'HBMNBD2',
+  e_id: 1,
+  e_team: 'HWSS',
+  e_servergroup: 'DELL 13G',
+  e_title: '13G R630',
+  e_location: 'DELL Server10',
+  e_iDrac_ip: '20.12.131.24',
+  e_tag: 'HBMNBD2',
   booker: 'Cathy',
   start_date: '7/15',
   end_date: '7/20'
@@ -48,63 +48,25 @@ const TerminalList=() => {
 
     // Table Collection Data
     const colomns = [{
-      title: 'Index',
-      key: 'index',
-      align: 'center',
-      render: (txt,record,index) => index+1,
-      fixed: 'left',
-      width: 80
+      title: 'ID',
+      dataIndex: 'e_id',
     },{
       title: 'Team',
-      dataIndex: 'team',
-      fixed: 'left',
-      width: 100
-    },{
-      title: 'Group',
-      dataIndex: 'group',
-      fixed: 'left',
-      width: 150
+      dataIndex: 'e_team',
     },{
       title: 'Title',
-      dataIndex: 'title',
-      fixed: 'left',
-      width: 150
+      dataIndex: 'e_title',
     },{
       title: 'Location',
-      dataIndex: 'location',
-      width: 150
+      dataIndex: 'e_location',
     },{
-      title: 'idrac Ip',
-      dataIndex: 'idrac_ip',
-      width: 120
+      title: 'iDrac_Ip',
+      dataIndex: 'e_iDrac_ip',
     },{
       title: 'Server Tag',
-      dataIndex: 'server_tag',
-      width: 100
-    },{
-      title: 'Other 1',
-      dataIndex: 'server_tag',
-      width: 120
-    },{
-      title: 'Other 2',
-      dataIndex: 'server_tag',
-      width: 120
-    },{
-      title: 'Other 3',
-      dataIndex: 'server_tag',
-      width: 120
-    },{
-      title: 'Other 4',
-      dataIndex: 'server_tag',
-      width: 120
-    },{
-      title: 'Other 5',
-      dataIndex: 'server_tag',
-
+      dataIndex: 'e_tag',
     },{
       title: 'Operation',
-      fixed: 'right',
-      width: 150,
       render: (txt,record,index) => {
         return(
           <div>
@@ -124,6 +86,7 @@ const TerminalList=() => {
                   <Button type="primary"> Extend </Button>
                 </Space>
               }
+              
               >
                 <Descriptions.Item label="Team"> HWSS </Descriptions.Item>
                 <Descriptions.Item label="Group"> DELL 13G </Descriptions.Item>
@@ -156,7 +119,7 @@ const TerminalList=() => {
             </Button>
           }
         >
-          <Table columns={colomns} bordered dataSource={dataSource}  scroll={{ x: 1200, y: 200 }}/>
+          <Table columns={colomns} bordered dataSource={dataSource} />
         </Card>
 
 
