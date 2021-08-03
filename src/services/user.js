@@ -1,21 +1,21 @@
 import { get, post, put, del } from "../utils/request";
 
-export function UserListApi(page=1) {
-    return get('',{page})
+export function UserListApi() {
+    return get('/admin/users')
 }
 
 export function UserCreateApi(data) {
-    return post('',data)
+    return post('admin/users',data)
 }
 
-export function UserGetOneById(id) {
-    return get(`/${id}`)
+export function UserGetOneById(username) {
+    return get(`admin/users/${username}`)
 }
 
-export function UserModifyApi(id,data) {
-    return put(`/${id}`,data)
+export function UserResetApi(username,data) {
+    return put(`admin/users/${username}`,data)
 }
 
-export function UserDelApi(id) {
-    return del(`/${id}`)
+export function UserDelApi(username) {
+    return del(`admin/users/${username}`)
 }

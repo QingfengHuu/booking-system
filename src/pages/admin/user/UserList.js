@@ -2,7 +2,7 @@ import React, { useState,useEffect } from 'react'
 
 import { Drawer, Form, Button, Col, Row, Input, Select, Card, Table, Popconfirm, Modal, Space, Divider, Descriptions } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
-import { UserListApi,UserCreateApi, UserDelApi, UserModifyApi } from '../../../services/user';
+import { UserListApi,UserCreateApi, UserDelApi, UserResetApi } from '../../../services/user';
 
 const { Option } = Select;
 
@@ -85,16 +85,16 @@ const UserList=() => {
             <Space split={<Divider type="vertical" />}>
               <Popconfirm title= 'Sure Reset?'>
               <Button type='primary' size='small' onClick={()=>{
-                UserModifyApi(record.name).then(res=>{
-                  console.log(record.name+' modified!')
+                UserResetApi(record.username).then(res=>{
+                  console.log(record.username+' modified!')
                 })
               }}>Reset</Button>
               </Popconfirm>
               <Popconfirm title= 'Sure Delete?'>
                 <Button type='primary' danger size='small' onClick={(e)=>{
 
-                UserDelApi(record.name).then(res=>{
-                  console.log(record.name+' deleted!')
+                UserDelApi(record.username).then(res=>{
+                  console.log(record.username+' deleted!')
                 })
               }}> Delete </Button>
               </Popconfirm>
