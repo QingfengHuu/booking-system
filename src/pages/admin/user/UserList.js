@@ -1,8 +1,8 @@
-import React, { useState } from 'react'
+import React, { useState,useEffect } from 'react'
 
 import { Drawer, Form, Button, Col, Row, Input, Select, Card, Table, Popconfirm, Modal, Space, Divider, Descriptions } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
-import { UserCreateApi, UserDelApi, UserModifyApi } from '../../../services/user';
+import { UserListApi,UserCreateApi, UserDelApi, UserModifyApi } from '../../../services/user';
 
 const { Option } = Select;
 
@@ -28,6 +28,13 @@ const dataSource = [{
 const UserList=() => {
     // Drawer Trigger Setting
     const [isFormVisible, setIsFromVisble] = useState(false);
+    const [dataSource1, setDataSource1] = useState([]);
+
+    useEffect(() => {
+      UserListApi().then(res =>{
+        setDataSource1(res.terminal);
+      })
+    }, [])
     
     const onClose = () => {
       setIsFromVisble(false)
@@ -129,7 +136,7 @@ const UserList=() => {
             </Button>
           }
         >
-          <Table columns={colomns} bordered dataSource={dataSource}/>
+          <Table columns={colomns} bordered dataSource={dataSource1}/>
         </Card>
 
 

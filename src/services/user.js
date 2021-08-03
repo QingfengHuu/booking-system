@@ -9,7 +9,7 @@ export function UserCreateApi(data) {
 }
 
 export function UserGetOneById(id) {
-    return get(`api/admin/user/${id}`)
+    return get(`/${id}`)
 }
 
 export function UserModifyApi(id,data) {
