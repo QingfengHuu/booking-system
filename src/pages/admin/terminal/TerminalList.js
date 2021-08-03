@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 
-import { Drawer, Form, Button, Col, Row, Input, Select, Card, Table, Popconfirm, Modal, Space, Divider, Descriptions } from 'antd';
+import { Drawer, Form, Button, Col, Row, Input, Select, Card, Table, Popconfirm, Modal, Space, Divider, Descriptions, Checkbox  } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 
 const { Option } = Select;
@@ -8,18 +8,46 @@ const { Option } = Select;
 // Terminal DataSource: due to the disconnection with the backend
 const dataSource = [{
   e_id: 1,
-  e_team: 'HWSS',
-  e_servergroup: 'DELL 13G',
-  e_title: '13G R630',
-  e_location: 'DELL Server10',
-  e_iDrac_ip: '20.12.131.24',
-  e_tag: 'HBMNBD2',
-  booker: 'Cathy',
-  start_date: '7/15',
-  end_date: '7/20'
+    e_team: 'HWSS',
+    e_servergroup: 'DELL 13G',
+    e_title: '13G R630',
+    e_location: 'DELL Server10',
+    e_iDrac_ip: '20.12.131.24',
+    e_tag: 'HBMNBD2',
+    booker: 'Cathy',
+    start_date: '7/15',
+    end_date: '7/20'
 }]
 
+
+
+// Check Box Data
+const CheckboxGroup = Checkbox.Group;
+const plainOptions = ['ID', 'Title', 'Status', 'Location', 'iDrac IP', 'Server Tag', 'Configuration', 'Other 1', 'Other 2', 'Other 3', 'Other 4'];
+const defaultCheckedList = ['Title', 'OrangLocatione', 'iDrac IP', 'Server Tag'];
+
+
 const TerminalList=() => {
+
+  // Check Box Setting
+  const [checkedList, setCheckedList] = React.useState(defaultCheckedList);
+  const [indeterminate, setIndeterminate] = React.useState(true);
+  const [checkAll, setCheckAll] = React.useState(false);
+
+  const onChange = list => {
+    setCheckedList(list);
+    setIndeterminate(!!list.length && list.length < plainOptions.length);
+    setCheckAll(list.length === plainOptions.length);
+  };
+
+  const onCheckAllChange = e => {
+    setCheckedList(e.target.checked ? plainOptions : []);
+    setIndeterminate(false);
+    setCheckAll(e.target.checked);
+  };
+
+
+  
     // Drawer Trigger Setting
     const [isFormVisible, setIsFromVisble] = useState(false);
     
@@ -50,6 +78,7 @@ const TerminalList=() => {
     const colomns = [{
       title: 'ID',
       dataIndex: 'e_id',
+
     },{
       title: 'Team',
       dataIndex: 'e_team',
@@ -67,6 +96,7 @@ const TerminalList=() => {
       dataIndex: 'e_tag',
     },{
       title: 'Operation',
+
       render: (txt,record,index) => {
         return(
           <div>
@@ -111,7 +141,8 @@ const TerminalList=() => {
 
 
     return (
-        <div>
+      <div>
+
         <Card title='Terminal List' 
           extra={
             <Button type="primary" onClick={showDrawer}>
@@ -120,6 +151,7 @@ const TerminalList=() => {
           }
         >
           <Table columns={colomns} bordered dataSource={dataSource} />
+
         </Card>
 
 
