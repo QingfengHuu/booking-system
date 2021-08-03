@@ -16,14 +16,12 @@
     "react-dom": "^17.0.2",
     "react-highlight-words": "^0.17.0",
     "react-router-dom": "^5.2.0",
-<<<<<<< HEAD
-    "react-scripts": "^1.1.5",
-=======
+
     "react-scripts": "4.0.3",
     "tslib": "^2.3.0",
->>>>>>> 3f24641ef61248a9b85a1dfa5d40fbcb826b78d4
     "web-vitals": "^1.1.2"
   },
+  
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",

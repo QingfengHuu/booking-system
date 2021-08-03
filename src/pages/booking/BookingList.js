@@ -1,17 +1,19 @@
 import { Form, Input, DatePicker, Button, Card, Table, Popconfirm, Modal } from 'antd';
 import React, { useState, useEffect } from 'react'
+import { bookListApi } from '../../services/booking';
 import { listApi } from '../../services/terminal';
 
 const {RangePicker} = DatePicker;
 
 const dataSource = [{
-  index: 1,
-  team: 'HWSS',
-  group: 'DELL 13G',
-  title: '13G R630',
-  location: 'DELL Server10',
-  idrac_ip: '20.12.131.24',
-  server_tag: 'HBMNBD2',
+  e_id: 1,
+  e_team: 'HWSS',
+  e_servergroup: 'DELL 13G',
+  e_title: '13G R630',
+  e_location: 'DELL Server10',
+  e_iDrac_ip: '20.12.131.24',
+  e_tag: 'HBMNBD2',
+  e_status : 1,
   booker: 'Cathy',
   start_date: '7/15',
   end_date: '7/20'
@@ -22,6 +24,8 @@ const BookingList= (props) => {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [dataSource1, setDataSource1] = useState([]);
   const [total,setTotal] = useState(0);
+  const [buttonDisabled,setButtonDisabled] = useState(false);
+
 
   useEffect(() => {
     listApi().then(res =>{
@@ -68,31 +72,26 @@ const BookingList= (props) => {
   };
 
   const colomns = [{
-    title: 'index',
-    key: 'index',
-    align: 'center',
-    render: (txt,record,index) => index+1
+    title: 'ID',
+    dataIndex: 'e_id',
   },{
     title: 'Team',
-    dataIndex: 'team'
-  },{
-    title: 'Server Group',
-    dataIndex: 'group',
+    dataIndex: 'e_team',
   },{
     title: 'Title',
-    dataIndex: 'title'
+    dataIndex: 'e_title',
   },{
     title: 'Location',
-    dataIndex: 'location'
+    dataIndex: 'e_location',
   },{
-    title: 'iDrac_ip',
-    dataIndex: 'idrac_ip'
+    title: 'iDrac_Ip',
+    dataIndex: 'e_iDrac_ip',
   },{
     title: 'Server Tag',
-    dataIndex: 'server_tag'
+    dataIndex: 'e_tag',
   },{
     title: 'Booker',
-    dataIndex: 'booker'
+    dataIndex: 'booker',
   },{
     title: 'Start Date',
     dataIndex: 'start_date'
@@ -105,8 +104,11 @@ const BookingList= (props) => {
   },{
     title: 'Operation',
     render: (txt,record,index) => {
-      return(<div>
-        <Button type='primary' size='small' onClick={showModal}>Reserve</Button>
+      if(record.e_status===0){
+        setButtonDisabled(true);
+      }
+      return(<div>    
+        <Button type='primary' size='small' onClick={showModal} disabled={buttonDisabled}>Reserve</Button>
         <Modal title="Basic Modal" visible={isModalVisible} onOk={handleOk} onCancel={handleCancel}>
           <Form
             name="basic"
