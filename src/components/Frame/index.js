@@ -54,7 +54,7 @@ function index(props) {
                 mode="inline"
                 defaultSelectedKeys={[{}]}
                 defaultOpenKeys={['sub1']}
-                style={{ height: '100%', borderRight: 0 }}
+                style={{ height: '100%', color: "#ffffff", background: 'rgb(49 48 48 / 64%)', borderRight: 0 }}
                 >
                 {routes.map(route=>{
                     return(
@@ -83,6 +83,8 @@ function index(props) {
                 <Content
                 className="site-layout-background"
                 style={{
+                    paddingLeft: '1%',
+                    paddingRight:"1%",
                     background: '#fff',
                 }}
                 >
