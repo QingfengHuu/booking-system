@@ -1,4 +1,4 @@
-import { Form, Input, DatePicker, Button, Card, Table, Popconfirm, Modal } from 'antd';
+import { Form, Input, DatePicker, Button, Card, Table, Popconfirm, Modal, Radio } from 'antd';
 import React, { useState } from 'react'
 
 const {RangePicker} = DatePicker;
@@ -87,7 +87,7 @@ const BookingList= (props) => {
     render: (txt,record,index) => {
       return(<div>
         <Button type='primary' size='small' onClick={showModal}>Reserve</Button>
-        <Modal title="Basic Modal" visible={isModalVisible} onOk={handleOk} onCancel={handleCancel}>
+        <Modal title="Reserve an equipment" visible={isModalVisible} onOk={handleOk} onCancel={handleCancel}>
           <Form
             name="basic"
             labelCol={{ span: 8 }}
@@ -97,23 +97,36 @@ const BookingList= (props) => {
             onFinishFailed={onFinishFailed}
           >
             <Form.Item
-              label="Username"
-              name="username"
-              rules={[{ required: true, message: 'Please input your username!' }]}
+              label=" Renter"
+              name="Renter"
+              // placeholder="Select a option and change input text above"
+              rules={[{ required: true, message: 'Please input your Renter!' }]}
             >
               <Input />
             </Form.Item>
 
             <Form.Item
-              label="Password"
-              name="password"
-              rules={[{ required: true, message: 'Please input your password!' }]}
+              name="radio-button"
+              label="Renter"
+              rules={[{ required: true, message: 'Please pick an item!' }]}
             >
-              <Input.Password />
+              <Radio.Group>
+                <Radio.Button value="a">Username</Radio.Button>
+                <Radio.Button value="b">Book for other?</Radio.Button>
+              </Radio.Group>
             </Form.Item>
 
+            
             <Form.Item name="range-picker" label="RangePicker" {...rangeConfig}>
               <RangePicker />
+            </Form.Item>
+
+            <Form.Item
+              label="Comments"
+              name="Comments"
+              rules={[{ required: false, message: 'Please input your comments!' }]}
+            >
+              <Input.TextArea />
             </Form.Item>
 
             <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
