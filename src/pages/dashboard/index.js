@@ -94,7 +94,7 @@ const Index = () => {
         
         <div className="site-card-wrapper">
         <Row className = "UsageCard" gutter={16}>
-        <Col span={8}>
+        <Col className = "cardRow" span={8}>
             <Card  title="All Equipment usage" bordered={true}
             headStyle={{backgroundColor: '#a0a0a0', border: 0 }}
             >
