@@ -85,10 +85,10 @@ const UserList=() => {
               </Popconfirm>
             </Space>
 
-            <Modal title="User Detail" width={800} visible={isModalVisible} onOk={handleOk} onCancel={handleCancel}>
+            <Modal title="User Detail" width={1000} visible={isModalVisible} onOk={handleOk} onCancel={handleCancel}>
               <Descriptions
                 bordered
-                extra={<Button type="primary">Edit</Button>}
+                extra={<Button type="primary"> Reset Password </Button>}
               >
                 <Descriptions.Item label="ID"> 1 </Descriptions.Item>
                 <Descriptions.Item label="User Name"> Javis </Descriptions.Item>

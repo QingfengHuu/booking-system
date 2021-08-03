@@ -1,25 +1,53 @@
 import React, { useState } from 'react'
 
-import { Drawer, Form, Button, Col, Row, Input, Select, Card, Table, Popconfirm, Modal, Space, Divider, Descriptions } from 'antd';
+import { Drawer, Form, Button, Col, Row, Input, Select, Card, Table, Popconfirm, Modal, Space, Divider, Descriptions, Checkbox  } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 
 const { Option } = Select;
 
 // Terminal DataSource: due to the disconnection with the backend
 const dataSource = [{
-  index: 1,
-  team: 'HWSS',
-  group: 'DELL 13G',
-  title: '13G R630',
-  location: 'DELL Server10',
-  idrac_ip: '20.12.131.24',
-  server_tag: 'HBMNBD2',
-  booker: 'Cathy',
-  start_date: '7/15',
-  end_date: '7/20'
+  e_id: 1,
+    e_team: 'HWSS',
+    e_servergroup: 'DELL 13G',
+    e_title: '13G R630',
+    e_location: 'DELL Server10',
+    e_iDrac_ip: '20.12.131.24',
+    e_tag: 'HBMNBD2',
+    booker: 'Cathy',
+    start_date: '7/15',
+    end_date: '7/20'
 }]
 
+
+
+// Check Box Data
+const CheckboxGroup = Checkbox.Group;
+const plainOptions = ['ID', 'Title', 'Status', 'Location', 'iDrac IP', 'Server Tag', 'Configuration', 'Other 1', 'Other 2', 'Other 3', 'Other 4'];
+const defaultCheckedList = ['Title', 'OrangLocatione', 'iDrac IP', 'Server Tag'];
+
+
 const TerminalList=() => {
+
+  // Check Box Setting
+  const [checkedList, setCheckedList] = React.useState(defaultCheckedList);
+  const [indeterminate, setIndeterminate] = React.useState(true);
+  const [checkAll, setCheckAll] = React.useState(false);
+
+  const onChange = list => {
+    setCheckedList(list);
+    setIndeterminate(!!list.length && list.length < plainOptions.length);
+    setCheckAll(list.length === plainOptions.length);
+  };
+
+  const onCheckAllChange = e => {
+    setCheckedList(e.target.checked ? plainOptions : []);
+    setIndeterminate(false);
+    setCheckAll(e.target.checked);
+  };
+
+
+  
     // Drawer Trigger Setting
     const [isFormVisible, setIsFromVisble] = useState(false);
     
@@ -48,63 +76,27 @@ const TerminalList=() => {
 
     // Table Collection Data
     const colomns = [{
-      title: 'Index',
-      key: 'index',
-      align: 'center',
-      render: (txt,record,index) => index+1,
-      fixed: 'left',
-      width: 80
-    },{
-      title: 'Team',
-      dataIndex: 'team',
-      fixed: 'left',
-      width: 100
-    },{
-      title: 'Group',
-      dataIndex: 'group',
-      fixed: 'left',
-      width: 150
-    },{
-      title: 'Title',
-      dataIndex: 'title',
-      fixed: 'left',
-      width: 150
-    },{
-      title: 'Location',
-      dataIndex: 'location',
-      width: 150
-    },{
-      title: 'idrac Ip',
-      dataIndex: 'idrac_ip',
-      width: 120
-    },{
-      title: 'Server Tag',
-      dataIndex: 'server_tag',
-      width: 100
-    },{
-      title: 'Other 1',
-      dataIndex: 'server_tag',
-      width: 120
-    },{
-      title: 'Other 2',
-      dataIndex: 'server_tag',
-      width: 120
-    },{
-      title: 'Other 3',
-      dataIndex: 'server_tag',
-      width: 120
-    },{
-      title: 'Other 4',
-      dataIndex: 'server_tag',
-      width: 120
-    },{
-      title: 'Other 5',
-      dataIndex: 'server_tag',
+      title: 'ID',
+      dataIndex: 'e_id',
 
     },{
+      title: 'Team',
+      dataIndex: 'e_team',
+    },{
+      title: 'Title',
+      dataIndex: 'e_title',
+    },{
+      title: 'Location',
+      dataIndex: 'e_location',
+    },{
+      title: 'iDrac_Ip',
+      dataIndex: 'e_iDrac_ip',
+    },{
+      title: 'Server Tag',
+      dataIndex: 'e_tag',
+    },{
       title: 'Operation',
-      fixed: 'right',
-      width: 150,
+
       render: (txt,record,index) => {
         return(
           <div>
@@ -115,7 +107,7 @@ const TerminalList=() => {
               </Popconfirm>
             </Space>
 
-            <Modal title="User Detail" width={800} visible={isModalVisible} onOk={handleOk} onCancel={handleCancel}>
+            <Modal title="Terminal Detail" width={800} visible={isModalVisible} onOk={handleOk} onCancel={handleCancel}>
               <Descriptions
                 bordered
                 extra={
@@ -124,6 +116,7 @@ const TerminalList=() => {
                   <Button type="primary"> Extend </Button>
                 </Space>
               }
+              
               >
                 <Descriptions.Item label="Team"> HWSS </Descriptions.Item>
                 <Descriptions.Item label="Group"> DELL 13G </Descriptions.Item>
@@ -131,7 +124,7 @@ const TerminalList=() => {
                 <Descriptions.Item label="Location"> DELL Server10 </Descriptions.Item>
                 <Descriptions.Item label="idrac Ip"> 20.12.131.24 </Descriptions.Item>
                 <Descriptions.Item label="Server Tag"> HBMNBD2 </Descriptions.Item>
-                <Descriptions.Item label="Booker"> DELL Server10 </Descriptions.Item>
+                <Descriptions.Item label="Booker"> Cathy </Descriptions.Item>
                 <Descriptions.Item label="Start Date"> 7/15 </Descriptions.Item>
                 <Descriptions.Item label="End Date"> 7/20 </Descriptions.Item>
                 <Descriptions.Item label="Comment">
@@ -148,7 +141,8 @@ const TerminalList=() => {
 
 
     return (
-        <div>
+      <div>
+
         <Card title='Terminal List' 
           extra={
             <Button type="primary" onClick={showDrawer}>
@@ -156,7 +150,8 @@ const TerminalList=() => {
             </Button>
           }
         >
-          <Table columns={colomns} bordered dataSource={dataSource}  scroll={{ x: 1200, y: 200 }}/>
+          <Table columns={colomns} bordered dataSource={dataSource} />
+
         </Card>
 
 
