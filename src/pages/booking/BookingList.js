@@ -25,6 +25,7 @@ const BookingList= (props) => {
   const [dataSource1, setDataSource1] = useState([]);
   const [total,setTotal] = useState(0);
   const [buttonDisabled,setButtonDisabled] = useState(false);
+  const [isFormVisible, setIsFormVisble] =useState(false);
 
 
   useEffect(() => {
@@ -60,6 +61,10 @@ const BookingList= (props) => {
   const onFinishFailed = (errorInfo) => {
     console.log('Failed:', errorInfo);
   };
+
+  const handleFormVisible = (e) =>{
+    setIsFormVisble(true);
+  }
 
   const rangeConfig = {
     rules: [
@@ -121,6 +126,7 @@ const BookingList= (props) => {
               name="Renter"
               // placeholder="Select a option and change input text above"
               rules={[{ required: true, message: 'Please input your Renter!' }]}
+              visible={isFormVisible}
             >
               <Input />
             </Form.Item>
@@ -131,7 +137,7 @@ const BookingList= (props) => {
               rules={[{ required: true, message: 'Please pick an item!' }]}
             >
               <Radio.Group>
-                <Radio.Button value="a" onClick={handleChange}>Username</Radio.Button>
+                <Radio.Button value="a" onClick={setIsFormVisble} >Username</Radio.Button>
                 <Radio.Button value="b">Book for other?</Radio.Button>
               </Radio.Group>
             </Form.Item>
