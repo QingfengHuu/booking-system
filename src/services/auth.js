@@ -1,4 +1,5 @@
 import { post } from "../utils/request";
+import api from '../api/api'
 
 /**
  * 用户登录
@@ -7,5 +8,5 @@ import { post } from "../utils/request";
  * password
  */
 export function loginApi(user){
-    return post("",user)
+    return post(api.login,user)
 }
