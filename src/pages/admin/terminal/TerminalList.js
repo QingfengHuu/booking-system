@@ -7,6 +7,7 @@ const { Option } = Select;
 
 // Terminal DataSource: due to the disconnection with the backend
 const dataSource = [{
+<<<<<<< HEAD
   e_id: 1,
     e_team: 'HWSS',
     e_group:'DELL 13G',
@@ -16,17 +17,37 @@ const dataSource = [{
     e_location: 'DELL Server10',
     e_iDrac_ip: '20.12.131.24',
     e_tag: 'HBMNBD2'
+=======
+  id: '1',
+  e_id: '32',
+  e_title: '13G R630',
+  e_location: 'DELL Server10',
+  e_iDrac_ip: '20.12.131.24',
+  e_status: 'Available',
+  e_tag: 'HBMNBD2',
+  e_configuration: 'confgiue',
+  content:'Content Here'
+>>>>>>> main
 }]
 
 
 
 // Check Box Data
 const CheckboxGroup = Checkbox.Group;
+<<<<<<< HEAD
 const plainOptions = ['Cluster', 'Team', 'Title', 'Location', 'iDrac IP', 'Server Tag', 'Tag', 'Configuration'];
 const defaultCheckedList = ['Cluster', 'Title', 'OrangLocatione', 'iDrac IP', 'Server Tag'];
 
 
 const TerminalList=() => {
+=======
+const plainOptions = ['ID', 'Title', 'Status', 'Location', 'iDrac IP', 'Server Tag', 'Configuration', 'Other 1', 'Other 2', 'Other 3', 'Other 4'];
+const defaultCheckedList = ['Title', 'OrangLocatione', 'iDrac IP', 'Server Tag'];
+
+
+const TerminalList=() => {
+
+>>>>>>> main
   // Check Box Setting
   const [checkedList, setCheckedList] = React.useState(defaultCheckedList);
   const [indeterminate, setIndeterminate] = React.useState(true);
@@ -76,6 +97,7 @@ const TerminalList=() => {
     const colomns = [{
       title: 'ID',
       dataIndex: 'e_id',
+<<<<<<< HEAD
     },{
       title: 'Group',
       dataIndex: 'e_group',
@@ -99,6 +121,56 @@ const TerminalList=() => {
       dataIndex: 'e_location',
     },{
       title: 'Operation',
+=======
+      fixed: 'left',
+      width: 50
+    },{
+      title: 'Title',
+      dataIndex: 'e_title',
+      fixed: 'left',
+      width: 100
+    },{
+      title: 'Status',
+      dataIndex: 'e_status',
+      fixed: 'left',
+      width: 100
+    },{
+      title: 'Location',
+      dataIndex: 'e_location',
+      width: 150
+    },{
+      title: 'iDrac IP',
+      dataIndex: 'e_iDrac_ip',
+      width: 150
+    },{
+      title: 'Server Tag',
+      dataIndex: 'e_tag',
+      width: 150
+    },{
+      title: 'Configuration',
+      dataIndex: 'e_configuration',
+      width: 150
+    },{
+      title: 'Other 1',
+      dataIndex: 'content',
+      width: 120
+    },{
+      title: 'Other 2',
+      dataIndex: 'content',
+      width: 120
+    },{
+      title: 'Other 3',
+      dataIndex: 'content',
+      width: 120
+    },{
+      title: 'Other 4',
+      dataIndex: 'content',
+      width: 120
+    },{
+      title: 'Operation',
+      fixed: 'right',
+      width: 160,
+>>>>>>> main
       render: (txt,record,index) => {
         return(
           <div>
@@ -141,6 +213,10 @@ const TerminalList=() => {
 
     return (
       <div>
+<<<<<<< HEAD
+=======
+
+>>>>>>> main
         <Card title='Terminal List' 
           extra={
             <Button type="primary" onClick={showDrawer}>
@@ -148,6 +224,7 @@ const TerminalList=() => {
             </Button>
           }
         >
+<<<<<<< HEAD
           <>
             <Checkbox indeterminate={indeterminate} onChange={onCheckAllChange} checked={checkAll}>
               Check all
@@ -157,6 +234,23 @@ const TerminalList=() => {
           </>
           <Divider />
           <Table columns={colomns} bordered dataSource={dataSource} />
+=======
+          <Card>
+            <>
+            <Space size={50}>
+              <Checkbox indeterminate={indeterminate} onChange={onCheckAllChange} checked={checkAll}>
+                Display all
+              </Checkbox>
+              <Popconfirm title= 'Sure Submit?'>
+                <Button type='primary' danger size='small' align='end'> Submit </Button>
+              </Popconfirm>
+              </Space>
+              <Divider />
+              <CheckboxGroup options={plainOptions} value={checkedList} onChange={onChange} />
+            </>
+          </Card>
+          <Table columns={colomns} bordered dataSource={dataSource}  scroll={{ x: 1200, y: 200 }}/>
+>>>>>>> main
         </Card>
 
 
