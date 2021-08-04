@@ -11,7 +11,8 @@ const dataSource = [{
   server_tag: 'HBMNBD2',
   booker: 'Cathy',
   start_date: '7/15',
-  end_date: '7/20'
+  end_date: '7/29',
+  extend:1
 }]
 
 const Account= (props) => {
@@ -30,7 +31,7 @@ const Account= (props) => {
     setIsModalVisible(false);
   };
 
-  const colomns = [{
+  const currColumns = [{
     title: 'index',
     key: 'index',
     align: 'center',
@@ -54,14 +55,14 @@ const Account= (props) => {
     title: 'Server Tag',
     dataIndex: 'server_tag'
   },{
-    title: 'Booker',
-    dataIndex: 'booker'
-  },{
     title: 'Start Date',
     dataIndex: 'start_date'
   },{
     title: 'End Date',
     dataIndex: 'end_date'
+  },{
+    title:'Extend Time',
+    dataIndex:'extend'
   },{
     title: 'Operation',
     render: (txt,record,index) => {
@@ -84,6 +85,41 @@ const Account= (props) => {
   }
 ]
 
+  const histColums = [{
+    title: 'index',
+    key: 'index',
+    align: 'center',
+    render: (txt,record,index) => index+1
+  },{
+    title: 'Team',
+    dataIndex: 'team'
+  },{
+    title: 'Server Group',
+    dataIndex: 'group',
+  },{
+    title: 'Title',
+    dataIndex: 'title'
+  },{
+    title: 'Location',
+    dataIndex: 'location'
+  },{
+    title: 'iDrac_ip',
+    dataIndex: 'idrac_ip'
+  },{
+    title: 'Server Tag',
+    dataIndex: 'server_tag'
+  },{
+    title: 'Start Date',
+    dataIndex: 'start_date'
+  },{
+    title: 'End Date',
+    dataIndex: 'end_date'
+  },{
+    title:'Extend Time',
+    dataIndex:'extend'
+  }
+]
+
   return (
     <Card title='Account' 
       extra={
@@ -97,14 +133,14 @@ const Account= (props) => {
             Additional Operation
             </Button>
         }>
-            <Table rowKey='index' columns={colomns} bordered dataSource={dataSource}/>
+            <Table rowKey='index' columns={currColumns} bordered dataSource={dataSource}/>
         </Card>
         <Card type='inner' title='Reservation history'extra={
             <Button type='primary'>
             Additional Operation
             </Button>
         }>
-            <Table rowKey='index' columns={colomns} bordered dataSource={dataSource}/>
+            <Table rowKey='index' columns={histColums} bordered dataSource={dataSource}/>
         </Card>
     </Card>
   )

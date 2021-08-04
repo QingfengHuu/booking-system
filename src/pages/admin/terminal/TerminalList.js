@@ -9,26 +9,24 @@ const { Option } = Select;
 const dataSource = [{
   e_id: 1,
     e_team: 'HWSS',
+    e_group:'DELL 13G',
+    e_cluster:'cluster',
     e_servergroup: 'DELL 13G',
     e_title: '13G R630',
     e_location: 'DELL Server10',
     e_iDrac_ip: '20.12.131.24',
-    e_tag: 'HBMNBD2',
-    booker: 'Cathy',
-    start_date: '7/15',
-    end_date: '7/20'
+    e_tag: 'HBMNBD2'
 }]
 
 
 
 // Check Box Data
 const CheckboxGroup = Checkbox.Group;
-const plainOptions = ['ID', 'Title', 'Status', 'Location', 'iDrac IP', 'Server Tag', 'Configuration', 'Other 1', 'Other 2', 'Other 3', 'Other 4'];
-const defaultCheckedList = ['Title', 'OrangLocatione', 'iDrac IP', 'Server Tag'];
+const plainOptions = ['Cluster', 'Team', 'Title', 'Location', 'iDrac IP', 'Server Tag', 'Tag', 'Configuration'];
+const defaultCheckedList = ['Cluster', 'Title', 'OrangLocatione', 'iDrac IP', 'Server Tag'];
 
 
 const TerminalList=() => {
-
   // Check Box Setting
   const [checkedList, setCheckedList] = React.useState(defaultCheckedList);
   const [indeterminate, setIndeterminate] = React.useState(true);
@@ -78,25 +76,29 @@ const TerminalList=() => {
     const colomns = [{
       title: 'ID',
       dataIndex: 'e_id',
-
     },{
-      title: 'Team',
-      dataIndex: 'e_team',
+      title: 'Group',
+      dataIndex: 'e_group',
     },{
       title: 'Title',
       dataIndex: 'e_title',
     },{
-      title: 'Location',
-      dataIndex: 'e_location',
-    },{
-      title: 'iDrac_Ip',
-      dataIndex: 'e_iDrac_ip',
-    },{
       title: 'Server Tag',
       dataIndex: 'e_tag',
     },{
+      title: 'Cluster',
+      dataIndex: 'e_cluster',
+    },{
+      title: 'iDrac Ip',
+      dataIndex: 'e_iDrac_ip',
+    },{
+      title: 'Team',
+      dataIndex: 'e_team',
+    },{
+      title: 'Location',
+      dataIndex: 'e_location',
+    },{
       title: 'Operation',
-
       render: (txt,record,index) => {
         return(
           <div>
@@ -107,7 +109,7 @@ const TerminalList=() => {
               </Popconfirm>
             </Space>
 
-            <Modal title="User Detail" width={800} visible={isModalVisible} onOk={handleOk} onCancel={handleCancel}>
+            <Modal title="Terminal Detail" width={1000} visible={isModalVisible} onOk={handleOk} onCancel={handleCancel}>
               <Descriptions
                 bordered
                 extra={
@@ -116,17 +118,14 @@ const TerminalList=() => {
                   <Button type="primary"> Extend </Button>
                 </Space>
               }
-              
               >
-                <Descriptions.Item label="Team"> HWSS </Descriptions.Item>
                 <Descriptions.Item label="Group"> DELL 13G </Descriptions.Item>
                 <Descriptions.Item label="Title"> 13G R630 </Descriptions.Item>
-                <Descriptions.Item label="Location"> DELL Server10 </Descriptions.Item>
-                <Descriptions.Item label="idrac Ip"> 20.12.131.24 </Descriptions.Item>
                 <Descriptions.Item label="Server Tag"> HBMNBD2 </Descriptions.Item>
-                <Descriptions.Item label="Booker"> DELL Server10 </Descriptions.Item>
-                <Descriptions.Item label="Start Date"> 7/15 </Descriptions.Item>
-                <Descriptions.Item label="End Date"> 7/20 </Descriptions.Item>
+                <Descriptions.Item label="Cluster"> cluster </Descriptions.Item>
+                <Descriptions.Item label="idrac Ip"> 20.12.131.24 </Descriptions.Item>
+                <Descriptions.Item label="Team"> HWSS </Descriptions.Item>
+                <Descriptions.Item label="Location"> DELL Server10 </Descriptions.Item>
                 <Descriptions.Item label="Comment">
                   This terminal has some issue on the uploading function, need IT assistant to check the functionality.
                 </Descriptions.Item>
@@ -142,7 +141,6 @@ const TerminalList=() => {
 
     return (
       <div>
-
         <Card title='Terminal List' 
           extra={
             <Button type="primary" onClick={showDrawer}>
@@ -150,8 +148,15 @@ const TerminalList=() => {
             </Button>
           }
         >
+          <>
+            <Checkbox indeterminate={indeterminate} onChange={onCheckAllChange} checked={checkAll}>
+              Check all
+            </Checkbox>
+            <Divider />
+            <CheckboxGroup options={plainOptions} value={checkedList} onChange={onChange} />
+          </>
+          <Divider />
           <Table columns={colomns} bordered dataSource={dataSource} />
-
         </Card>
 
 
@@ -181,19 +186,6 @@ const TerminalList=() => {
             <Row gutter={16}>
               <Col span={12}>
                 <Form.Item
-                  name="team"
-                  label="Team"
-                  rules={[{ required: true, message: 'Please choose terminal team' }]}
-                >
-                  <Select placeholder="Please choose terminal team">
-                    <Option value="HWSS"> HWSS </Option>
-                    <Option value="HWSA"> HWSA </Option>
-                    <Option value="HWSN"> HWSN </Option>
-                  </Select>
-                </Form.Item>
-              </Col>
-              <Col span={12}>
-                <Form.Item
                   name="group"
                   label="Group"
                   rules={[{ required: true, message: 'Please choose the group' }]}
@@ -205,9 +197,6 @@ const TerminalList=() => {
                   </Select>
                 </Form.Item>
               </Col>
-            </Row>
-
-            <Row gutter={16}>
               <Col span={12}>
                 <Form.Item
                   name="title"
@@ -217,27 +206,9 @@ const TerminalList=() => {
                   <Input placeholder="Please enter terminal title" />
                 </Form.Item>
               </Col>
-              <Col span={12}>
-                <Form.Item
-                  name="location"
-                  label="Location"
-                  rules={[{ required: true, message: 'Please enter terminal location' }]}
-                >
-                  <Input placeholder="Please enter terminal location" />
-                </Form.Item>
-              </Col>
             </Row>
 
             <Row gutter={16}>
-              <Col span={12}>
-                <Form.Item
-                  name="idrac Ip"
-                  label="idrac Ip"
-                  rules={[{ required: true, message: 'Please enter terminal idrac ip' }]}
-                >
-                  <Input placeholder="Please enter terminal idrac ip" />
-                </Form.Item>
-              </Col>
               <Col span={12}>
                 <Form.Item
                   name="server_tag"
@@ -251,7 +222,58 @@ const TerminalList=() => {
                   </Select>
                 </Form.Item>
               </Col>
+              <Col span={12}>
+                <Form.Item
+                  name="cluster"
+                  label="Cluster"
+                  rules={[{ required: true, message: 'Please choose the cluster' }]}
+                >
+                  <Select placeholder="Please choose the cluster">
+                    <Option value="cluster1"> cluster1 </Option>
+                    <Option value="cluster2"> cluster2 </Option>
+                    <Option value="cluster3"> cluster3 </Option>
+                  </Select>
+                </Form.Item>
+              </Col>
             </Row>
+
+            <Row gutter={16}>
+              <Col span={12}>
+                <Form.Item
+                  name="idrac Ip"
+                  label="iDrac Ip"
+                  rules={[{ required: true, message: 'Please enter terminal idrac ip' }]}
+                >
+                  <Input placeholder="Please enter terminal idrac ip" />
+                </Form.Item>
+              </Col>
+              <Col span={12}>
+                <Form.Item
+                  name="team"
+                  label="Team"
+                  rules={[{ required: true, message: 'Please choose terminal team' }]}
+                >
+                  <Select placeholder="Please choose terminal team">
+                    <Option value="HWSS"> HWSS </Option>
+                    <Option value="HWSA"> HWSA </Option>
+                    <Option value="HWSN"> HWSN </Option>
+                  </Select>
+                </Form.Item>
+              </Col>
+            </Row>
+          
+          <Row gutter={16}>
+            <Col span={12}>
+                <Form.Item
+                  name="location"
+                  label="Location"
+                  rules={[{ required: true, message: 'Please enter terminal location' }]}
+                >
+                  <Input placeholder="Please enter terminal location" />
+                </Form.Item>
+              </Col>
+            </Row>
+            
 
             <Row gutter={16}>
               <Col span={24}>
