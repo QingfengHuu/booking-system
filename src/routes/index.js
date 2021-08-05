@@ -9,6 +9,7 @@ import Login from "../pages/Login";
 import PageNotFound from "../pages/PageNotFound";
 import TerminalEdit from "../pages/admin/terminal/TerminalEdit";
 
+
 export const mainRoutes = [{
     path: '/login',
     component: Login
@@ -59,7 +60,8 @@ export const bookingRoutes = [{
     exact: true,
     isShow: true,
     title: 'Booking',
-},{
+},
+{
     path: '/booking/look/:id',
     component: Detail,
     isShow: false
