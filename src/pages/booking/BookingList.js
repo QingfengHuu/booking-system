@@ -1,10 +1,15 @@
 import { Form, Input, DatePicker, Button, Card, Table, Popconfirm, Modal, Radio, Space } from 'antd';
 import React, { useState, useEffect } from 'react'
 import { bookListApi } from '../../services/booking';
+<<<<<<< HEAD
+import { TerminalListApi } from '../../services/terminal';
+import TerminalList from '../admin/terminal/TerminalList';
+=======
 import { listApi } from '../../services/terminal';
 import Highlighter from 'react-highlight-words';
 import { SearchOutlined } from '@ant-design/icons';
 
+>>>>>>> f2d674412b165f927b89ffc74d0b02d3c9001d9e
 
 const {RangePicker} = DatePicker;
 
@@ -60,14 +65,14 @@ const BookingList= (props) => {
 
 
   useEffect(() => {
-    listApi().then(res =>{
+    TerminalListApi().then(res =>{
       setDataSource1(res.terminal);
       setTotal(res.totalCount);
     })
   }, [])
 
   const loadData = (page) =>{
-    listApi(page).then(res =>{
+    TerminalListApi(page).then(res =>{
       setDataSource1(res.terminal);
       setTotal(res.totalCount);
     })

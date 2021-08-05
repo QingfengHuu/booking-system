@@ -1,5 +1,5 @@
 export function getToken(){
-    return localStorage.getItem("token");
+    return localStorage.getItem("AUTHORIZATION");
 }
 
 export function setToken(token){
@@ -7,13 +7,12 @@ export function setToken(token){
 }
 
 export function clearToken() {
-    localStorage.removeItem("token")
+    localStorage.removeItem("AUTHORIZATION")
 }
 
 export function isLogined(){
-    if(localStorage.getItem("token")){
+    if(localStorage.getItem("AUTHORIZATION")){
         return true;
     }
     return false;
-
 }

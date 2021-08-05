@@ -7,6 +7,7 @@ import Detail from "../pages/booking/Detail";
 import Index from "../pages/dashboard/";
 import Login from "../pages/Login";
 import PageNotFound from "../pages/PageNotFound";
+import TerminalEdit from "../pages/admin/terminal/TerminalEdit";
 
 
 export const mainRoutes = [{
@@ -30,6 +31,10 @@ export const adminRoutes=[{
     exact: true,
     isShow: true,
     title: 'Terminal Manage'
+},{
+    path: '/admin/terminal/edit/:id?',
+    component: TerminalEdit,
+    isShow: false
 },{
     path: '/admin/order',
     component: OrderList,
