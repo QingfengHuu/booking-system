@@ -1,8 +1,7 @@
-import React, { useState,useEffect } from 'react'
+import React, { useState } from 'react'
 
 import { Drawer, Form, Button, Col, Row, Input, Select, Card, Table, Popconfirm, Modal, Space, Divider, Descriptions } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
-import { UserListApi,UserCreateApi, UserDelApi, UserResetApi } from '../../../services/user';
 
 const { Option } = Select;
 
@@ -25,23 +24,16 @@ const dataSource = [{
   approver: 'Tom Liu'
 }]
 
-const UserList=() => {
+const OrderList=() => {
     // Drawer Trigger Setting
-    const [isFormVisible, setIsFormVisble] = useState(false);
-    const [dataSource1, setDataSource1] = useState([]);
-
-    useEffect(() => {
-      UserListApi().then(res =>{
-        setDataSource1(res.data);
-      })
-    }, [])
+    const [isFormVisible, setIsFromVisble] = useState(false);
     
     const onClose = () => {
-      setIsFormVisble(false)
+      setIsFromVisble(false)
     };
 
     const showDrawer = () => {
-      setIsFormVisble(true)
+      setIsFromVisble(true)
     };
 
     // Table Trigger Setting
@@ -59,21 +51,16 @@ const UserList=() => {
       setIsModalVisible(false);
     };
 
-    const onFinish = (values) => {
-      UserCreateApi(values).then(res=>{
-        console.log(values)
-      })
-
-    };
-
     // Table Collection Data
     const colomns = [{
-      title: 'ID',
-      dataIndex: 'id'
+      title: 'Order ID',
+      dataIndex: 'b_id'
     },{
-      title: 'User Name',
-      key: 'username',
-      dataIndex: 'username'
+      title: 'Booker ID',
+      dataIndex: 'u_id'
+    },{
+        title: 'Booker Name',
+        dataIndex: 'username'
     },{
       title: 'Email',
       dataIndex: 'email',
@@ -81,28 +68,27 @@ const UserList=() => {
       title: 'Group',
       dataIndex: 'group_name'
     },{
+      title: 'Staff Access',
+      dataIndex: 'is_staff'
+    },{
+      title: 'Superuser Access',
+      dataIndex: 'is_superuser'
+    },{
+      title: 'Approver',
+      dataIndex: 'approver'
+    },{
       title: 'Operation',
       render: (txt,record,index) => {
         return(
           <div>
             <Space split={<Divider type="vertical" />}>
-              <Popconfirm title= 'Sure Reset?'>
-              <Button type='primary' size='small' onClick={()=>{
-                UserResetApi(record.username).then(res=>{
-                  console.log(record.username+' modified!')
-                })
-              }}>Reset</Button>
-              </Popconfirm>
+              <Button type='primary' size='small' onClick={showModal}>Edit</Button>
               <Popconfirm title= 'Sure Delete?'>
-                <Button type='primary' danger size='small' onClick={()=>{
-                UserDelApi(record.username).then(res=>{
-                  console.log(record.username+' deleted!')
-                })
-              }}> Delete </Button>
+                <Button type='primary' danger size='small'> Delete </Button>
               </Popconfirm>
             </Space>
 
-            {/* <Modal title="User Detail" width={800} visible={isModalVisible} onOk={handleOk} onCancel={handleCancel}>
+            <Modal title="User Detail" width={1000} visible={isModalVisible} onOk={handleOk} onCancel={handleCancel}>
               <Descriptions
                 bordered
                 extra={<Button type="primary"> Reset Password </Button>}
@@ -120,14 +106,14 @@ const UserList=() => {
                 <Descriptions.Item label="Approver"> Tom Liu </Descriptions.Item>
                 <Descriptions.Item label="Password"> ******** </Descriptions.Item>
               </Descriptions>
-            </Modal> */}
+            </Modal>
           </div>
           
         )
       }
     }
   ]
-  
+
 
     return (
         <div>
@@ -138,7 +124,7 @@ const UserList=() => {
             </Button>
           }
         >
-          <Table rowKey='username' columns={colomns} bordered dataSource={dataSource1}/>
+          <Table columns={colomns} bordered dataSource={dataSource}/>
         </Card>
 
 
@@ -158,11 +144,13 @@ const UserList=() => {
               <Button onClick={onClose} style={{ marginRight: 8 }}>
                 Cancel
               </Button>
-              
+              <Button onClick={onClose} type="primary">
+                Submit
+              </Button>
             </div>
           }
         >
-          <Form layout="vertical"  hideRequiredMark onFinish={onFinish} >
+          <Form layout="vertical" hideRequiredMark>
             <Row gutter={16}>
               <Col span={12}>
                 <Form.Item
@@ -197,26 +185,59 @@ const UserList=() => {
                   label="Group"
                   rules={[{ required: true, message: 'Please choose the group' }]}
                 >
-                  <Input
-                    style={{ width: '100%' }}
-                    placeholder="Please enter group name"
-                  />
+                  <Select placeholder="Please choose the group">
+                    <Option value="vxRail_day0_team"> VxRail Day0 Team </Option>
+                    <Option value="vxRail_day1_team"> VxRail Day1 Team </Option>
+                    <Option value="vxRail_day2_team"> VxRail Day2 Team </Option>
+                  </Select>
+                </Form.Item>
+              </Col>
+              <Col span={12}>
+                <Form.Item
+                  name="approver"
+                  label="Approver"
+                  rules={[{ required: true, message: 'Please choose the approver' }]}
+                >
+                  <Select placeholder="Please choose the approver">
+                    <Option value="jack"> Jack Ma </Option>
+                    <Option value="tom"> Tom Liu </Option>
+                  </Select>
                 </Form.Item>
               </Col>
             </Row>
+
             <Row gutter={16}>
               <Col span={12}>
-                <Form.Item>
-                  <Button htmlType='submit'  type="primary" >
-                    Submit
-                  </Button>
+                <Form.Item
+                  name="is_staff"
+                  label="Is Staff"
+                  rules={[{ required: true, message: 'Please select the staff access' }]}
+                >
+                  <Select placeholder="Please select the staff access">
+                    <Option value="ture"> Ture </Option>
+                    <Option value="false"> False </Option>
+                  </Select>
                 </Form.Item>
               </Col>
+              <Col span={12}>
+                <Form.Item
+                  name="is_superuser"
+                  label="Is Superuser"
+                  rules={[{ required: true, message: 'Please select the superuser access' }]}
+                >
+                  <Select placeholder="Please select the superuser access">
+                    <Option value="ture"> Ture </Option>
+                    <Option value="false"> False </Option>
+                  </Select>
+                </Form.Item>
+              </Col>
+
+
             </Row>
           </Form>
         </Drawer>
         </div>
     )
-        }
+}
 
-export default UserList
+export default OrderList

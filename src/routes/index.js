@@ -1,6 +1,7 @@
 import Account from "../pages/Account";
 import TerminalList from "../pages/admin/terminal/TerminalList";
 import UserList from "../pages/admin/user/UserList";
+import OrderList from "../pages/admin/order/OderList";
 import BookingList from "../pages/booking/BookingList";
 import Detail from "../pages/booking/Detail";
 import Index from "../pages/dashboard/";
@@ -29,6 +30,12 @@ export const adminRoutes=[{
     exact: true,
     isShow: true,
     title: 'Terminal Manage'
+},{
+    path: '/admin/order',
+    component: OrderList,
+    exact: true,
+    isShow: true,
+    title: 'Order Manager'
 },{
     path: '/admin/user',
     component: UserList,

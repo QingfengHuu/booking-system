@@ -269,7 +269,7 @@ const BookingList= (props) => {
               name="Renter"
               placeholder="Select a option and change input text above"
               initialValue= {InputShown('')}
-              rules={[{ required: true,   message: 'Please input your Renter!' }]}
+              rules={[{ required: true,   message: 'Please input the name of Renter!' }]}
             >
               <Input />
             </Form.Item>
