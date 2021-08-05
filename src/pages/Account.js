@@ -73,9 +73,6 @@ const Account= (props) => {
           <p>Some contents...</p>
           <p>Some contents...</p>
         </Modal>
-        <Popconfirm title= 'Sure delay?'>
-        <Button type='primary' size='small' style={{margin:"0 1rem"}}>Delay</Button>
-        </Popconfirm>
         <Popconfirm title= 'Sure release?'>
         <Button type='primary' danger size='small'>Release</Button>
         </Popconfirm>
