@@ -14,9 +14,13 @@ const api = [{
     getEquipment: '/equipments/',
     editEquipment: '/equipments/',
     delEquipment: '/equipments/',
-    getTotalStatus: '/equipments/'
+    getTotalStatus: '/equipments/',
 
-    //...
-}]
+    //Book
+    getHistoryBook: 'book/historyBook?u_id=',
+    getNowBook: 'book/nowBook?u_id=',
+    extendBook: 'book/extendBook?',
+
+    }]
 
 export default api

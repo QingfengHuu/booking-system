@@ -1,22 +1,23 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 
 import { Drawer, Form, Button, Col, Row, Input, Select, Switch, Card, Table, Popconfirm, Modal, Space, Divider, Descriptions, Checkbox  } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
+import { TerminalCreateApi, TerminalDelApi, TerminalListApi } from '../../../services/terminal';
 
 const { Option } = Select;
 
 // Terminal DataSource: due to the disconnection with the backend
-const dataSource = [{
-  e_id: 1,
-    e_team: 'HWSS',
-    e_group:'DELL 13G',
-    e_cluster:'cluster',
-    e_servergroup: 'DELL 13G',
-    e_title: '13G R630',
-    e_location: 'DELL Server10',
-    e_iDrac_ip: '20.12.131.24',
-    e_tag: 'HBMNBD2'
-}]
+// const dataSource = [{
+//     e_id: 1,
+//     e_team: 'HWSS',
+//     e_group:'DELL 13G',
+//     e_cluster:'cluster',
+//     e_servergroup: 'DELL 13G',
+//     e_title: '13G R630',
+//     e_location: 'DELL Server10',
+//     e_iDrac_ip: '20.12.131.24',
+//     e_tag: 'HBMNBD2'
+// }]
 
 
 
@@ -26,11 +27,18 @@ const plainOptions = ['Cluster', 'Team', 'Title', 'Location', 'iDrac IP', 'Serve
 const defaultCheckedList = ['Cluster', 'Title', 'OrangLocatione', 'iDrac IP', 'Server Tag'];
 
 
-const TerminalList=() => {
+const TerminalList=(props) => {
   // Check Box Setting
   const [checkedList, setCheckedList] = React.useState(defaultCheckedList);
   const [indeterminate, setIndeterminate] = React.useState(true);
   const [checkAll, setCheckAll] = React.useState(false);
+  const [dataSource, setDataSource] = useState([])
+
+  useEffect(() => {
+    TerminalListApi().then(res =>{
+      setDataSource(res.data.data);
+    })
+  }, [])
 
   const [checkStrictly, setCheckStrictly] = React.useState(false);
 
@@ -61,10 +69,6 @@ const TerminalList=() => {
 
     // Table Trigger Setting
     const [isModalVisible, setIsModalVisible] = useState(false);
-
-    const showModal = () => {
-      setIsModalVisible(true);
-    };
   
     const handleOk = () => {
       setIsModalVisible(false);
@@ -73,6 +77,7 @@ const TerminalList=() => {
     const handleCancel = () => {
       setIsModalVisible(false);
     };
+
 
 
     // columnSelection objects indicates the need for row selection
@@ -105,10 +110,12 @@ const TerminalList=() => {
     //   );
     // }
 
+
     // Table Collection Data
     const colomns = [{
       title: 'ID',
       dataIndex: 'e_id',
+      key:'index'
     },{
       title: 'Group',
       dataIndex: 'e_group',
@@ -136,34 +143,17 @@ const TerminalList=() => {
         return(
           <div>
             <Space split={<Divider type="vertical"/>}>
-              <Button type='primary' size='small' onClick={showModal}> View </Button>
+              <Button type='primary' size='small' onClick={()=>{
+                props.history.push(`/admin/terminal/edit/${record.e_id}`)
+              }} > Edit </Button>
               <Popconfirm title= 'Sure Delete?'>
-                <Button type='primary' danger size='small'> Delete </Button>
+                <Button type='primary' danger size='small' onClick={()=>{
+                  TerminalDelApi(record.e_id).then(res=>{
+                    console.log(record.e_title+'deleted!')
+                  })
+                }}> Delete </Button>
               </Popconfirm>
             </Space>
-
-            <Modal title="Terminal Detail" width={1000} visible={isModalVisible} onOk={handleOk} onCancel={handleCancel}>
-              <Descriptions
-                bordered
-                extra={
-                <Space split={<Divider type="vertical" />}>
-                  <Button type="primary"> Edit </Button>
-                  <Button type="primary"> Extend </Button>
-                </Space>
-              }
-              >
-                <Descriptions.Item label="Group"> DELL 13G </Descriptions.Item>
-                <Descriptions.Item label="Title"> 13G R630 </Descriptions.Item>
-                <Descriptions.Item label="Server Tag"> HBMNBD2 </Descriptions.Item>
-                <Descriptions.Item label="Cluster"> cluster </Descriptions.Item>
-                <Descriptions.Item label="idrac Ip"> 20.12.131.24 </Descriptions.Item>
-                <Descriptions.Item label="Team"> HWSS </Descriptions.Item>
-                <Descriptions.Item label="Location"> DELL Server10 </Descriptions.Item>
-                <Descriptions.Item label="Comment">
-                  This terminal has some issue on the uploading function, need IT assistant to check the functionality.
-                </Descriptions.Item>
-              </Descriptions>
-            </Modal>
           </div>
           
         )
@@ -189,6 +179,7 @@ const TerminalList=() => {
             <CheckboxGroup options={plainOptions} value={checkedList} onChange={onChange} />
           </>
           <Divider />
+
           <Space align="center" style={{ marginBottom: 16 }}>
             CheckStrictly: <Switch checked={checkStrictly} onChange={setCheckStrictly} />
           </Space>
@@ -196,6 +187,7 @@ const TerminalList=() => {
             columnSelection={{ ...columnSelection, checkStrictly }}
             //checkstrictly cancellation
             bordered dataSource={dataSource} />
+
         </Card>
 
 
@@ -215,13 +207,15 @@ const TerminalList=() => {
               <Button onClick={onClose} style={{ marginRight: 8 }}>
                 Cancel
               </Button>
-              <Button onClick={onClose} type="primary">
-                Submit
-              </Button>
             </div>
           }
         >
-          <Form layout="vertical" hideRequiredMark>
+          <Form layout="vertical" hideRequiredMark onFinish={(value)=>{
+            TerminalCreateApi(value).then(res=>{
+              console.log(res)
+            }
+            )
+          }}>
             <Row gutter={16}>
               <Col span={12}>
                 <Form.Item
@@ -254,11 +248,7 @@ const TerminalList=() => {
                   label="Server Tag"
                   rules={[{ required: true, message: 'Please choose the server tag' }]}
                 >
-                  <Select placeholder="Please choose the server tag">
-                    <Option value="HBMNBD1"> HBMNBD1 </Option>
-                    <Option value="HBMNBD2"> HBMNBD2 </Option>
-                    <Option value="HBMNBD3"> HBMNBD3 </Option>
-                  </Select>
+                  <Input placeholder="Please enter terminal server tag" />
                 </Form.Item>
               </Col>
               <Col span={12}>
@@ -267,11 +257,7 @@ const TerminalList=() => {
                   label="Cluster"
                   rules={[{ required: true, message: 'Please choose the cluster' }]}
                 >
-                  <Select placeholder="Please choose the cluster">
-                    <Option value="cluster1"> cluster1 </Option>
-                    <Option value="cluster2"> cluster2 </Option>
-                    <Option value="cluster3"> cluster3 </Option>
-                  </Select>
+                  <Input placeholder="Please enter terminal cluster" />
                 </Form.Item>
               </Col>
             </Row>
@@ -292,11 +278,7 @@ const TerminalList=() => {
                   label="Team"
                   rules={[{ required: true, message: 'Please choose terminal team' }]}
                 >
-                  <Select placeholder="Please choose terminal team">
-                    <Option value="HWSS"> HWSS </Option>
-                    <Option value="HWSA"> HWSA </Option>
-                    <Option value="HWSN"> HWSN </Option>
-                  </Select>
+                  <Input placeholder="Please enter terminal team" />
                 </Form.Item>
               </Col>
             </Row>
@@ -310,26 +292,21 @@ const TerminalList=() => {
                 >
                   <Input placeholder="Please enter terminal location" />
                 </Form.Item>
-              </Col>
-            </Row>
-            
+            </Col>
+          </Row>
 
-            <Row gutter={16}>
-              <Col span={24}>
-                <Form.Item
-                  name="comment"
-                  label="Comment"
-                  rules={[
-                    {
-                      required: true,
-                      message: 'please enter comment about this terminal',
-                    },
-                  ]}
-                >
-                  <Input.TextArea rows={4} placeholder="please enter comment about this terminal" />
+          <Row gutter={16}>
+              <Col span={12}>
+                <Form.Item>
+                    {/* <Popconfirm title= 'Sure add?'> */}
+                      <Button htmlType='submit'  type="primary" >
+                        Submit
+                      </Button>
+                    {/* </Popconfirm> */}
                 </Form.Item>
               </Col>
             </Row>
+            
           </Form>
         </Drawer>
       </div>

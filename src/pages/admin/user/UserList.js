@@ -1,29 +1,27 @@
 import React, { useState,useEffect } from 'react'
 
-import { Drawer, Form, Button, Col, Row, Input, Select, Card, Table, Popconfirm, Modal, Space, Divider, Descriptions } from 'antd';
+import { Drawer, Form, Button, Col, Row, Input, Select, Card, Table, Popconfirm, Modal, Space, Divider, Descriptions, message } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 import { UserListApi,UserCreateApi, UserDelApi, UserResetApi } from '../../../services/user';
 
-const { Option } = Select;
-
 // Account DataSource: due to the disconnection with the backend
-const dataSource = [{
-  id:'1',
-  password:'********',
-  last_login:'2021/07/30',
-  is_superuser:'false',
-  username:'Javis',
-  first_name:'Javis',
-  last_name:'Huang',
-  email:'javis_huang@dell.com',
-  is_staff:'false',
-  is_active:'true',
-  date_joined:'2021/07/01',
-  group_name: 'VxRail Day0 Team',
-  location: 'Wu Jiao Chang',
+// const dataSource = [{
+//   id:'1',
+//   password:'********',
+//   last_login:'2021/07/30',
+//   is_superuser:'false',
+//   username:'Javis',
+//   first_name:'Javis',
+//   last_name:'Huang',
+//   email:'javis_huang@dell.com',
+//   is_staff:'false',
+//   is_active:'true',
+//   date_joined:'2021/07/01',
+//   group_name: 'VxRail Day0 Team',
+//   location: 'Wu Jiao Chang',
 
-  approver: 'Tom Liu'
-}]
+//   approver: 'Tom Liu'
+// }]
 
 const UserList=() => {
     // Drawer Trigger Setting
@@ -32,7 +30,7 @@ const UserList=() => {
 
     useEffect(() => {
       UserListApi().then(res =>{
-        setDataSource1(res.data);
+        setDataSource1(res.data.data);
       })
     }, [])
     
@@ -57,13 +55,6 @@ const UserList=() => {
   
     const handleCancel = () => {
       setIsModalVisible(false);
-    };
-
-    const onFinish = (values) => {
-      UserCreateApi(values).then(res=>{
-        console.log(values)
-      })
-
     };
 
     // Table Collection Data
@@ -101,26 +92,6 @@ const UserList=() => {
               }}> Delete </Button>
               </Popconfirm>
             </Space>
-
-            {/* <Modal title="User Detail" width={800} visible={isModalVisible} onOk={handleOk} onCancel={handleCancel}>
-              <Descriptions
-                bordered
-                extra={<Button type="primary"> Reset Password </Button>}
-              >
-                <Descriptions.Item label="ID"> 1 </Descriptions.Item>
-                <Descriptions.Item label="User Name"> Javis </Descriptions.Item>
-                <Descriptions.Item label="First Name"> Javis </Descriptions.Item>
-                <Descriptions.Item label="Last Name"> Huang </Descriptions.Item>
-                <Descriptions.Item label="Email Address"> javis_huang@dell.com </Descriptions.Item>
-                <Descriptions.Item label="Group"> VxRail Day0 Team </Descriptions.Item>
-                <Descriptions.Item label="Is Active"> True </Descriptions.Item>
-                <Descriptions.Item label="Is Staff"> false </Descriptions.Item>
-                <Descriptions.Item label="Is Superuser"> false </Descriptions.Item>
-                <Descriptions.Item label="Last Login"> 2021/07/30 </Descriptions.Item>
-                <Descriptions.Item label="Approver"> Tom Liu </Descriptions.Item>
-                <Descriptions.Item label="Password"> ******** </Descriptions.Item>
-              </Descriptions>
-            </Modal> */}
           </div>
           
         )
@@ -141,8 +112,6 @@ const UserList=() => {
           <Table rowKey='username' columns={colomns} bordered dataSource={dataSource1}/>
         </Card>
 
-
-
         <Drawer
           title="Create a new user account"
           width={720}
@@ -162,7 +131,17 @@ const UserList=() => {
             </div>
           }
         >
-          <Form layout="vertical"  hideRequiredMark onFinish={onFinish} >
+          <Form layout="vertical"  hideRequiredMark onFinish={(values) => {
+            UserCreateApi(values).then(res=>{
+              console.log(values)
+              message.log("success!")
+              if(res.data.code===200){
+                message.log(res.data.message)
+              }else if(res.data.code===400){
+                message.log(res.data.message)
+              }
+            })
+    }} >
             <Row gutter={16}>
               <Col span={12}>
                 <Form.Item
@@ -176,24 +155,7 @@ const UserList=() => {
 
               <Col span={12}>
                 <Form.Item
-                  name="email"
-                  label="Email"
-                  rules={[{ required: true, message: 'Please enter email address' }]}
-                >
-                  <Input
-                    style={{ width: '100%' }}
-                    addonBefore="http://"
-                    addonAfter=".com"
-                    placeholder="Please enter email address"
-                  />
-                </Form.Item>
-              </Col>
-            </Row>
-
-            <Row gutter={16}>
-              <Col span={12}>
-                <Form.Item
-                  name="group"
+                  name="group_name"
                   label="Group"
                   rules={[{ required: true, message: 'Please choose the group' }]}
                 >
@@ -204,12 +166,15 @@ const UserList=() => {
                 </Form.Item>
               </Col>
             </Row>
+
             <Row gutter={16}>
               <Col span={12}>
                 <Form.Item>
-                  <Button htmlType='submit'  type="primary" >
-                    Submit
-                  </Button>
+                    {/* <Popconfirm title= 'Sure add?'> */}
+                      <Button htmlType='submit'  type="primary" >
+                        Submit
+                      </Button>
+                    {/* </Popconfirm> */}
                 </Form.Item>
               </Col>
             </Row>
