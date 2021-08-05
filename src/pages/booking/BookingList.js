@@ -13,6 +13,9 @@ import { SearchOutlined } from '@ant-design/icons';
 
 const {RangePicker} = DatePicker;
 
+const mainDatasource = [{
+  name: 'Node1',
+}]
 
 const dataSource = [{
   e_id: 1,
@@ -215,102 +218,125 @@ const BookingList= (props) => {
   };
   //search modules
 
-  const colomns = [{
-    title: 'ID',
-    dataIndex: 'e_id',
-    sorter: (a, b) => a.e_id - b.e_id,
-        sortDirections: ['descend', 'ascend'],
-  },{
-    title: 'Team',
-    dataIndex: 'e_team',
-  },{
-    title: 'Title',
-    dataIndex: 'e_title',
-    ...getColumnSearchProps('e_title'),
-  },{
-    title: 'Location',
-    dataIndex: 'e_location',
-    ...getColumnSearchProps('e_location'),
-  },{
-    title: 'iDrac_Ip',
-    dataIndex: 'e_iDrac_ip',
-  },{
-    title: 'Server Tag',
-    dataIndex: 'e_tag',
-    ...getColumnSearchProps('e_tag'),
-  },{
-    title: 'Booker',
-    dataIndex: 'booker',
-    sorter: (a, b) => a.booker.length - b.booker.length,
-        sortDirections: ['descend', 'ascend'],
-  },{
-    title: 'Start Date',
-    dataIndex: 'start_date'
-  },{
-    title: 'End Date',
-    dataIndex: 'end_date'
-  },{
-    title: 'Operation',
+  const mainColumns = [
+    { title: 'Name', dataIndex: 'name', key: 'name' },
+  ];
 
-    render: (txt,record,index) => {
 
-      return(<div>
+
+  const expandedRowRender = () => {
+    const colomns = [{
+      title: 'ID',
+      dataIndex: 'e_id',
+      sorter: (a, b) => a.e_id - b.e_id,
+          sortDirections: ['descend', 'ascend'],
+    },{
+      title: 'Team',
+      dataIndex: 'e_team',
+    },{
+      title: 'Title',
+      dataIndex: 'e_title',
+      ...getColumnSearchProps('e_title'),
+    },{
+      title: 'Location',
+      dataIndex: 'e_location',
+      ...getColumnSearchProps('e_location'),
+    },{
+      title: 'iDrac_Ip',
+      dataIndex: 'e_iDrac_ip',
+    },{
+      title: 'Server Tag',
+      dataIndex: 'e_tag',
+      ...getColumnSearchProps('e_tag'),
+    },{
+      title: 'Booker',
+      dataIndex: 'booker',
+      sorter: (a, b) => a.booker.length - b.booker.length,
+          sortDirections: ['descend', 'ascend'],
+    },{
+      title: 'Start Date',
+      dataIndex: 'start_date',
+      sorter: (a, b) => a.start_date > b.start_date? 1:-1,
+          sortDirections: ['descend', 'ascend'],
+    },{
+      title: 'End Date',
+      dataIndex: 'end_date',
+      sorter: (a, b) => a.end_date > b.end_date? 1:-1,
+          sortDirections: ['descend', 'ascend'],
+    },{
+      title: 'Operation',
+      render:()=>{return(
         <Button type='primary' size='small' onClick={showModal}>Reserve</Button>
-        <Modal title="Reserve an equipment" visible={isModalVisible} onOk={handleOk} onCancel={handleCancel}>
-          <Form
-            name="basic"
-            labelCol={{ span: 8 }}
-            wrapperCol={{ span: 16 }}
-            initialValues={{ remember: true }}
-            onFinish={onFinish}
-            onFinishFailed={onFinishFailed}
-            
-          >
-            
-
-            
-            <Form.Item
-              label=" Renter"
-              name="Renter"
-              placeholder="Select a option and change input text above"
-              initialValue= {InputShown('')}
-              rules={[{ required: true,   message: 'Please input the name of Renter!' }]}
-            >
-              <Input />
-            </Form.Item>
-
-            
-            <Form.Item name="range-picker" label="RangePicker" {...rangeConfig}>
-            <RangePicker
-                value={hackValue || value}
-                disabledDate={disabledDate}
-                onCalendarChange={val => setDates(val)}
-                onChange={val => setValue(val)}
-                onOpenChange={onOpenChange}
-              />
-            </Form.Item>
-
-            <Form.Item
-              label="Comments"
-              name="Comments"
-              rules={[{ required: false, message: 'Please input your comments!' }]}
-            >
-              <Input.TextArea />
-            </Form.Item>
-
-            <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
-              <Button type="primary" htmlType="submit">
-                Submit
-              </Button>
-            </Form.Item>
-          </Form>
-        </Modal>
-        
-      </div>
       )
+        
+      }
     }
-  }
-]
+    ]
+
+          return(
+            <div>
+          <Table 
+            rowKey='index' 
+            // pagination={{total,defaultPageSize:10, onChange: loadData}} 
+            columns={colomns} 
+            bordered 
+            dataSource={dataSource}
+            pagination={false}
+            />
+            
+          
+            <Modal title="Reserve an equipment" visible={isModalVisible} onOk={handleOk} onCancel={handleCancel}>
+              <Form
+                name="basic"
+                labelCol={{ span: 8 }}
+                wrapperCol={{ span: 16 }}
+                initialValues={{ remember: true }}
+                onFinish={onFinish}
+                onFinishFailed={onFinishFailed}
+                
+              >
+              
+                <Form.Item
+                  label=" Renter"
+                  name="Renter"
+                  placeholder="Select a option and change input text above"
+                  initialValue= {InputShown('')}
+                  rules={[{ required: true,   message: 'Please input the name of Renter!' }]}
+                >
+                  <Input />
+                </Form.Item>
+  
+                
+                <Form.Item name="range-picker" label="RangePicker" {...rangeConfig}>
+                <RangePicker
+                    value={hackValue || value}
+                    disabledDate={disabledDate}
+                    onCalendarChange={val => setDates(val)}
+                    onChange={val => setValue(val)}
+                    onOpenChange={onOpenChange}
+                  />
+                </Form.Item>
+  
+                <Form.Item
+                  label="Comments"
+                  name="Comments"
+                  rules={[{ required: false, message: 'Please input your comments!' }]}
+                >
+                  <Input.TextArea />
+                </Form.Item>
+  
+                <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
+                  <Button type="primary" htmlType="submit">
+                    Submit
+                  </Button>
+                </Form.Item>
+              </Form>
+            </Modal>
+          </div>
+          
+              )
+ 
+};
 
   return (
     <Card title='BookingList' 
@@ -320,13 +346,14 @@ const BookingList= (props) => {
         </Button>
       }
     >
-      <Table 
-        rowKey='index' 
-        pagination={{total,defaultPageSize:10, onChange: loadData}} 
-        columns={colomns} 
-        bordered 
-        dataSource={dataSource}
+      
+      <Table
+        className="components-table-demo-nested"
+        columns={mainColumns}
+        expandable={{ expandedRowRender }}
+        dataSource={mainDatasource}
       />
+      
     </Card>
   )
 }
