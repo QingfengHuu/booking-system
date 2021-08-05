@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 
-import { Drawer, Form, Button, Col, Row, Input, Select, Card, Table, Popconfirm, Modal, Space, Divider, Descriptions, Checkbox  } from 'antd';
+import { Drawer, Form, Button, Col, Row, Input, Select, Switch, Card, Table, Popconfirm, Modal, Space, Divider, Descriptions, Checkbox  } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 
 const { Option } = Select;
@@ -31,6 +31,8 @@ const TerminalList=() => {
   const [checkedList, setCheckedList] = React.useState(defaultCheckedList);
   const [indeterminate, setIndeterminate] = React.useState(true);
   const [checkAll, setCheckAll] = React.useState(false);
+
+  const [checkStrictly, setCheckStrictly] = React.useState(false);
 
   const onChange = list => {
     setCheckedList(list);
@@ -71,6 +73,37 @@ const TerminalList=() => {
     const handleCancel = () => {
       setIsModalVisible(false);
     };
+
+
+    // columnSelection objects indicates the need for row selection
+    const columnSelection = {
+      onChange: (selectedColumnKeys, selectedColumns) => {
+        console.log(`selectedColumnKeys: ${selectedColumnKeys}`, 'selectedColumns: ', selectedColumns);
+      },
+      onSelect: (record, selected, selectedColumns) => {
+        console.log(record, selected, selectedColumns);
+      },
+      onSelectAll: (selected, selectedColumns, changeColumns) => {
+        console.log(selected, selectedColumns, changeColumns);
+      },
+    };
+    //checkstrictly cancellation
+
+    // function TreeData() {
+    //   const [checkStrictly, setCheckStrictly] = React.useState(false);
+    //   return (
+    //     <>
+    //       <Space align="center" style={{ marginBottom: 16 }}>
+    //         CheckStrictly: <Switch checked={checkStrictly} onChange={setCheckStrictly} />
+    //       </Space>
+    //       <Table
+    //         columns={columns}
+    //         columnSelection={{ ...columnSelection, checkStrictly }}
+    //         dataSource={dataSource}
+    //       />
+    //     </>
+    //   );
+    // }
 
     // Table Collection Data
     const colomns = [{
@@ -156,7 +189,13 @@ const TerminalList=() => {
             <CheckboxGroup options={plainOptions} value={checkedList} onChange={onChange} />
           </>
           <Divider />
-          <Table columns={colomns} bordered dataSource={dataSource} />
+          <Space align="center" style={{ marginBottom: 16 }}>
+            CheckStrictly: <Switch checked={checkStrictly} onChange={setCheckStrictly} />
+          </Space>
+          <Table columns={colomns} 
+            columnSelection={{ ...columnSelection, checkStrictly }}
+            //checkstrictly cancellation
+            bordered dataSource={dataSource} />
         </Card>
 
 

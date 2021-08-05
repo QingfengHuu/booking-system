@@ -240,10 +240,14 @@ const BookingList= (props) => {
         sortDirections: ['descend', 'ascend'],
   },{
     title: 'Start Date',
-    dataIndex: 'start_date'
+    dataIndex: 'start_date',
+    sorter: (a, b) => a.start_date > b.start_date? 1:-1,
+        sortDirections: ['descend', 'ascend'],
   },{
     title: 'End Date',
-    dataIndex: 'end_date'
+    dataIndex: 'end_date',
+    sorter: (a, b) => a.end_date > b.end_date? 1:-1,
+        sortDirections: ['descend', 'ascend'],
   },{
     title: 'Operation',
 
