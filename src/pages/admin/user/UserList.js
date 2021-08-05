@@ -27,21 +27,21 @@ const dataSource = [{
 
 const UserList=() => {
     // Drawer Trigger Setting
-    const [isFormVisible, setIsFromVisble] = useState(false);
+    const [isFormVisible, setIsFormVisble] = useState(false);
     const [dataSource1, setDataSource1] = useState([]);
 
     useEffect(() => {
       UserListApi().then(res =>{
-        setDataSource1(res.terminal);
+        setDataSource1(res.data);
       })
     }, [])
     
     const onClose = () => {
-      setIsFromVisble(false)
+      setIsFormVisble(false)
     };
 
     const showDrawer = () => {
-      setIsFromVisble(true)
+      setIsFormVisble(true)
     };
 
     // Table Trigger Setting
@@ -59,10 +59,12 @@ const UserList=() => {
       setIsModalVisible(false);
     };
 
-    const handleSubmit = e =>{
-      console.log(e)
-      e.preventDefault()
-    }
+    const onFinish = (values) => {
+      UserCreateApi(values).then(res=>{
+        console.log(values)
+      })
+
+    };
 
     // Table Collection Data
     const colomns = [{
@@ -70,6 +72,7 @@ const UserList=() => {
       dataIndex: 'id'
     },{
       title: 'User Name',
+      key: 'username',
       dataIndex: 'username'
     },{
       title: 'Email',
@@ -91,8 +94,7 @@ const UserList=() => {
               }}>Reset</Button>
               </Popconfirm>
               <Popconfirm title= 'Sure Delete?'>
-                <Button type='primary' danger size='small' onClick={(e)=>{
-
+                <Button type='primary' danger size='small' onClick={()=>{
                 UserDelApi(record.username).then(res=>{
                   console.log(record.username+' deleted!')
                 })
@@ -136,7 +138,7 @@ const UserList=() => {
             </Button>
           }
         >
-          <Table columns={colomns} bordered dataSource={dataSource1}/>
+          <Table rowKey='username' columns={colomns} bordered dataSource={dataSource1}/>
         </Card>
 
 
@@ -156,13 +158,11 @@ const UserList=() => {
               <Button onClick={onClose} style={{ marginRight: 8 }}>
                 Cancel
               </Button>
-              <Button htmlType='submit' onClick={onClose} type="primary" >
-                Submit
-              </Button>
+              
             </div>
           }
         >
-          <Form layout="vertical"  hideRequiredMark onSubmit={e=>handleSubmit(e)} >
+          <Form layout="vertical"  hideRequiredMark onFinish={onFinish} >
             <Row gutter={16}>
               <Col span={12}>
                 <Form.Item
@@ -197,11 +197,19 @@ const UserList=() => {
                   label="Group"
                   rules={[{ required: true, message: 'Please choose the group' }]}
                 >
-                  <Select placeholder="Please choose the group">
-                    <Option value="vxRail_day0_team"> VxRail Day0 Team </Option>
-                    <Option value="vxRail_day1_team"> VxRail Day1 Team </Option>
-                    <Option value="vxRail_day2_team"> VxRail Day2 Team </Option>
-                  </Select>
+                  <Input
+                    style={{ width: '100%' }}
+                    placeholder="Please enter group name"
+                  />
+                </Form.Item>
+              </Col>
+            </Row>
+            <Row gutter={16}>
+              <Col span={12}>
+                <Form.Item>
+                  <Button htmlType='submit'  type="primary" >
+                    Submit
+                  </Button>
                 </Form.Item>
               </Col>
             </Row>
@@ -209,6 +217,6 @@ const UserList=() => {
         </Drawer>
         </div>
     )
-}
+        }
 
 export default UserList
