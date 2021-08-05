@@ -12,6 +12,7 @@ ReactDOM.render(
           <Route path='/booking' render={routeProps=><App {...routeProps} />} />
           <Route path='/dashboard' render={routeProps=><App {...routeProps} />} />
           <Route path='/admin/terminal' render={routeProps=><App {...routeProps} />} />
+          <Route path='/admin/order' render={routeProps=><App {...routeProps} />} />
           <Route path='/admin/user' render={routeProps=><App {...routeProps} />} />
           <Route path='/user/account' render={routeProps=><App {...routeProps} />} />
           {mainRoutes.map(route=>{
