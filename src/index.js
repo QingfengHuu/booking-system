@@ -11,13 +11,15 @@ ReactDOM.render(
         <Switch>
           <Route path='/booking' render={routeProps=><App {...routeProps} />} />
           <Route path='/dashboard' render={routeProps=><App {...routeProps} />} />
-          <Route path='/admin/terminal' render={routeProps=><App {...routeProps} />} />
+          <Route path='/admin' render={routeProps=><App {...routeProps} />} />
+          {/* <Route path='/admin/terminal/edit/:id' render={routeProps=><App {...routeProps} />} />
           <Route path='/admin/user' render={routeProps=><App {...routeProps} />} />
+          <Route path='/admin/order' render={routeProps=><App {...routeProps} />} /> */}
           <Route path='/user/account' render={routeProps=><App {...routeProps} />} />
           {mainRoutes.map(route=>{
             return <Route key={route.path} {...route} />
           })}
-          <Redirect to='/booking' from='/' />
+          <Redirect to='/dashboard' from='/' />
           <Redirect to='/404' />
         </Switch>
       </Router>

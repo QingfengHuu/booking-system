@@ -1,7 +1,8 @@
 import { Form, Input, DatePicker, Button, Card, Table, Popconfirm, Modal, Radio } from 'antd';
 import React, { useState, useEffect } from 'react'
 import { bookListApi } from '../../services/booking';
-import { listApi } from '../../services/terminal';
+import { TerminalListApi } from '../../services/terminal';
+import TerminalList from '../admin/terminal/TerminalList';
 
 const {RangePicker} = DatePicker;
 
@@ -29,14 +30,14 @@ const BookingList= (props) => {
 
 
   useEffect(() => {
-    listApi().then(res =>{
+    TerminalListApi().then(res =>{
       setDataSource1(res.terminal);
       setTotal(res.totalCount);
     })
   }, [])
 
   const loadData = (page) =>{
-    listApi(page).then(res =>{
+    TerminalListApi(page).then(res =>{
       setDataSource1(res.terminal);
       setTotal(res.totalCount);
     })
