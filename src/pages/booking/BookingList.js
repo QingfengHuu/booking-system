@@ -1,9 +1,13 @@
-import { Form, Input, DatePicker, Button, Card, Table, Popconfirm, Modal, Radio } from 'antd';
+import { Form, Input, DatePicker, Button, Card, Table, Popconfirm, Modal, Radio, Space } from 'antd';
 import React, { useState, useEffect } from 'react'
 import { bookListApi } from '../../services/booking';
 import { listApi } from '../../services/terminal';
+import Highlighter from 'react-highlight-words';
+import { SearchOutlined } from '@ant-design/icons';
+
 
 const {RangePicker} = DatePicker;
+
 
 const dataSource = [{
   e_id: 1,
@@ -17,7 +21,20 @@ const dataSource = [{
   booker: 'Cathy',
   start_date: '7/15',
   end_date: '7/20'
-}]
+},{
+  e_id: 2,
+  e_team: 'HWSS',
+  e_servergroup: 'DELL 13G',
+  e_title: '13G R630',
+  e_location: 'DELL Server10ACDSFG',
+  e_iDrac_ip: '20.12.131.24',
+  e_tag: 'HBMNBD2',
+  e_status : 2,
+  booker: 'LOL',
+  start_date: '7/15',
+  end_date: '7/20'
+}
+]
 
 const BookingList= (props) => {
 
@@ -25,6 +42,21 @@ const BookingList= (props) => {
   const [dataSource1, setDataSource1] = useState([]);
   const [total,setTotal] = useState(0);
   const [buttonDisabled,setButtonDisabled] = useState(false);
+  //states for range picker
+  const [dates, setDates] = useState([]);
+  const [hackValue, setHackValue] = useState();
+  const [value, setValue] = useState();
+  const [searchedColumn, setSearchedColumn] = useState('');
+  const [searchText, setSearchText] = useState('');
+
+  let searchInput ='';
+
+  // let state = {
+  //   searchText: '',
+  //   searchedColumn: '',
+  // };
+
+
 
 
   useEffect(() => {
@@ -61,6 +93,36 @@ const BookingList= (props) => {
     console.log('Failed:', errorInfo);
   };
 
+  const InputShown = (value) => {
+    if (value != null && value === ''){
+      return 'LOL'; 
+    }
+  };
+
+  
+
+  //This is where u call api/method for username
+
+
+  //states for range picker
+  const disabledDate = current => {
+    if (!dates || dates.length === 0) {
+      return false;
+    }
+    const tooLate = dates[0] && current.diff(dates[0], 'days') > 7;
+    const tooEarly = dates[1] && dates[1].diff(current, 'days') > 7;
+    return tooEarly || tooLate;
+  };
+  const onOpenChange = open => {
+    if (open) {
+      setHackValue([]);
+      setDates([]);
+    } else {
+      setHackValue(undefined);
+    }
+  };
+  //states for range picker
+
   const rangeConfig = {
     rules: [
       {
@@ -71,27 +133,111 @@ const BookingList= (props) => {
     ],
   };
 
+
+  //search modules
+  const getColumnSearchProps = dataIndex => ({
+    filterDropdown: ({ setSelectedKeys, selectedKeys, confirm, clearFilters }) => (
+      <div style={{ padding: 8 }}>
+        <Input
+          ref={node => {
+            searchInput = node;
+          }}
+          placeholder={`Search ${dataIndex}`}
+          value={selectedKeys[0]}
+          onChange={e => setSelectedKeys(e.target.value ? [e.target.value] : [])}
+          onPressEnter={() => handleSearch(selectedKeys, confirm, dataIndex)}
+          style={{ marginBottom: 8, display: 'block' }}
+        />
+        <Space>
+          <Button
+            type="primary"
+            onClick={() => handleSearch(selectedKeys, confirm, dataIndex)}
+            icon={<SearchOutlined />}
+            size="small"
+            style={{ width: 90 }}
+          >
+            Search
+          </Button>
+          <Button onClick={() => handleReset(clearFilters)} size="small" style={{ width: 90 }}>
+            Reset
+          </Button>
+          <Button
+            type="link"
+            size="small"
+            onClick={() => {
+              confirm({ closeDropdown: false });
+              setSearchedColumn(selectedKeys[0]);
+              setSearchText(dataIndex);
+            }}
+          >
+            Filter
+          </Button>
+        </Space>
+      </div>
+    ),
+    filterIcon: filtered => <SearchOutlined style={{ color: filtered ? '#1890ff' : undefined }} />,
+    onFilter: (value, record) =>
+      record[dataIndex]
+        ? record[dataIndex].toString().toLowerCase().includes(value.toLowerCase())
+        : '',
+    onFilterDropdownVisibleChange: visible => {
+      if (visible) {
+        setTimeout(() => searchInput.select(), 100);
+      }
+    },
+    render: text =>
+      searchedColumn === dataIndex ? (
+        <Highlighter
+          highlightStyle={{ backgroundColor: '#ffc069', padding: 0 }}
+          searchWords={[searchText]}
+          autoEscape
+          textToHighlight={text ? text.toString() : ''}
+        />
+      ) : (
+        text
+      ),
+  });
+
+  const handleSearch = (selectedKeys, confirm, dataIndex) => {
+    confirm();
+    setSearchedColumn(selectedKeys[0]);
+    setSearchText(dataIndex);
+  };
+
+  const handleReset = clearFilters => {
+    clearFilters();
+    setSearchText('');
+  };
+  //search modules
+
   const colomns = [{
     title: 'ID',
     dataIndex: 'e_id',
+    sorter: (a, b) => a.e_id - b.e_id,
+        sortDirections: ['descend', 'ascend'],
   },{
     title: 'Team',
     dataIndex: 'e_team',
   },{
     title: 'Title',
     dataIndex: 'e_title',
+    ...getColumnSearchProps('e_title'),
   },{
     title: 'Location',
     dataIndex: 'e_location',
+    ...getColumnSearchProps('e_location'),
   },{
     title: 'iDrac_Ip',
     dataIndex: 'e_iDrac_ip',
   },{
     title: 'Server Tag',
     dataIndex: 'e_tag',
+    ...getColumnSearchProps('e_tag'),
   },{
     title: 'Booker',
     dataIndex: 'booker',
+    sorter: (a, b) => a.booker.length - b.booker.length,
+        sortDirections: ['descend', 'ascend'],
   },{
     title: 'Start Date',
     dataIndex: 'start_date'
@@ -99,10 +245,8 @@ const BookingList= (props) => {
     title: 'End Date',
     dataIndex: 'end_date'
   },{
-    title: 'haha',
-    dataIndex: 'haha'
-  },{
     title: 'Operation',
+
     render: (txt,record,index) => {
 
       return(<div>
@@ -115,30 +259,30 @@ const BookingList= (props) => {
             initialValues={{ remember: true }}
             onFinish={onFinish}
             onFinishFailed={onFinishFailed}
+            
           >
+            
+
+            
             <Form.Item
               label=" Renter"
               name="Renter"
-              // placeholder="Select a option and change input text above"
-              rules={[{ required: true, message: 'Please input your Renter!' }]}
+              placeholder="Select a option and change input text above"
+              initialValue= {InputShown('')}
+              rules={[{ required: true,   message: 'Please input your Renter!' }]}
             >
               <Input />
             </Form.Item>
 
-            <Form.Item
-              name="radio-button"
-              label="Renter"
-              rules={[{ required: true, message: 'Please pick an item!' }]}
-            >
-              <Radio.Group>
-                <Radio.Button value="a" onClick={handleChange}>Username</Radio.Button>
-                <Radio.Button value="b">Book for other?</Radio.Button>
-              </Radio.Group>
-            </Form.Item>
-
             
             <Form.Item name="range-picker" label="RangePicker" {...rangeConfig}>
-              <RangePicker />
+            <RangePicker
+                value={hackValue || value}
+                disabledDate={disabledDate}
+                onCalendarChange={val => setDates(val)}
+                onChange={val => setValue(val)}
+                onOpenChange={onOpenChange}
+              />
             </Form.Item>
 
             <Form.Item
@@ -156,12 +300,7 @@ const BookingList= (props) => {
             </Form.Item>
           </Form>
         </Modal>
-        <Popconfirm title= 'Sure delay?'>
-        <Button type='primary' size='small' style={{margin:"0 1rem"}}>Delay</Button>
-        </Popconfirm>
-        <Popconfirm title= 'Sure release?'>
-        <Button type='primary' danger size='small'>Release</Button>
-        </Popconfirm>
+        
       </div>
       )
     }
