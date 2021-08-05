@@ -8,6 +8,7 @@ import Index from "../pages/dashboard/";
 import Login from "../pages/Login";
 import PageNotFound from "../pages/PageNotFound";
 
+
 export const mainRoutes = [{
     path: '/login',
     component: Login
@@ -54,7 +55,8 @@ export const bookingRoutes = [{
     exact: true,
     isShow: true,
     title: 'Booking',
-},{
+},
+{
     path: '/booking/look/:id',
     component: Detail,
     isShow: false
