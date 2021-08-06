@@ -1,31 +1,22 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 
 import { Drawer, Form, Button, Col, Row, Input, Select, Card, Table, Popconfirm, Modal, Space, Divider, Descriptions } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
+import { OrderListApi } from '../../../services/order';
 
 
 // Account DataSource: due to the disconnection with the backend
-const dataSource = [{
-  id:'1',
-  password:'********',
-  last_login:'2021/07/30',
-  is_superuser:'false',
-  username:'Javis',
-  first_name:'Javis',
-  last_name:'Huang',
-  email:'javis_huang@dell.com',
-  is_staff:'false',
-  is_active:'true',
-  date_joined:'2021/07/01',
-  group_name: 'VxRail Day0 Team',
-  location: 'Wu Jiao Chang',
-
-  approver: 'Tom Liu'
-}]
 
 const OrderList=() => {
     // Table Trigger Setting
     const [isModalVisible, setIsModalVisible] = useState(false);
+    const [dataSource, setDataSource]= useState([]);
+
+    useEffect(()=>{
+      OrderListApi().then(res=>{
+        setDataSource(res.data.data)
+      })
+    })
 
     const showModal = () => {
       setIsModalVisible(true);
@@ -72,7 +63,12 @@ const OrderList=() => {
           <div>
             <Space split={<Divider type="vertical" />}>
               <Popconfirm title= 'Extend for 3 days?'>
-                <Button type='primary' size='small'> Extend </Button>
+                <Button type='primary' size='small' onClick={()=>{
+                  OrderListApi().then(res=>{
+                    setDataSource(res.data.data)
+                  }
+                  )
+                }}> Extend </Button>
               </Popconfirm>
               <Popconfirm title= 'Sure Release?'>
                 <Button type='primary' danger size='small'> Release </Button>
