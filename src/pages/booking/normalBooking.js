@@ -1,12 +1,13 @@
 import { Form, Input, DatePicker, Button, Card, Table, Popconfirm, Modal, Radio, Space } from 'antd';
 import React, { useState, useEffect } from 'react'
 import { bookListApi } from '../../services/booking';
-import { NormalBookingListApi } from '../../services/terminal';
+import { NormalBookingListApi, NormalBookingListReserveApi} from '../../services/terminal';
 import TerminalList from '../admin/terminal/TerminalList';
 import { listApi } from '../../services/terminal';
 import Highlighter from 'react-highlight-words';
 import { SearchOutlined } from '@ant-design/icons';
 import moment from 'moment'
+import  {getUsername}  from '../../utils/auth';
 
 
 const {RangePicker} = DatePicker;
@@ -39,7 +40,7 @@ const dataSource = [{
 }
 ]
 
-const BookingList= (props) => {
+const NormalBookingList= (props) => {
 
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [dataSource, setDataSource] = useState([]);
@@ -304,7 +305,11 @@ const BookingList= (props) => {
             </Form.Item>
 
             <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
-              <Button type="primary" htmlType="submit">
+              <Button type="primary" htmlType="submit" onClick={()=>{
+                  NormalBookingListReserveApi({e_id : dataSource.e_id, u_id : getUsername.getUsername(), subscribe_date: dataSource.start_date, expire_date: dataSource.end_date}).then(res=>{
+                    console.log(record.e_id+'reserved!')
+                  })
+                }}>
                 Submit
               </Button>
             </Form.Item>
@@ -336,6 +341,6 @@ const BookingList= (props) => {
   )
 }
 
-export default BookingList
+export default NormalBookingList
 
 

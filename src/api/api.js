@@ -21,6 +21,7 @@ const api = [{
     getHistoryBook: 'book/historyBook?u_id=',
     getNowBook: 'book/nowBook?u_id=',
     extendBook: 'book/extendBook?',
+    bookEquipment: "book/bookEquipment"
 
     }]
 
