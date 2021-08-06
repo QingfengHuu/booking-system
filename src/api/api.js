@@ -23,7 +23,8 @@ const api = {
     getNowBook: 'book/nowBook',
     extendBook: 'book/extendBook',
     endBook: 'book/endBook',
-    createBook: 'book/bookEquipment'
+    bookEquipment: "book/bookEquipment"
+
 
     }
 

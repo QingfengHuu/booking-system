@@ -3,7 +3,7 @@ import TerminalList from "../pages/admin/terminal/TerminalList";
 import UserList from "../pages/admin/user/UserList";
 import OrderList from "../pages/admin/order/OderList";
 import BookingList from "../pages/booking/nodeBookingList";
-import Detail from "../pages/booking/normalBooking";
+import NormalBookingList from "../pages/booking/normalBooking";
 import Index from "../pages/dashboard/";
 import Login from "../pages/Login";
 import PageNotFound from "../pages/PageNotFound";
@@ -66,8 +66,8 @@ export const bookingRoutes = [
     title: 'Booking with Clusters',
 },
 {
-    path: '/booking/look/:id',
-    component: Detail,
+    path: '/NormalBookingList',
+    component: NormalBookingList,
     isShow: true,
     title: 'Booking with Nodes',
 }]
