@@ -1,7 +1,7 @@
 import { Form, Input, DatePicker, Button, Card, Table, Popconfirm, Modal, Radio, Space } from 'antd';
 import React, { useState, useEffect } from 'react'
 import { bookListApi } from '../../services/booking';
-import { TerminalListApi } from '../../services/terminal';
+import { NormalBookingListApi } from '../../services/terminal';
 import TerminalList from '../admin/terminal/TerminalList';
 import { listApi } from '../../services/terminal';
 import Highlighter from 'react-highlight-words';
@@ -42,7 +42,7 @@ const dataSource = [{
 const BookingList= (props) => {
 
   const [isModalVisible, setIsModalVisible] = useState(false);
-  const [dataSource1, setDataSource1] = useState([]);
+  const [dataSource, setDataSource] = useState([]);
   const [total,setTotal] = useState(0);
   const [buttonDisabled,setButtonDisabled] = useState(false);
   //states for range picker
@@ -65,18 +65,17 @@ const BookingList= (props) => {
 
 
   useEffect(() => {
-    TerminalListApi().then(res =>{
-      setDataSource1(res.terminal);
-      setTotal(res.totalCount);
+    NormalBookingListApi().then(res =>{
+      setDataSource(res.data.data);
     })
   }, [])
 
-  const loadData = (page) =>{
-    TerminalListApi(page).then(res =>{
-      setDataSource1(res.terminal);
-      setTotal(res.totalCount);
-    })
-  }
+  // const loadData = (page) =>{
+  //   TerminalListApi(page).then(res =>{
+  //     setDataSource1(res.terminal);
+  //     setTotal(res.totalCount);
+  //   })
+  // }
 
   const showModal = () => {
     setIsModalVisible(true);
@@ -328,7 +327,7 @@ const BookingList= (props) => {
     >
       <Table 
         rowKey='index' 
-        pagination={{total,defaultPageSize:10, onChange: loadData}} 
+        // pagination={{total,defaultPageSize:10, onChange: loadData}} 
         columns={colomns} 
         bordered 
         dataSource={dataSource}

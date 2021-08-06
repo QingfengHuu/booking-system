@@ -15,6 +15,7 @@ const api = [{
     editEquipment: '/equipments/',
     delEquipment: '/equipments/',
     getTotalStatus: '/equipments/',
+    getEquipmentDetail: "/equimentdetail",
 
     //Book
     getHistoryBook: 'book/historyBook?u_id=',
