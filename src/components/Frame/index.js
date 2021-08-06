@@ -6,9 +6,10 @@ import './frame.css';
 import React from 'react'
 
 
-import { adminRoutes, bookingRoutes } from '../../routes';
+import { adminRoutes, bookingRoutes, DashboardRoutes } from '../../routes';
 const routes = bookingRoutes.filter(route=>route.isShow);
 const routesAdmin =adminRoutes.filter(routes=>routes.isShow);
+const routesDashboard =DashboardRoutes.filter(routes=>routes.isShow);
 
 const { SubMenu } = Menu;
 const { Header, Content, Sider } = Layout;
@@ -26,7 +27,7 @@ function index(props) {
     const menu = (
         <Menu onClick={onClick}>
         <Menu.Item key="account">My Account</Menu.Item>
-        <Menu.Item key="2">2nd menu item</Menu.Item>
+        {/* <Menu.Item key="2">2nd menu item</Menu.Item> */}
         <Menu.Item key="logout">Log out</Menu.Item>
         </Menu>
     );
@@ -56,13 +57,22 @@ function index(props) {
                 defaultOpenKeys={['sub1']}
                 style={{ height: '100%', color: "#ffffff", background: 'rgb(49 48 48 / 64%)', borderRight: 0 }}
                 >
-                {routes.map(route=>{
+                {routesDashboard.map(routesDashboard=>{
                     return(
-                        <MenuItem key={route.path} onClick={p=>props.history.push(p.key)}>
-                            {route.title}
+                        <MenuItem key={routesDashboard.path} onClick={p=>props.history.push(p.key)}>
+                            {routesDashboard.title}
                         </MenuItem>
                     )
                 })}
+                <SubMenu key="Booking" title="Booking">
+                        {bookingRoutes.map(route=>{
+                            return(
+                                <MenuItem key={route.path} onClick={p=>props.history.push(p.key)}>
+                                    {route.title}
+                                </MenuItem>
+                            )
+                        })}
+                    </SubMenu>
                     <SubMenu key="admin" title="Admin">
                         {routesAdmin.map(route=>{
                             return(
