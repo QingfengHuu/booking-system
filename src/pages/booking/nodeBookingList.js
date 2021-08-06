@@ -1,15 +1,13 @@
 import { Form, Input, DatePicker, Button, Card, Table, Popconfirm, Modal, Radio, Space } from 'antd';
 import React, { useState, useEffect } from 'react'
 import { bookListApi } from '../../services/booking';
-<<<<<<< HEAD
 import { TerminalListApi } from '../../services/terminal';
 import TerminalList from '../admin/terminal/TerminalList';
-=======
 import { listApi } from '../../services/terminal';
 import Highlighter from 'react-highlight-words';
 import { SearchOutlined } from '@ant-design/icons';
+import moment from 'moment'
 
->>>>>>> f2d674412b165f927b89ffc74d0b02d3c9001d9e
 
 const {RangePicker} = DatePicker;
 
@@ -114,11 +112,14 @@ const BookingList= (props) => {
 
   //states for range picker
   const disabledDate = current => {
+    dates[0] = moment();
     if (!dates || dates.length === 0) {
       return false;
     }
-    const tooLate = dates[0] && current.diff(dates[0], 'days') > 7;
-    const tooEarly = dates[1] && dates[1].diff(current, 'days') > 7;
+    const tooLate = dates[0] && current.diff(dates[0], 'days') > 6;
+    const tooEarly = dates[1] && dates[1].diff(current, 'days') > 6;
+    
+    // const limitEarly = current && current < moment().startOf('day');
     return tooEarly || tooLate;
   };
   const onOpenChange = open => {
@@ -221,6 +222,8 @@ const BookingList= (props) => {
   const mainColumns = [
     { title: 'Name', dataIndex: 'name', key: 'name' },
   ];
+  const dateFormat = 'YYYY-MM-DD';
+
 
 
 
@@ -310,10 +313,13 @@ const BookingList= (props) => {
                 <Form.Item name="range-picker" label="RangePicker" {...rangeConfig}>
                 <RangePicker
                     value={hackValue || value}
-                    disabledDate={disabledDate}
                     onCalendarChange={val => setDates(val)}
                     onChange={val => setValue(val)}
                     onOpenChange={onOpenChange}
+                    defaultValue={moment()} 
+                    format={dateFormat}
+                    disabled={[true, false]}
+                    disabledDate={disabledDate}
                   />
                 </Form.Item>
   
@@ -339,7 +345,7 @@ const BookingList= (props) => {
 };
 
   return (
-    <Card title='BookingList' 
+    <Card title='Node BookingList' 
       extra={
         <Button type='primary'>
           Additional Operation
