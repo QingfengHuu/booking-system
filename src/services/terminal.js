@@ -5,6 +5,11 @@ export function TerminalListApi() {
     return get(api.getAllEquipment)
 }
 
+export function NormalBookingListApi() {
+    return get(api.getEquipmentDetail)
+}
+
+
 export function TerminalCreateApi(data) {
     return post(api.addEquipment,data)
 }
