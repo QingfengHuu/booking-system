@@ -100,7 +100,7 @@ const Index = () => {
             >
                 <div className = "Usage_image">
                     <div className="icons-list">
-                        <DashboardOutlined style={{ fontSize: '400%'}}/>
+                        <DashboardOutlined  style={{ fontSize: '400%'}}/>
                     </div>
                 </div>
         
@@ -122,7 +122,7 @@ const Index = () => {
             >
                 <div className = "AE_image">
                     <div className="icons-list">
-                        <ScheduleOutlined style={{ fontSize: '400%'}}/>
+                        <ScheduleOutlined  style={{ fontSize: '400%'}}/>
                     </div>
                 </div>
                 <div className = "dataGroupB">
