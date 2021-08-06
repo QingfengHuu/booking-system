@@ -1,4 +1,4 @@
-const api = [{
+const api = {
     //Login
     login: '/login',
 
@@ -18,11 +18,14 @@ const api = [{
     getEquipmentDetail: "/equimentdetail",
 
     //Book
-    getHistoryBook: 'book/historyBook?u_id=',
-    getNowBook: 'book/nowBook?u_id=',
-    extendBook: 'book/extendBook?',
+    getAllBook: 'book/allBook',
+    getHistoryBook: 'book/historyBook',
+    getNowBook: 'book/nowBook',
+    extendBook: 'book/extendBook',
+    endBook: 'book/endBook',
     bookEquipment: "book/bookEquipment"
 
-    }]
+
+    }
 
 export default api
