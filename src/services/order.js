@@ -1,7 +1,7 @@
 import { get, post, put, del } from "../utils/request";
 import api from "../api/api";
 
-export function OrderListApi(params) {
+export function OrderListApi() {
     return get(api.getAllBook)
 }
 
@@ -9,16 +9,14 @@ export function OrderHistoryListApi(params) {
     return get(api.getHistoryBook,params)
 }
 
-
-
-export function OrderGetOneById(username) {
-    return get(api.addUser+username)
+export function OrderNowListApi(params) {
+    return get(api.getNowBook,params)
 }
 
-export function OrderResetApi(username,data) {
-    return put(api.resetUserPwd+username,data)
+export function OrderExtendApi(params) {
+    return get(api.extendBook,params)
 }
 
-export function OrderDelApi(username) {
-    return del(api.delUser+username)
+export function OrderEndApi(params) {
+    return get(api.endBook,params)
 }

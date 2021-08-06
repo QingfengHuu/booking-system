@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 
 import { Drawer, Form, Button, Col, Row, Input, Select, Card, Table, Popconfirm, Modal, Space, Divider, Descriptions } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
-import { OrderListApi } from '../../../services/order';
+import { OrderEndApi, OrderExtendApi, OrderListApi } from '../../../services/order';
 
 
 // Account DataSource: due to the disconnection with the backend
@@ -64,14 +64,17 @@ const OrderList=() => {
             <Space split={<Divider type="vertical" />}>
               <Popconfirm title= 'Extend for 3 days?'>
                 <Button type='primary' size='small' onClick={()=>{
-                  OrderListApi().then(res=>{
-                    setDataSource(res.data.data)
-                  }
-                  )
+                  OrderExtendApi(record.b_id).then(res=>{
+                    console.log(record.b_id+'extended!')
+                  })
                 }}> Extend </Button>
               </Popconfirm>
               <Popconfirm title= 'Sure Release?'>
-                <Button type='primary' danger size='small'> Release </Button>
+                <Button type='primary' danger size='small' onClick={()=>{
+                  OrderEndApi(record.b_id).then(res=>{
+                    console.log(record.b_id+'ended!')
+                  })
+                }}> Release </Button>
               </Popconfirm>
             </Space>
 

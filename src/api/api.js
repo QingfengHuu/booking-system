@@ -20,8 +20,9 @@ const api = {
     getAllBook: 'book/allBook',
     getHistoryBook: 'book/historyBook',
     getNowBook: 'book/nowBook',
-    extendBook: 'book/extendBook?',
-
+    extendBook: 'book/extendBook',
+    endBook: 'book/endBook',
+    createBook: 'book/bookEquipment'
 
     }
 
