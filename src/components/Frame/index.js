@@ -33,7 +33,7 @@ function index(props) {
     );
     return (
         <Layout>
-            <Header className="header">
+            <Header className="header" style={{background:"white", paddingLeft:"25px"}}>
             {/* <h1 style={{color:'white'}}>DELL EMC</h1> */}
             <div className="white p2 flex a-center" >
                 <img className={['centered']} src='https://www.ashdowngroup.com/wp-content/uploads/2019/06/Dell_EMC_logo.svg.png' width='140px' />
@@ -44,7 +44,7 @@ function index(props) {
                 <Menu.Item key="3">nav 3</Menu.Item>
             </Menu> */}
             <Dropdown overlay={menu} trigger={['click']}>
-                <a style={{color:'white'}} onClick={e => e.preventDefault()}>
+                <a style={{color:'black'}} onClick={e => e.preventDefault()}>
                     User
                 </a>
             </Dropdown>
@@ -55,7 +55,7 @@ function index(props) {
                 mode="inline"
                 defaultSelectedKeys={[{}]}
                 defaultOpenKeys={['sub1']}
-                style={{ height: '100%', color: "#ffffff", background: 'rgb(49 48 48 / 64%)', borderRight: 0 }}
+                style={{ height: '100%', color: "rgb(0 0 0)", background: '#ffffff', borderRight: 0 }}
                 >
                 {routesDashboard.map(routesDashboard=>{
                     return(
@@ -95,7 +95,7 @@ function index(props) {
                 style={{
                     paddingLeft: '1%',
                     paddingRight:"1%",
-                    background: '#fff',
+                    background: '#F4F7FC',
                 }}
                 >
                 {props.children}
