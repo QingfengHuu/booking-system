@@ -363,11 +363,11 @@ const Account= (props) => {
 
   return (
     <Card title='Account' 
-      extra={
-        <Button type='primary'>
-          Change password
-        </Button>
-      }
+      // extra={
+      //   <Button type='primary'>
+      //     Change password
+      //   </Button>
+      // }
     >
         <Card type='inner' title='Reserving terminal'extra={
             <Button type='primary'>
