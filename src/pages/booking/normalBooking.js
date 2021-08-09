@@ -1,12 +1,19 @@
 import { Form, Input, DatePicker, Button, Card, Table, Popconfirm, Modal, Radio, Space } from 'antd';
 import React, { useState, useEffect } from 'react'
 import { bookListApi } from '../../services/booking';
-import { TerminalListApi } from '../../services/terminal';
+import { NormalBookingListApi, NormalBookingListReserveApi} from '../../services/terminal';
 import TerminalList from '../admin/terminal/TerminalList';
 import { listApi } from '../../services/terminal';
 import Highlighter from 'react-highlight-words';
 import { SearchOutlined } from '@ant-design/icons';
-import moment from 'moment'
+import moment from 'moment';
+import 'moment-timezone';
+import  {getUsername}  from '../../utils/auth';
+
+
+moment.tz.setDefault("Asia/Shanghai");
+// moment(val).format('YYYY-MM-DD HH:mm:ss')
+
 
 
 const {RangePicker} = DatePicker;
@@ -39,10 +46,10 @@ const dataSource = [{
 }
 ]
 
-const BookingList= (props) => {
+const NormalBookingList= (props) => {
 
   const [isModalVisible, setIsModalVisible] = useState(false);
-  const [dataSource1, setDataSource1] = useState([]);
+  const [dataSource, setDataSource] = useState([]);
   const [total,setTotal] = useState(0);
   const [buttonDisabled,setButtonDisabled] = useState(false);
   //states for range picker
@@ -65,18 +72,17 @@ const BookingList= (props) => {
 
 
   useEffect(() => {
-    TerminalListApi().then(res =>{
-      setDataSource1(res.terminal);
-      setTotal(res.totalCount);
+    NormalBookingListApi().then(res =>{
+      setDataSource(res.data.data);
     })
   }, [])
 
-  const loadData = (page) =>{
-    TerminalListApi(page).then(res =>{
-      setDataSource1(res.terminal);
-      setTotal(res.totalCount);
-    })
-  }
+  // const loadData = (page) =>{
+  //   TerminalListApi(page).then(res =>{
+  //     setDataSource1(res.terminal);
+  //     setTotal(res.totalCount);
+  //   })
+  // }
 
   const showModal = () => {
     setIsModalVisible(true);
@@ -305,7 +311,11 @@ const BookingList= (props) => {
             </Form.Item>
 
             <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
-              <Button type="primary" htmlType="submit">
+              <Button type="primary" htmlType="submit" onClick={()=>{
+                  NormalBookingListReserveApi({e_id : dataSource.e_id, u_id : getUsername(), subscribe_date: dataSource.start_date, expire_date: dataSource.end_date}).then(res=>{
+                    console.log(record.e_id+'reserved!')
+                  })
+                }}>
                 Submit
               </Button>
             </Form.Item>
@@ -328,7 +338,7 @@ const BookingList= (props) => {
     >
       <Table 
         rowKey='index' 
-        pagination={{total,defaultPageSize:10, onChange: loadData}} 
+        // pagination={{total,defaultPageSize:10, onChange: loadData}} 
         columns={colomns} 
         bordered 
         dataSource={dataSource}
@@ -337,6 +347,6 @@ const BookingList= (props) => {
   )
 }
 
-export default BookingList
+export default NormalBookingList
 
 

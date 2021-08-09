@@ -15,6 +15,7 @@ const api = {
     editEquipment: '/equipments/',
     delEquipment: '/equipments/',
     getTotalStatus: '/equipments/',
+    getEquipmentDetail: "/equimentdetail",
 
     //Book
     getAllBook: 'book/allBook',
@@ -22,7 +23,8 @@ const api = {
     getNowBook: 'book/nowBook',
     extendBook: 'book/extendBook',
     endBook: 'book/endBook',
-    createBook: 'book/bookEquipment'
+    bookEquipment: "book/bookEquipment"
+
 
     }
 

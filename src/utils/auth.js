@@ -2,8 +2,9 @@ export function getToken(){
     return localStorage.getItem("AUTHORIZATION");
 }
 
-export function setToken(token){
-    localStorage.setItem("AUTHORIZATION",'jwr'+token);
+export function setToken(token,username){
+    localStorage.setItem("AUTHORIZATION",'jwt'+token);
+    localStorage.setItem("Username",username)
 }
 
 export function clearToken() {
@@ -15,4 +16,8 @@ export function isLogined(){
         return true;
     }
     return false;
+}
+
+export function getUsername(){
+    return localStorage.getItem("Username");
 }
