@@ -60,7 +60,8 @@ const UserList=() => {
     // Table Collection Data
     const colomns = [{
       title: 'ID',
-      dataIndex: 'id'
+      key:'index',
+      render: (txt, record, index) => index + 1,
     },{
       title: 'User Name',
       key: 'username',
@@ -77,19 +78,25 @@ const UserList=() => {
         return(
           <div>
             <Space split={<Divider type="vertical" />}>
-              <Popconfirm title= 'Sure Reset?'>
-              <Button type='primary' size='small' onClick={()=>{
+              <Popconfirm title= 'Sure Reset?'
+              onConfirm={()=>{
                 UserResetApi(record.username).then(res=>{
                   console.log(record.username+' modified!')
                 })
-              }}>Reset</Button>
+              }}>
+              <Button type='primary' size='small' >Reset</Button>
               </Popconfirm>
-              <Popconfirm title= 'Sure Delete?'>
-                <Button type='primary' danger size='small' onClick={()=>{
+              <Popconfirm title= 'Sure Delete?'
+              onConfirm={()=>{
                 UserDelApi(record.username).then(res=>{
-                  console.log(record.username+' deleted!')
+                  if(res.code===200){
+                    console.log(record.username+' deleted!')
+                  }else{
+                    console.log("You dont't have permission")
+                  }    
                 })
-              }}> Delete </Button>
+              }}>
+                <Button type='primary' danger size='small' > Delete </Button>
               </Popconfirm>
             </Space>
           </div>
@@ -109,7 +116,7 @@ const UserList=() => {
             </Button>
           }
         >
-          <Table rowKey='username' columns={colomns} bordered dataSource={dataSource1}/>
+          <Table rowKey='index' columns={colomns} bordered dataSource={dataSource1}/>
         </Card>
 
         <Drawer
