@@ -6,11 +6,15 @@
     border: 10px;
 } */
 .UsageCard{
-    padding-top: 2%;
+    padding-top: 1%;
 }
 
-/* .cardRow{
-    padding-left: 5%;
+.overviewHeader{
+    padding-top: 1%;
+}
+
+/* .ant-card-head{
+    font-size: 26px;
 } */
 
 .Usage_image{

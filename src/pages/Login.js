@@ -10,10 +10,28 @@ import { loginApi } from '../services/auth';
 
 const Login = (props) => {
   const onFinish = (values) => {
-    console.log('Received values of form: ', values);
-    setToken(values.username);
-    console.log(values.username);
-    props.history.push('/booking');
+    // console.log('Received values of form: ', values);
+    // setToken(values.username);
+    // console.log(values.username);
+    // props.history.push('/booking');
+    loginApi({
+        username:values.username,
+        password:values.password
+    })
+    .then(res=>{
+        if(res.code===200){
+            message.success("Login successfully!")
+            setToken(res.data.token,res.data.username)
+            props.history.push('/dashboard')
+        }else{
+            message.info(res.message)
+        }
+        console.log(res)
+    })
+    .catch(err=>{
+        console.log(err)
+        message.info("Account doesn't exit!");
+    })
   }
     // loginApi({
     //     username=values.username,
@@ -22,7 +40,7 @@ const Login = (props) => {
     // .then(res=>{
     //     if(res.code==='success'){
     //         message.success("Login successfully!")
-    //         setToken(res.token)
+    //         setToken(res.data.token,res.data.username)
     //         props.history.push('/dashboard')
     //     }else{
     //         message.info(res.message)
