@@ -7,17 +7,17 @@ import { TerminalCreateApi, TerminalDelApi, TerminalListApi } from '../../../ser
 const { Option } = Select;
 
 // Terminal DataSource: due to the disconnection with the backend
-// const dataSource = [{
-//     e_id: 1,
-//     e_team: 'HWSS',
-//     e_group:'DELL 13G',
-//     e_cluster:'cluster',
-//     e_servergroup: 'DELL 13G',
-//     e_title: '13G R630',
-//     e_location: 'DELL Server10',
-//     e_iDrac_ip: '20.12.131.24',
-//     e_tag: 'HBMNBD2'
-// }]
+const dataSource1 = [{
+    e_id: 1,
+    e_team: 'HWSS',
+    e_group:'DELL 13G',
+    e_cluster:'cluster',
+    e_servergroup: 'DELL 13G',
+    e_title: '13G R630',
+    e_location: 'DELL Server10',
+    e_iDrac_ip: '20.12.131.24',
+    e_tag: 'HBMNBD2'
+}]
 
 
 
@@ -186,7 +186,7 @@ const TerminalList=(props) => {
           <Table columns={colomns} 
             columnSelection={{ ...columnSelection, checkStrictly }}
             //checkstrictly cancellation
-            bordered dataSource={dataSource} />
+            bordered dataSource={dataSource1} />
 
         </Card>
 

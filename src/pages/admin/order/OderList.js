@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from 'react'
 
-import { Drawer, Form, Button, Col, Row, Input, Select, Card, Table, Popconfirm, Modal, Space, Divider, Descriptions } from 'antd';
+import { Drawer, Form, Button, Col, Row, Input, Select, Card, Table, Popconfirm, Modal, Space, Divider, Descriptions, message } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 import { OrderEndApi, OrderExtendApi, OrderListApi } from '../../../services/order';
 
 
 // Account DataSource: due to the disconnection with the backend
 
-const OrderList=() => {
+const OrderList=(props) => {
     // Table Trigger Setting
     const [isModalVisible, setIsModalVisible] = useState(false);
     const [dataSource, setDataSource]= useState([]);
@@ -16,7 +16,7 @@ const OrderList=() => {
       OrderListApi().then(res=>{
         setDataSource(res.data.data)
       })
-    })
+    },[])
 
     const showModal = () => {
       setIsModalVisible(true);
@@ -64,16 +64,26 @@ const OrderList=() => {
             <Space split={<Divider type="vertical" />}>
               <Popconfirm title= 'Extend for 3 days?'>
                 <Button type='primary' size='small' onClick={()=>{
-                  OrderExtendApi(record.b_id).then(res=>{
-                    console.log(record.b_id+'extended!')
+                  OrderExtendApi({b_id : record.b_id}).then(res=>{
+                    if(res.code==='200'){
+                      console.log(record.b_id+'extended!')
+                      message.info(res.message)
+                      props.history.push('/admin/order')
+                    }else{
+                      message.info(res.message)
+                    }
                   })
                 }}> Extend </Button>
               </Popconfirm>
               <Popconfirm title= 'Sure Release?'>
                 <Button type='primary' danger size='small' onClick={()=>{
-                  OrderEndApi(record.b_id).then(res=>{
-                    console.log(record.b_id+'ended!')
-                  })
+                  OrderEndApi({b_id : record.b_id}).then(res=>{
+                    if(res.code===200){
+                      console.log(record.b_id+'ended!')
+                      message.info(res.message)
+                      props.history.push('/admin/order')
+                    }
+                    })
                 }}> Release </Button>
               </Popconfirm>
             </Space>
