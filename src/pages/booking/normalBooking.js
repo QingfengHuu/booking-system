@@ -6,8 +6,14 @@ import TerminalList from '../admin/terminal/TerminalList';
 import { listApi } from '../../services/terminal';
 import Highlighter from 'react-highlight-words';
 import { SearchOutlined } from '@ant-design/icons';
-import moment from 'moment'
+import moment from 'moment';
+import 'moment-timezone';
 import  {getUsername}  from '../../utils/auth';
+
+
+moment.tz.setDefault("Asia/Shanghai");
+// moment(val).format('YYYY-MM-DD HH:mm:ss')
+
 
 
 const {RangePicker} = DatePicker;
@@ -306,7 +312,7 @@ const NormalBookingList= (props) => {
 
             <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
               <Button type="primary" htmlType="submit" onClick={()=>{
-                  NormalBookingListReserveApi({e_id : dataSource.e_id, u_id : getUsername.getUsername(), subscribe_date: dataSource.start_date, expire_date: dataSource.end_date}).then(res=>{
+                  NormalBookingListReserveApi({e_id : dataSource.e_id, u_id : getUsername(), subscribe_date: dataSource.start_date, expire_date: dataSource.end_date}).then(res=>{
                     console.log(record.e_id+'reserved!')
                   })
                 }}>
