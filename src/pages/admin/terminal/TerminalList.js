@@ -7,17 +7,17 @@ import { TerminalCreateApi, TerminalDelApi, TerminalListApi } from '../../../ser
 const { Option } = Select;
 
 // Terminal DataSource: due to the disconnection with the backend
-// const dataSource = [{
-//     e_id: 1,
-//     e_team: 'HWSS',
-//     e_group:'DELL 13G',
-//     e_cluster:'cluster',
-//     e_servergroup: 'DELL 13G',
-//     e_title: '13G R630',
-//     e_location: 'DELL Server10',
-//     e_iDrac_ip: '20.12.131.24',
-//     e_tag: 'HBMNBD2'
-// }]
+const dataSource1 = [{
+    e_id: 1,
+    e_team: 'HWSS',
+    e_group:'DELL 13G',
+    e_cluster:'cluster',
+    e_servergroup: 'DELL 13G',
+    e_title: '13G R630',
+    e_location: 'DELL Server10',
+    e_iDrac_ip: '20.12.131.24',
+    e_tag: 'HBMNBD2'
+}]
 
 
 
@@ -146,12 +146,14 @@ const TerminalList=(props) => {
               <Button type='primary' size='small' onClick={()=>{
                 props.history.push(`/admin/terminal/edit/${record.e_id}`)
               }} > Edit </Button>
-              <Popconfirm title= 'Sure Delete?'>
-                <Button type='primary' danger size='small' onClick={()=>{
-                  TerminalDelApi(record.e_id).then(res=>{
-                    console.log(record.e_title+'deleted!')
-                  })
-                }}> Delete </Button>
+              <Popconfirm title= 'Sure Delete?'
+              onConfirm={()=>{
+                TerminalDelApi(record.e_id).then(res=>{
+                  console.log(record.e_title+'deleted!')
+                })
+              }}
+              >
+                <Button type='primary' danger size='small' > Delete </Button>
               </Popconfirm>
             </Space>
           </div>
@@ -186,7 +188,7 @@ const TerminalList=(props) => {
           <Table columns={colomns} 
             columnSelection={{ ...columnSelection, checkStrictly }}
             //checkstrictly cancellation
-            bordered dataSource={dataSource} />
+            bordered dataSource={dataSource1} />
 
         </Card>
 
@@ -221,13 +223,9 @@ const TerminalList=(props) => {
                 <Form.Item
                   name="group"
                   label="Group"
-                  rules={[{ required: true, message: 'Please choose the group' }]}
+                  rules={[{ required: true, message: 'Please enter the group' }]}
                 >
-                  <Select placeholder="Please choose the group">
-                    <Option value="DELL 11G"> DELL 11G </Option>
-                    <Option value="DELL 12G"> DELL 12G </Option>
-                    <Option value="DELL 13G"> DELL 13G </Option>
-                  </Select>
+                  <Input placeholder="Please enter group" />
                 </Form.Item>
               </Col>
               <Col span={12}>

@@ -230,9 +230,6 @@ const NormalBookingList= (props) => {
     sorter: (a, b) => a.e_id - b.e_id,
         sortDirections: ['descend', 'ascend'],
   },{
-    title: 'Team',
-    dataIndex: 'e_team',
-  },{
     title: 'Title',
     dataIndex: 'e_title',
     ...getColumnSearchProps('e_title'),
@@ -249,15 +246,15 @@ const NormalBookingList= (props) => {
     ...getColumnSearchProps('e_tag'),
   },{
     title: 'Booker',
-    dataIndex: 'booker',
+    dataIndex: 'u_id',
     sorter: (a, b) => a.booker.length - b.booker.length,
         sortDirections: ['descend', 'ascend'],
   },{
     title: 'Start Date',
-    dataIndex: 'start_date'
+    dataIndex: 'subscribe_date'
   },{
     title: 'End Date',
-    dataIndex: 'end_date'
+    dataIndex: 'end_time'
   },{
     title: 'Operation',
 
@@ -275,9 +272,6 @@ const NormalBookingList= (props) => {
             onFinishFailed={onFinishFailed}
             
           >
-            
-
-            
             <Form.Item
               label=" Renter"
               name="Renter"

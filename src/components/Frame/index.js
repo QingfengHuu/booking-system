@@ -3,7 +3,7 @@ import MenuItem from 'antd/lib/menu/MenuItem';
 import { withRouter } from 'react-router-dom';
 import { clearToken } from '../../utils/auth';
 import './frame.css';
-import React from 'react'
+import React, { useState } from 'react'
 
 
 import { adminRoutes, bookingRoutes, DashboardRoutes } from '../../routes';
@@ -14,7 +14,8 @@ const routesDashboard =DashboardRoutes.filter(routes=>routes.isShow);
 const { SubMenu } = Menu;
 const { Header, Content, Sider } = Layout;
 
-function index(props) {
+function Frame(props) {
+    const [test,setTest] =useState('sdf')
     const onClick = ({ key }) => {
         if(key==='logout'){
             clearToken();
@@ -106,4 +107,4 @@ function index(props) {
     )
 }
 
-export default withRouter(index)
+export default withRouter(Frame)
