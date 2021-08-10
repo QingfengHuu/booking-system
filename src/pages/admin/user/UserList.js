@@ -69,31 +69,30 @@ const UserList=() => {
       title: 'Email',
       dataIndex: 'email',
     },{
-      title: 'Group',
-      dataIndex: 'group_name'
+      title: 'Access Level',
+      dataIndex: 'access'
     },{
       title: 'Operation',
       render: (txt,record,index) => {
         return(
           <div>
             <Space split={<Divider type="vertical" />}>
-              <Popconfirm title= 'Sure Reset?'>
-              <Button type='primary' size='small' onClick={()=>{
+              <Popconfirm title= 'Sure Reset?' onConfirm={()=>{
                 UserResetApi(record.username).then(res=>{
                   console.log(record.username+' modified!')
                 })
-              }}>Reset</Button>
+              }}>
+              <Button type='primary' size='small'>Reset</Button>
               </Popconfirm>
-              <Popconfirm title= 'Sure Delete?'>
-                <Button type='primary' danger size='small' onClick={()=>{
+              <Popconfirm title= 'Sure Delete?' onConfirm={()=>{
                 UserDelApi(record.username).then(res=>{
                   console.log(record.username+' deleted!')
                 })
-              }}> Delete </Button>
+              }}>
+                <Button type='primary' danger size='small'> Delete </Button>
               </Popconfirm>
             </Space>
           </div>
-          
         )
       }
     }
@@ -155,13 +154,12 @@ const UserList=() => {
 
               <Col span={12}>
                 <Form.Item
-                  name="group_name"
-                  label="Group"
-                  rules={[{ required: true, message: 'Please choose the group' }]}
+                  name="email"
+                  label="Email"
+                  rules={[{ required: true, message: 'Please enter the email' }]}
                 >
                   <Input
-                    style={{ width: '100%' }}
-                    placeholder="Please enter group name"
+                    placeholder="Please enter the email"
                   />
                 </Form.Item>
               </Col>
