@@ -3,7 +3,8 @@
 // import React from 'react'
 import React, { useState, useEffect } from 'react';
 import { Card, Col, Row } from 'antd';
-import { Liquid } from '@ant-design/charts';
+// import { Liquid } from '@ant-design/charts';
+import { Gauge } from '@ant-design/charts';
 // import Test from 'NODE_PATH=./src/components/charts.js';
 import { Line } from '@ant-design/charts';
 import './index.css';
@@ -24,83 +25,157 @@ const Index = () => {
     
     var data = [
         {
+          date: datelist[0],
+          key: 'User usage',
+          value: 125,
+        },
+        {
             date: datelist[0],
-            value: 3,
+          key: 'Total usage',
+          value: 51,
         },
         {
             date: datelist[1],
-            value: 4,
+          key: 'User usage',
+          value: 132,
+        },
+        {
+            date: datelist[1],
+          key: 'Total usage',
+          value: 91,
         },
         {
             date: datelist[2],
-            value: 3,
+          key: 'User usage',
+          value: 141,
+        },
+        {
+            date: datelist[2],
+          key: 'Total usage',
+          value: 34,
         },
         {
             date: datelist[3],
-            value: 5,
+          key: 'User usage',
+          value: 158,
+        },
+        {
+            date: datelist[3],
+          key: 'Total usage',
+          value: 47,
         },
         {
             date: datelist[4],
-            value: 4,
+          key: 'User usage',
+          value: 133,
+        },
+        {
+            date: datelist[4],
+          key: 'Total usage',
+          value: 63,
         },
         {
             date: datelist[5],
-            value: 6,
+          key: 'User usage',
+          value: 143,
+        },
+        {
+            date: datelist[5],
+          key: 'Total usage',
+          value: 58,
         },
         {
             date: datelist[6],
-            value: 7,
+          key: 'User usage',
+          value: 176,
+        },
+        {
+            date: datelist[6],
+          key: 'Total usage',
+          value: 56,
         },
         {
             date: datelist[7],
-            value: 9,
+          key: 'User usage',
+          value: 194,
+        },
+        {
+            date: datelist[7],
+          key: 'Total usage',
+          value: 77,
         },
         {
             date: datelist[8],
-            value: 90,
+          key: 'User usage',
+          value: 115,
+        },
+        {
+            date: datelist[8],
+          key: 'Total usage',
+          value: 99,
         },
         {
             date: datelist[9],
-            value: 8,
+          key: 'User usage',
+          value: 134,
+        },
+        {
+            date: datelist[9],
+          key: 'Total usage',
+          value: 106,
         },
       ];
       var config = {
         data: data,
         xField: 'date',
         yField: 'value',
-        stepType: 'vh',
+        legend: true,
+        seriesField: 'key',
+        color: ["#0058FF", '#21D59B'],
+        stepType: 'hvh',
+        legend: {
+            layout: 'horizontal',
+            position: 'top'
+          }
       };
 
-      const waterFlowconfig = {
-        title: {
-          visible: true,
-          //text: '水波图',
-        },
-        description: {
-          visible: true,
-          //text: '水波图 - 百分比显示',
-        },
-        min: 0,
-        max: 10000,
-        value: 5639,
-        statistic: { formatter: (value) => ((100 * value) / 10000).toFixed(1) + '%' },
-      };
+        const gaugeConfig = {
+            percent: 0.75,
+            type: 'meter',
+            innerRadius: 0.75,
+            range: {
+              ticks: [0, 1 / 3, 2 / 3, 1],
+              color: ['#301c4d', '#51258f', '#ab7ae0'],
+            },
+            indicator: {
+              pointer: { style: { stroke: '#D0D0D0' } },
+              pin: { style: { stroke: '#D0D0D0' } },
+            },
+            statistic: {
+              content: {
+                style: {
+                  fontSize: '36px',
+                  lineHeight: '36px',
+                },
+              },
+            },
+          };
 
       const { Title } = Typography;
     //   waterflow chart config
     return (
         
-        
-        
         <div className="site-card-wrapper">
+            <Title level={1} className="overviewHeader">Overview</Title>
         <Row className = "UsageCard" gutter={16}>
-        <Col span={8}>
+        <Col className = "cardRow" span={8}>
             <Card  title="All Equipment usage" bordered={true}
-            headStyle={{backgroundColor: '#a0a0a0', border: 0 }}
+            headStyle={{backgroundColor: '#D7DBEC', borderRadius: 10, fontSize: 26}}
+            style={{borderRadius: 20}}
             >
                 <div className = "Usage_image">
                     <div className="icons-list">
-                        <DashboardOutlined style={{ fontSize: '400%'}}/>
+                        <DashboardOutlined  style={{ fontSize: '400%'}}/>
                     </div>
                 </div>
         
@@ -118,11 +193,12 @@ const Index = () => {
         </Col>
         <Col span={8}>
             <Card title="Available Equipments" bordered={true}
-            headStyle={{backgroundColor: '#a0a0a0', border: 0 }}
+            headStyle={{backgroundColor: '#D7DBEC', borderRadius: 10, fontSize: 26 }}
+            style={{borderRadius: 20}}
             >
                 <div className = "AE_image">
                     <div className="icons-list">
-                        <ScheduleOutlined style={{ fontSize: '400%'}}/>
+                        <ScheduleOutlined  style={{ fontSize: '400%'}}/>
                     </div>
                 </div>
                 <div className = "dataGroupB">
@@ -139,7 +215,8 @@ const Index = () => {
         </Col>
         <Col span={8}>
             <Card title="Occupied Equipments" bordered={true}
-            headStyle={{backgroundColor: '#a0a0a0', border: 0 }}
+            headStyle={{backgroundColor: '#D7DBEC',borderRadius: 10,  fontSize: 26 }}
+            style={{borderRadius: 20}}
             >
             <div className = "OE_Usage_image">
                     <div className="icons-list">
@@ -160,14 +237,14 @@ const Index = () => {
         </Col>
         </Row>
         <div className = "cardWrapperA">
-            <Card className = "line_chart_space" style={{ width: 1100 }}>
+            <Card className = "line_chart_space" style={{ width: 1100, borderRadius: "10px" }}>
                 <Line className = "line_chart" {...config} />
             </Card>
         </div>
         
         <div className = "cardWrapperB">
-            <Card className = "flow_chart_space" style={{ width: 560 }}>
-                <Liquid {...waterFlowconfig} />
+            <Card className = "flow_chart_space" style={{ width: 560, background: "#FFFF", borderRadius: "10px", border:"false" }}>
+                <Gauge {...gaugeConfig} />
             </Card>
         </div>
         

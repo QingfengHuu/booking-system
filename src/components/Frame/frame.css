@@ -2,3 +2,8 @@
     display: flex;
     justify-content: space-between;
 }
+
+.ant-menu-item-selected {
+    background-color: #ffffff7a !important;
+}
+

@@ -1,39 +1,45 @@
-import React, { useState } from 'react'
+import React, { useState,useEffect } from 'react'
 
-import { Drawer, Form, Button, Col, Row, Input, Select, Card, Table, Popconfirm, Modal, Space, Divider, Descriptions } from 'antd';
+import { Drawer, Form, Button, Col, Row, Input, Select, Card, Table, Popconfirm, Modal, Space, Divider, Descriptions, message } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
-
-const { Option } = Select;
+import { UserListApi,UserCreateApi, UserDelApi, UserResetApi } from '../../../services/user';
 
 // Account DataSource: due to the disconnection with the backend
-const dataSource = [{
-  id:'1',
-  password:'********',
-  last_login:'2021/07/30',
-  is_superuser:'false',
-  username:'Javis',
-  first_name:'Javis',
-  last_name:'Huang',
-  email:'javis_huang@dell.com',
-  is_staff:'false',
-  is_active:'true',
-  date_joined:'2021/07/01',
-  group_name: 'VxRail Day0 Team',
-  location: 'Wu Jiao Chang',
+// const dataSource = [{
+//   id:'1',
+//   password:'********',
+//   last_login:'2021/07/30',
+//   is_superuser:'false',
+//   username:'Javis',
+//   first_name:'Javis',
+//   last_name:'Huang',
+//   email:'javis_huang@dell.com',
+//   is_staff:'false',
+//   is_active:'true',
+//   date_joined:'2021/07/01',
+//   group_name: 'VxRail Day0 Team',
+//   location: 'Wu Jiao Chang',
 
-  approver: 'Tom Liu'
-}]
+//   approver: 'Tom Liu'
+// }]
 
 const UserList=() => {
     // Drawer Trigger Setting
-    const [isFormVisible, setIsFromVisble] = useState(false);
+    const [isFormVisible, setIsFormVisble] = useState(false);
+    const [dataSource1, setDataSource1] = useState([]);
+
+    useEffect(() => {
+      UserListApi().then(res =>{
+        setDataSource1(res.data.data);
+      })
+    }, [])
     
     const onClose = () => {
-      setIsFromVisble(false)
+      setIsFormVisble(false)
     };
 
     const showDrawer = () => {
-      setIsFromVisble(true)
+      setIsFormVisble(true)
     };
 
     // Table Trigger Setting
@@ -54,9 +60,11 @@ const UserList=() => {
     // Table Collection Data
     const colomns = [{
       title: 'ID',
-      dataIndex: 'id'
+      key:'index',
+      render: (txt, record, index) => index + 1,
     },{
       title: 'User Name',
+      key: 'username',
       dataIndex: 'username'
     },{
       title: 'Email',
@@ -65,52 +73,39 @@ const UserList=() => {
       title: 'Group',
       dataIndex: 'group_name'
     },{
-      title: 'Staff Access',
-      dataIndex: 'is_staff'
-    },{
-      title: 'Superuser Access',
-      dataIndex: 'is_superuser'
-    },{
-      title: 'Approver',
-      dataIndex: 'approver'
-    },{
       title: 'Operation',
       render: (txt,record,index) => {
         return(
           <div>
             <Space split={<Divider type="vertical" />}>
-              <Button type='primary' size='small' onClick={showModal}>Edit</Button>
-              <Popconfirm title= 'Sure Delete?'>
-                <Button type='primary' danger size='small'> Delete </Button>
+              <Popconfirm title= 'Sure Reset?'
+              onConfirm={()=>{
+                UserResetApi(record.username).then(res=>{
+                  console.log(record.username+' modified!')
+                })
+              }}>
+              <Button type='primary' size='small' >Reset</Button>
+              </Popconfirm>
+              <Popconfirm title= 'Sure Delete?'
+              onConfirm={()=>{
+                UserDelApi(record.username).then(res=>{
+                  if(res.code===200){
+                    console.log(record.username+' deleted!')
+                  }else{
+                    console.log("You dont't have permission")
+                  }    
+                })
+              }}>
+                <Button type='primary' danger size='small' > Delete </Button>
               </Popconfirm>
             </Space>
-
-            <Modal title="User Detail" width={1000} visible={isModalVisible} onOk={handleOk} onCancel={handleCancel}>
-              <Descriptions
-                bordered
-                extra={<Button type="primary"> Reset Password </Button>}
-              >
-                <Descriptions.Item label="ID"> 1 </Descriptions.Item>
-                <Descriptions.Item label="User Name"> Javis </Descriptions.Item>
-                <Descriptions.Item label="First Name"> Javis </Descriptions.Item>
-                <Descriptions.Item label="Last Name"> Huang </Descriptions.Item>
-                <Descriptions.Item label="Email Address"> javis_huang@dell.com </Descriptions.Item>
-                <Descriptions.Item label="Group"> VxRail Day0 Team </Descriptions.Item>
-                <Descriptions.Item label="Is Active"> True </Descriptions.Item>
-                <Descriptions.Item label="Is Staff"> false </Descriptions.Item>
-                <Descriptions.Item label="Is Superuser"> false </Descriptions.Item>
-                <Descriptions.Item label="Last Login"> 2021/07/30 </Descriptions.Item>
-                <Descriptions.Item label="Approver"> Tom Liu </Descriptions.Item>
-                <Descriptions.Item label="Password"> ******** </Descriptions.Item>
-              </Descriptions>
-            </Modal>
           </div>
           
         )
       }
     }
   ]
-
+  
 
     return (
         <div>
@@ -121,10 +116,8 @@ const UserList=() => {
             </Button>
           }
         >
-          <Table columns={colomns} bordered dataSource={dataSource}/>
+          <Table rowKey='index' columns={colomns} bordered dataSource={dataSource1}/>
         </Card>
-
-
 
         <Drawer
           title="Create a new user account"
@@ -141,13 +134,21 @@ const UserList=() => {
               <Button onClick={onClose} style={{ marginRight: 8 }}>
                 Cancel
               </Button>
-              <Button onClick={onClose} type="primary">
-                Submit
-              </Button>
+              
             </div>
           }
         >
-          <Form layout="vertical" hideRequiredMark>
+          <Form layout="vertical"  hideRequiredMark onFinish={(values) => {
+            UserCreateApi(values).then(res=>{
+              console.log(values)
+              message.log("success!")
+              if(res.data.code===200){
+                message.log(res.data.message)
+              }else if(res.data.code===400){
+                message.log(res.data.message)
+              }
+            })
+    }} >
             <Row gutter={16}>
               <Col span={12}>
                 <Form.Item
@@ -161,15 +162,13 @@ const UserList=() => {
 
               <Col span={12}>
                 <Form.Item
-                  name="email"
-                  label="Email"
-                  rules={[{ required: true, message: 'Please enter email address' }]}
+                  name="group_name"
+                  label="Group"
+                  rules={[{ required: true, message: 'Please choose the group' }]}
                 >
                   <Input
                     style={{ width: '100%' }}
-                    addonBefore="http://"
-                    addonAfter=".com"
-                    placeholder="Please enter email address"
+                    placeholder="Please enter group name"
                   />
                 </Form.Item>
               </Col>
@@ -177,64 +176,19 @@ const UserList=() => {
 
             <Row gutter={16}>
               <Col span={12}>
-                <Form.Item
-                  name="group"
-                  label="Group"
-                  rules={[{ required: true, message: 'Please choose the group' }]}
-                >
-                  <Select placeholder="Please choose the group">
-                    <Option value="vxRail_day0_team"> VxRail Day0 Team </Option>
-                    <Option value="vxRail_day1_team"> VxRail Day1 Team </Option>
-                    <Option value="vxRail_day2_team"> VxRail Day2 Team </Option>
-                  </Select>
+                <Form.Item>
+                    {/* <Popconfirm title= 'Sure add?'> */}
+                      <Button htmlType='submit'  type="primary" >
+                        Submit
+                      </Button>
+                    {/* </Popconfirm> */}
                 </Form.Item>
               </Col>
-              <Col span={12}>
-                <Form.Item
-                  name="approver"
-                  label="Approver"
-                  rules={[{ required: true, message: 'Please choose the approver' }]}
-                >
-                  <Select placeholder="Please choose the approver">
-                    <Option value="jack"> Jack Ma </Option>
-                    <Option value="tom"> Tom Liu </Option>
-                  </Select>
-                </Form.Item>
-              </Col>
-            </Row>
-
-            <Row gutter={16}>
-              <Col span={12}>
-                <Form.Item
-                  name="is_staff"
-                  label="Is Staff"
-                  rules={[{ required: true, message: 'Please select the staff access' }]}
-                >
-                  <Select placeholder="Please select the staff access">
-                    <Option value="ture"> Ture </Option>
-                    <Option value="false"> False </Option>
-                  </Select>
-                </Form.Item>
-              </Col>
-              <Col span={12}>
-                <Form.Item
-                  name="is_superuser"
-                  label="Is Superuser"
-                  rules={[{ required: true, message: 'Please select the superuser access' }]}
-                >
-                  <Select placeholder="Please select the superuser access">
-                    <Option value="ture"> Ture </Option>
-                    <Option value="false"> False </Option>
-                  </Select>
-                </Form.Item>
-              </Col>
-
-
             </Row>
           </Form>
         </Drawer>
         </div>
     )
-}
+        }
 
 export default UserList

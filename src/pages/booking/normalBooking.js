@@ -1,67 +1,55 @@
-import { Form, Input, Button, DatePicker, Card, Table, Popconfirm, Modal, Space, Divider} from 'antd'
-import React, { useState } from 'react'
-// import { listApi } from '../../services/terminal';
+import { Form, Input, DatePicker, Button, Card, Table, Popconfirm, Modal, Radio, Space } from 'antd';
+import React, { useState, useEffect } from 'react'
+import { bookListApi } from '../../services/booking';
+import { NormalBookingListApi, NormalBookingListReserveApi} from '../../services/terminal';
+import TerminalList from '../admin/terminal/TerminalList';
+import { listApi } from '../../services/terminal';
 import Highlighter from 'react-highlight-words';
 import { SearchOutlined } from '@ant-design/icons';
+import moment from 'moment';
+import 'moment-timezone';
+import  {getUsername}  from '../../utils/auth';
+
+
+moment.tz.setDefault("Asia/Shanghai");
+// moment(val).format('YYYY-MM-DD HH:mm:ss')
+
+
 
 const {RangePicker} = DatePicker;
 
+
 const dataSource = [{
-  index: 1,
-  team: 'HWSS',
-  group: 'DELL 13G',
-  title: '13G R630',
-  location: 'DELL Server10',
-  idrac_ip: '20.12.131.24',
-  server_tag: 'HBMNBD2',
+  e_id: 1,
+  e_team: 'HWSS',
+  e_servergroup: 'DELL 13G',
+  e_title: '13G R630',
+  e_location: 'DELL Server10',
+  e_iDrac_ip: '20.12.131.24',
+  e_tag: 'HBMNBD2',
+  e_status : 1,
   booker: 'Cathy',
   start_date: '7/15',
-  end_date: '7/29',
-  extend:1
-}, {
-  index: 2,
-  team: 'HWSS',
-  group: 'DELL 13G',
-  title: '23G R630',
-  location: 'DELL Server10',
-  idrac_ip: '40.12.131.24',
-  server_tag: 'HBMNBD2',
-  booker: 'Cathy',
-  start_date: '7/26',
-  end_date: '7/30',
-  extend:2
-}]
-
-const dataSourceBeta = [{
-  index: 1,
-  team: 'HWSS',
-  group: 'DELL 13G',
-  title: '13G R630',
-  location: 'DELL Server10',
-  idrac_ip: '20.12.131.24',
-  server_tag: 'HBMNBD2',
-  booker: 'Cathy',
+  end_date: '7/20'
+},{
+  e_id: 2,
+  e_team: 'HWSS',
+  e_servergroup: 'DELL 13G',
+  e_title: '13G R630',
+  e_location: 'DELL Server10ACDSFG',
+  e_iDrac_ip: '20.12.131.24',
+  e_tag: 'HBMNBD2',
+  e_status : 2,
+  booker: 'LOL',
   start_date: '7/15',
-  end_date: '7/29',
-  extend:1
-}, {
-  index: 2,
-  team: 'HWSS',
-  group: 'DELL 13G',
-  title: '23G R630',
-  location: 'DELL Server10',
-  idrac_ip: '40.12.131.24',
-  server_tag: 'HBMNBD2',
-  booker: 'Cathy',
-  start_date: '7/16',
-  end_date: '7/30',
-  extend:2
-}]
+  end_date: '7/20'
+}
+]
 
-const Account= (props) => {
+const NormalBookingList= (props) => {
 
   const [isModalVisible, setIsModalVisible] = useState(false);
-  const [dataSource1, setDataSource1] = useState([]);
+  const [dataSource, setDataSource] = useState([]);
   const [total,setTotal] = useState(0);
   const [buttonDisabled,setButtonDisabled] = useState(false);
   //states for range picker
@@ -71,17 +59,26 @@ const Account= (props) => {
   const [searchedColumn, setSearchedColumn] = useState('');
   const [searchText, setSearchText] = useState('');
 
+  const dateFormat = 'YYYY-MM-DD';
+
   let searchInput ='';
 
-  // useEffect(() => {
-  //   listApi().then(res =>{
-  //     setDataSource1(res.terminal);
-  //     setTotal(res.totalCount);
-  //   })
-  // }, [])
+  // let state = {
+  //   searchText: '',
+  //   searchedColumn: '',
+  // };
+
+
+
+
+  useEffect(() => {
+    NormalBookingListApi().then(res =>{
+      setDataSource(res.data.data);
+    })
+  }, [])
 
   // const loadData = (page) =>{
-  //   listApi(page).then(res =>{
+  //   TerminalListApi(page).then(res =>{
   //     setDataSource1(res.terminal);
   //     setTotal(res.totalCount);
   //   })
@@ -113,16 +110,21 @@ const Account= (props) => {
     }
   };
 
+  
+
   //This is where u call api/method for username
 
 
   //states for range picker
   const disabledDate = current => {
+    dates[0] = moment();
     if (!dates || dates.length === 0) {
       return false;
     }
-    const tooLate = dates[0] && current.diff(dates[0], 'days') > 7;
-    const tooEarly = dates[1] && dates[1].diff(current, 'days') > 7;
+    const tooLate = dates[0] && current.diff(dates[0], 'days') > 6;
+    const tooEarly = dates[1] && dates[1].diff(current, 'days') > 6;
+    
+    // const limitEarly = current && current < moment().startOf('day');
     return tooEarly || tooLate;
   };
   const onOpenChange = open => {
@@ -145,8 +147,9 @@ const Account= (props) => {
     ],
   };
 
-   //search modules
-   const getColumnSearchProps = dataIndex => ({
+
+  //search modules
+  const getColumnSearchProps = dataIndex => ({
     filterDropdown: ({ setSelectedKeys, selectedKeys, confirm, clearFilters }) => (
       <div style={{ padding: 8 }}>
         <Input
@@ -221,48 +224,44 @@ const Account= (props) => {
   };
   //search modules
 
-  const currColumns = [{
-    title: 'index',
-    key: 'index',
-    align: 'center',
-    render: (txt,record,index) => index+1
-  },{
-    title: 'Team',
-    dataIndex: 'team'
-  },{
-    title: 'Server Group',
-    dataIndex: 'group',
+  const colomns = [{
+    title: 'ID',
+    dataIndex: 'e_id',
+    sorter: (a, b) => a.e_id - b.e_id,
+        sortDirections: ['descend', 'ascend'],
   },{
     title: 'Title',
-    dataIndex: 'title',
-    ...getColumnSearchProps('title'),
+    dataIndex: 'e_title',
+    ...getColumnSearchProps('e_title'),
   },{
     title: 'Location',
-    dataIndex: 'location',
-    ...getColumnSearchProps('location'),
+    dataIndex: 'e_location',
+    ...getColumnSearchProps('e_location'),
   },{
-    title: 'iDrac_ip',
-    dataIndex: 'idrac_ip'
+    title: 'iDrac_Ip',
+    dataIndex: 'e_iDrac_ip',
   },{
     title: 'Server Tag',
-    dataIndex: 'server_tag',
-    ...getColumnSearchProps('server_tag'),
+    dataIndex: 'e_tag',
+    ...getColumnSearchProps('e_tag'),
+  },{
+    title: 'Booker',
+    dataIndex: 'u_id',
+    sorter: (a, b) => a.booker.length - b.booker.length,
+        sortDirections: ['descend', 'ascend'],
   },{
     title: 'Start Date',
-    dataIndex: 'start_date',
+    dataIndex: 'subscribe_date'
   },{
     title: 'End Date',
-    dataIndex: 'end_date',
-  },{
-    title:'Extend Time',
-    dataIndex:'extend'
+    dataIndex: 'end_time'
   },{
     title: 'Operation',
+
     render: (txt,record,index) => {
+
       return(<div>
-        <Space split={<Divider type="vertical" />}>
         <Button type='primary' size='small' onClick={showModal}>Reserve</Button>
-        
         <Modal title="Reserve an equipment" visible={isModalVisible} onOk={handleOk} onCancel={handleCancel}>
           <Form
             name="basic"
@@ -273,9 +272,6 @@ const Account= (props) => {
             onFinishFailed={onFinishFailed}
             
           >
-            
-
-            
             <Form.Item
               label=" Renter"
               name="Renter"
@@ -289,12 +285,15 @@ const Account= (props) => {
             
             <Form.Item name="range-picker" label="RangePicker" {...rangeConfig}>
             <RangePicker
-                value={hackValue || value}
-                disabledDate={disabledDate}
-                onCalendarChange={val => setDates(val)}
-                onChange={val => setValue(val)}
-                onOpenChange={onOpenChange}
-              />
+                    value={hackValue || value}
+                    onCalendarChange={val => setDates(val)}
+                    onChange={val => setValue(val)}
+                    onOpenChange={onOpenChange}
+                    defaultValue={moment()} 
+                    format={dateFormat}
+                    disabled={[true, false]}
+                    disabledDate={disabledDate}
+                  />
             </Form.Item>
 
             <Form.Item
@@ -306,16 +305,16 @@ const Account= (props) => {
             </Form.Item>
 
             <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
-              <Button type="primary" htmlType="submit">
+              <Button type="primary" htmlType="submit" onClick={()=>{
+                  NormalBookingListReserveApi({e_id : dataSource.e_id, u_id : getUsername(), subscribe_date: dataSource.start_date, expire_date: dataSource.end_date}).then(res=>{
+                    console.log(record.e_id+'reserved!')
+                  })
+                }}>
                 Submit
               </Button>
             </Form.Item>
           </Form>
         </Modal>
-        </Space>
-        <Popconfirm title= 'Sure release?'>
-        <Button type='primary' danger size='small'>Release</Button>
-        </Popconfirm>
         
       </div>
       )
@@ -323,80 +322,25 @@ const Account= (props) => {
   }
 ]
 
-  const histColums = [{
-    title: 'index',
-    key: 'index',
-    align: 'center',
-    render: (txt,record,index) => index+1
-  },{
-    title: 'Team',
-    dataIndex: 'team'
-  },{
-    title: 'Server Group',
-    dataIndex: 'group',
-  },{
-    title: 'Title',
-    dataIndex: 'title',
-    ...getColumnSearchProps('title'),
-  },{
-    title: 'Location',
-    dataIndex: 'location',
-    ...getColumnSearchProps('location'),
-  },{
-    title: 'iDrac_ip',
-    dataIndex: 'idrac_ip'
-  },{
-    title: 'Server Tag',
-    dataIndex: 'server_tag',
-    ...getColumnSearchProps('server_tag'),
-  },{
-    title: 'Start Date',
-    dataIndex: 'start_date',
-  },{
-    title: 'End Date',
-    dataIndex: 'end_date',
-  },{
-    title:'Extend Time',
-    dataIndex:'extend'
-  },{
-    title: 'Operation',
-    render: (txt,record,index) => {
-      return(
-      <div>
-        <Popconfirm title= 'Sure delete?'>
-          <Button type='primary' danger size='small'>Delete</Button>
-        </Popconfirm>
-      </div>
-      )
-    }
-  }
-]
-
   return (
-    <Card title='Account' 
-      // extra={
-      //   <Button type='primary'>
-      //     Change password
-      //   </Button>
-      // }
+    <Card title='BookingList' 
+      extra={
+        <Button type='primary'>
+          Additional Operation
+        </Button>
+      }
     >
-        <Card type='inner' title='Reserving terminal'extra={
-            <Button type='primary'>
-            Additional Operation
-            </Button>
-        }>
-            <Table rowKey='index' columns={currColumns} bordered dataSource={dataSource}/>
-        </Card>
-        <Card type='inner' title='Reservation history'extra={
-            <Button type='primary'>
-            Additional Operation
-            </Button>
-        }>
-            <Table rowKey='index' columns={histColums} bordered dataSource={dataSourceBeta}/>
-        </Card>
+      <Table 
+        rowKey='index' 
+        // pagination={{total,defaultPageSize:10, onChange: loadData}} 
+        columns={colomns} 
+        bordered 
+        dataSource={dataSource}
+      />
     </Card>
   )
 }
 
-export default Account
+export default NormalBookingList
+
 

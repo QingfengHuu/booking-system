@@ -1,21 +1,31 @@
 import { get, post, put, del } from "../utils/request";
+import api from "../api/api";
 
-export function listApi(page=1) {
-    return get('',{page})
+export function TerminalListApi() {
+    return get(api.getAllEquipment)
 }
 
-export function createApi(data) {
-    return post('',data)
+export function NormalBookingListApi() {
+    return get(api.getEquipmentDetail)
 }
 
-export function getOneById(id) {
-    return get(`api/admin/terminal/${id}`)
+export function NormalBookingListReserveApi(data) {
+    return post(api.bookEquipment, data)
 }
 
-export function modifyApi(id,data) {
-    return put('/${id}',data)
+
+export function TerminalCreateApi(data) {
+    return post(api.addEquipment,data)
 }
 
-export function delApi(id) {
-    return del('/${id}')
+export function TerminalGetOneById(id) {
+    return get(api.getEquipment+id)
+}
+
+export function TerminalModifyApi(id,data) {
+    return put(api.editEquipment+id,data)
+}
+
+export function TerminalDelApi(id) {
+    return del(api.delEquipment+id)
 }

@@ -2,11 +2,13 @@ import Account from "../pages/Account";
 import TerminalList from "../pages/admin/terminal/TerminalList";
 import UserList from "../pages/admin/user/UserList";
 import OrderList from "../pages/admin/order/OderList";
-import BookingList from "../pages/booking/BookingList";
-import Detail from "../pages/booking/Detail";
+import BookingList from "../pages/booking/nodeBookingList";
+import NormalBookingList from "../pages/booking/normalBooking";
 import Index from "../pages/dashboard/";
 import Login from "../pages/Login";
 import PageNotFound from "../pages/PageNotFound";
+import TerminalEdit from "../pages/admin/terminal/TerminalEdit";
+
 
 export const mainRoutes = [{
     path: '/login',
@@ -21,6 +23,15 @@ export const userRoutes=[{
     component: Account,
     exact: true,
     isShow: true,
+    title: 'My Account',
+}]
+
+export const DashboardRoutes = [
+    {
+    path: '/dashboard',
+    component: Index,
+    isShow: true,
+    title: 'Dashboard',
 }]
 
 export const adminRoutes=[{
@@ -29,6 +40,10 @@ export const adminRoutes=[{
     exact: true,
     isShow: true,
     title: 'Terminal Manage'
+},{
+    path: '/admin/terminal/edit/:id?',
+    component: TerminalEdit,
+    isShow: false
 },{
     path: '/admin/order',
     component: OrderList,
@@ -43,19 +58,17 @@ export const adminRoutes=[{
     title: 'User Manager'
 }]
 
-export const bookingRoutes = [{
-    path: '/dashboard',
-    component: Index,
-    isShow: true,
-    title: 'Dashboard',
-},{
+export const bookingRoutes = [
+    {
     path: '/booking',
     component: BookingList,
     exact: true,
     isShow: true,
-    title: 'Booking',
-},{
-    path: '/booking/look/:id',
-    component: Detail,
-    isShow: false
+    title: 'Booking with Clusters',
+},
+{
+    path: '/NormalBookingList',
+    component: NormalBookingList,
+    isShow: true,
+    title: 'Booking with Nodes',
 }]
