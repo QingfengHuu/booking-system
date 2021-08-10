@@ -139,27 +139,13 @@ const Index = () => {
           }
       };
 
-    //   const waterFlowconfig = {
-    //     title: {
-    //       visible: true,
-    //       //text: '水波图',
-    //     },
-    //     description: {
-    //       visible: true,
-    //       //text: '水波图 - 百分比显示',
-    //     },
-    //     min: 0,
-    //     max: 10000,
-    //     value: 5639,
-    //     statistic: { formatter: (value) => ((100 * value) / 10000).toFixed(1) + '%' },
-    //   };
         const gaugeConfig = {
             percent: 0.75,
             type: 'meter',
             innerRadius: 0.75,
             range: {
               ticks: [0, 1 / 3, 2 / 3, 1],
-              color: ['#1a1325', '#51258f', '#ab7ae0'],
+              color: ['#301c4d', '#51258f', '#ab7ae0'],
             },
             indicator: {
               pointer: { style: { stroke: '#D0D0D0' } },
@@ -258,7 +244,6 @@ const Index = () => {
         
         <div className = "cardWrapperB">
             <Card className = "flow_chart_space" style={{ width: 560, background: "#FFFF", borderRadius: "10px", border:"false" }}>
-                {/* <Liquid {...waterFlowconfig} /> */}
                 <Gauge {...gaugeConfig} />
             </Card>
         </div>

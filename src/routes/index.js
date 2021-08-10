@@ -23,6 +23,7 @@ export const userRoutes=[{
     component: Account,
     exact: true,
     isShow: true,
+    title: 'My Account',
 }]
 
 export const DashboardRoutes = [
