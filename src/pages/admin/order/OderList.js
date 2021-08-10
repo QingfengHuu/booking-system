@@ -48,13 +48,13 @@ const OrderList=(props) => {
         dataIndex: 'e_id'
     },{
       title: 'Subscribe Date',
-      dataIndex: 'subscribe_time',
+      dataIndex: 'subscribe_date',
     },{
       title: 'Expire Date',
-      dataIndex: 'expire_time'
+      dataIndex: 'expire_date'
     },{
       title: 'End Date',
-      dataIndex: 'end_time'
+      dataIndex: 'end_date'
     },{
       title: 'Extend Times',
       dataIndex: 'extend'

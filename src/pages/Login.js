@@ -24,7 +24,7 @@ const Login = (props) => {
             setToken(res.data.token,res.data.username)
             props.history.push('/dashboard')
         }else{
-            message.info(res.message)
+            message.info(res.data.message)
         }
         console.log(res)
     })

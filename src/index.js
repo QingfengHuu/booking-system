@@ -9,8 +9,8 @@ import { mainRoutes } from './routes';
 ReactDOM.render(
       <Router>
         <Switch>
-          <Route path='/booking' render={routeProps=><App {...routeProps} />} />
-          <Route path='/NormalBookingList' render={routeProps=><App {...routeProps} />} />
+          <Route path='/ClusterBooking' render={routeProps=><App {...routeProps} />} />
+          <Route path='/NodeBookingList' render={routeProps=><App {...routeProps} />} />
           <Route path='/dashboard' render={routeProps=><App {...routeProps} />} />
           <Route path='/admin' render={routeProps=><App {...routeProps} />} />
           {/* <Route path='/admin/terminal/edit/:id' render={routeProps=><App {...routeProps} />} />
