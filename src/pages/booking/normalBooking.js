@@ -96,13 +96,13 @@ const NormalBookingList= (props) => {
     setIsModalVisible(false);
   };
 
-  const onFinish = (values) => {
-    console.log('Success:', values);
-  };
+  // const onFinish = (values) => {
+  //   console.log('Success:', values);
+  // };
 
-  const onFinishFailed = (errorInfo) => {
-    console.log('Failed:', errorInfo);
-  };
+  // const onFinishFailed = (errorInfo) => {
+  //   console.log('Failed:', errorInfo);
+  // };
 
   const InputShown = (value) => {
     if (value != null && value === ''){
@@ -268,8 +268,12 @@ const NormalBookingList= (props) => {
             labelCol={{ span: 8 }}
             wrapperCol={{ span: 16 }}
             initialValues={{ remember: true }}
-            onFinish={onFinish}
-            onFinishFailed={onFinishFailed}
+            onFinish={()=>{
+              NormalBookingListReserveApi({e_id : record.e_id, u_id : getUsername(), subscribe_date: record.start_date, expire_date: record.end_date}).then(res=>{
+                console.log(record.e_id+'reserved!')
+              })
+            }}
+            // onFinishFailed={onFinishFailed}
             
           >
             <Form.Item
@@ -305,11 +309,7 @@ const NormalBookingList= (props) => {
             </Form.Item>
 
             <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
-              <Button type="primary" htmlType="submit" onClick={()=>{
-                  NormalBookingListReserveApi({e_id : dataSource.e_id, u_id : getUsername(), subscribe_date: dataSource.start_date, expire_date: dataSource.end_date}).then(res=>{
-                    console.log(record.e_id+'reserved!')
-                  })
-                }}>
+              <Button type="primary" htmlType="submit" onClick={{}}>
                 Submit
               </Button>
             </Form.Item>

@@ -236,6 +236,7 @@ const Index = () => {
             </Card>
         </Col>
         </Row>
+
         <div className = "cardWrapperA">
             <Card className = "line_chart_space" style={{ width: 1100, borderRadius: "10px" }}>
                 <Line className = "line_chart" {...config} />
@@ -247,6 +248,7 @@ const Index = () => {
                 <Gauge {...gaugeConfig} />
             </Card>
         </div>
+
         
         </div>
         
