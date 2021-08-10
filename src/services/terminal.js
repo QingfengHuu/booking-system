@@ -23,7 +23,7 @@ export function TerminalGetOneById(id) {
 }
 
 export function TerminalModifyApi(id,data) {
-    return put(api.editEquipment,data)
+    return put(api.editEquipment+id,data)
 }
 
 export function TerminalDelApi(id) {

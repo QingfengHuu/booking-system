@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react'
 import { Drawer, Form, Button, Col, Row, Input, Select, Card, Table, Popconfirm, Modal, Space, Divider, Descriptions, message } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 import { OrderEndApi, OrderExtendApi, OrderListApi } from '../../../services/order';
+import './Order.css'
 
 
 // Account DataSource: due to the disconnection with the backend
@@ -32,9 +33,13 @@ const OrderList=(props) => {
 
     // Table Collection Data
     const colomns = [{
+      title: 'ID',
+      key:'index',
+      render: (txt, record, index) => index + 1,
+    },{
       title: 'Order ID',
       dataIndex: 'b_id',
-      key:'index'
+      className:'tableHidden'
     },{
       title: 'Booker ID',
       dataIndex: 'u_id'
