@@ -51,9 +51,6 @@ const OrderList=(props) => {
       title: 'End Date',
       dataIndex: 'end_time'
     },{
-      title: 'Extend Times',
-      dataIndex: 'extend'
-    },{
       title: 'Status',
       dataIndex: 'b_status'
     },{

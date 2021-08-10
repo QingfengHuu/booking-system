@@ -146,12 +146,12 @@ const TerminalList=(props) => {
               <Button type='primary' size='small' onClick={()=>{
                 props.history.push(`/admin/terminal/edit/${record.e_id}`)
               }} > Edit </Button>
-              <Popconfirm title= 'Sure Delete?'>
-                <Button type='primary' danger size='small' onClick={()=>{
+              <Popconfirm title= 'Sure Delete?' onConfirm={()=>{
                   TerminalDelApi(record.e_id).then(res=>{
                     console.log(record.e_title+'deleted!')
                   })
-                }}> Delete </Button>
+              }}>
+                <Button type='primary' danger size='small'> Delete </Button>
               </Popconfirm>
             </Space>
           </div>

@@ -39,6 +39,342 @@ const dataSource = [{
   booker: 'LOL',
   start_date: '7/15',
   end_date: '7/20'
+},{
+  e_id: 3,
+  e_team: 'HWSS',
+  e_servergroup: 'DELL 13G',
+  e_title: '13G R630',
+  e_location: 'DELL Server10',
+  e_iDrac_ip: '20.12.131.24',
+  e_tag: 'HBMNBD2',
+  e_status : 1,
+  booker: 'Cathy',
+  start_date: '7/15',
+  end_date: '7/20'
+},{
+  e_id: 4,
+  e_team: 'HWSS',
+  e_servergroup: 'DELL 13G',
+  e_title: '13G R630',
+  e_location: 'DELL Server10ACDSFG',
+  e_iDrac_ip: '20.12.131.24',
+  e_tag: 'HBMNBD2',
+  e_status : 2,
+  booker: 'LOL',
+  start_date: '7/15',
+  end_date: '7/20'
+},{
+  e_id: 5,
+  e_team: 'HWSS',
+  e_servergroup: 'DELL 13G',
+  e_title: '13G R630',
+  e_location: 'DELL Server10',
+  e_iDrac_ip: '20.12.131.24',
+  e_tag: 'HBMNBD2',
+  e_status : 1,
+  booker: 'Cathy',
+  start_date: '7/15',
+  end_date: '7/20'
+},{
+  e_id: 6,
+  e_team: 'HWSS',
+  e_servergroup: 'DELL 13G',
+  e_title: '13G R630',
+  e_location: 'DELL Server10ACDSFG',
+  e_iDrac_ip: '20.12.131.24',
+  e_tag: 'HBMNBD2',
+  e_status : 2,
+  booker: 'LOL',
+  start_date: '7/15',
+  end_date: '7/20'
+},{
+  e_id: 7,
+  e_team: 'HWSS',
+  e_servergroup: 'DELL 13G',
+  e_title: '13G R630',
+  e_location: 'DELL Server10',
+  e_iDrac_ip: '20.12.131.24',
+  e_tag: 'HBMNBD2',
+  e_status : 1,
+  booker: 'Cathy',
+  start_date: '7/15',
+  end_date: '7/20'
+},{
+  e_id: 8,
+  e_team: 'HWSS',
+  e_servergroup: 'DELL 13G',
+  e_title: '13G R630',
+  e_location: 'DELL Server10ACDSFG',
+  e_iDrac_ip: '20.12.131.24',
+  e_tag: 'HBMNBD2',
+  e_status : 2,
+  booker: 'LOL',
+  start_date: '7/15',
+  end_date: '7/20'
+},{
+  e_id: 9,
+  e_team: 'HWSS',
+  e_servergroup: 'DELL 13G',
+  e_title: '13G R630',
+  e_location: 'DELL Server10',
+  e_iDrac_ip: '20.12.131.24',
+  e_tag: 'HBMNBD2',
+  e_status : 1,
+  booker: 'Cathy',
+  start_date: '7/15',
+  end_date: '7/20'
+},{
+  e_id: 10,
+  e_team: 'HWSS',
+  e_servergroup: 'DELL 13G',
+  e_title: '13G R630',
+  e_location: 'DELL Server10ACDSFG',
+  e_iDrac_ip: '20.12.131.24',
+  e_tag: 'HBMNBD2',
+  e_status : 2,
+  booker: 'LOL',
+  start_date: '7/15',
+  end_date: '7/20'
+},{
+  e_id: 11,
+  e_team: 'HWSS',
+  e_servergroup: 'DELL 13G',
+  e_title: '13G R630',
+  e_location: 'DELL Server10',
+  e_iDrac_ip: '20.12.131.24',
+  e_tag: 'HBMNBD2',
+  e_status : 1,
+  booker: 'Cathy',
+  start_date: '7/15',
+  end_date: '7/20'
+},{
+  e_id: 12,
+  e_team: 'HWSS',
+  e_servergroup: 'DELL 13G',
+  e_title: '13G R630',
+  e_location: 'DELL Server10ACDSFG',
+  e_iDrac_ip: '20.12.131.24',
+  e_tag: 'HBMNBD2',
+  e_status : 2,
+  booker: 'LOL',
+  start_date: '7/15',
+  end_date: '7/20'
+},{
+  e_id: 13,
+  e_team: 'HWSS',
+  e_servergroup: 'DELL 13G',
+  e_title: '13G R630',
+  e_location: 'DELL Server10',
+  e_iDrac_ip: '20.12.131.24',
+  e_tag: 'HBMNBD2',
+  e_status : 1,
+  booker: 'Cathy',
+  start_date: '7/15',
+  end_date: '7/20'
+},{
+  e_id: 14,
+  e_team: 'HWSS',
+  e_servergroup: 'DELL 13G',
+  e_title: '13G R630',
+  e_location: 'DELL Server10ACDSFG',
+  e_iDrac_ip: '20.12.131.24',
+  e_tag: 'HBMNBD2',
+  e_status : 2,
+  booker: 'LOL',
+  start_date: '7/15',
+  end_date: '7/20'
+},{
+  e_id: 15,
+  e_team: 'HWSS',
+  e_servergroup: 'DELL 13G',
+  e_title: '13G R630',
+  e_location: 'DELL Server10',
+  e_iDrac_ip: '20.12.131.24',
+  e_tag: 'HBMNBD2',
+  e_status : 1,
+  booker: 'Cathy',
+  start_date: '7/15',
+  end_date: '7/20'
+},{
+  e_id: 16,
+  e_team: 'HWSS',
+  e_servergroup: 'DELL 13G',
+  e_title: '13G R630',
+  e_location: 'DELL Server10ACDSFG',
+  e_iDrac_ip: '20.12.131.24',
+  e_tag: 'HBMNBD2',
+  e_status : 2,
+  booker: 'LOL',
+  start_date: '7/15',
+  end_date: '7/20'
+},{
+  e_id: 17 ,
+  e_team: 'HWSS',
+  e_servergroup: 'DELL 13G',
+  e_title: '13G R630',
+  e_location: 'DELL Server10',
+  e_iDrac_ip: '20.12.131.24',
+  e_tag: 'HBMNBD2',
+  e_status : 1,
+  booker: 'Cathy',
+  start_date: '7/15',
+  end_date: '7/20'
+},{
+  e_id: 18 ,
+  e_team: 'HWSS',
+  e_servergroup: 'DELL 13G',
+  e_title: '13G R630',
+  e_location: 'DELL Server10ACDSFG',
+  e_iDrac_ip: '20.12.131.24',
+  e_tag: 'HBMNBD2',
+  e_status : 2,
+  booker: 'LOL',
+  start_date: '7/15',
+  end_date: '7/20'
+},{
+  e_id: 19,
+  e_team: 'HWSS',
+  e_servergroup: 'DELL 13G',
+  e_title: '13G R630',
+  e_location: 'DELL Server10',
+  e_iDrac_ip: '20.12.131.24',
+  e_tag: 'HBMNBD2',
+  e_status : 1,
+  booker: 'Cathy',
+  start_date: '7/15',
+  end_date: '7/20'
+},{
+  e_id: 20,
+  e_team: 'HWSS',
+  e_servergroup: 'DELL 13G',
+  e_title: '13G R630',
+  e_location: 'DELL Server10ACDSFG',
+  e_iDrac_ip: '20.12.131.24',
+  e_tag: 'HBMNBD2',
+  e_status : 2,
+  booker: 'LOL',
+  start_date: '7/15',
+  end_date: '7/20'
+},{
+  e_id: 21,
+  e_team: 'HWSS',
+  e_servergroup: 'DELL 13G',
+  e_title: '13G R630',
+  e_location: 'DELL Server10',
+  e_iDrac_ip: '20.12.131.24',
+  e_tag: 'HBMNBD2',
+  e_status : 1,
+  booker: 'Cathy',
+  start_date: '7/15',
+  end_date: '7/20'
+},{
+  e_id: 22,
+  e_team: 'HWSS',
+  e_servergroup: 'DELL 13G',
+  e_title: '13G R630',
+  e_location: 'DELL Server10ACDSFG',
+  e_iDrac_ip: '20.12.131.24',
+  e_tag: 'HBMNBD2',
+  e_status : 2,
+  booker: 'LOL',
+  start_date: '7/15',
+  end_date: '7/20'
+},{
+  e_id: 23,
+  e_team: 'HWSS',
+  e_servergroup: 'DELL 13G',
+  e_title: '13G R630',
+  e_location: 'DELL Server10',
+  e_iDrac_ip: '20.12.131.24',
+  e_tag: 'HBMNBD2',
+  e_status : 1,
+  booker: 'Cathy',
+  start_date: '7/15',
+  end_date: '7/20'
+},{
+  e_id: 24,
+  e_team: 'HWSS',
+  e_servergroup: 'DELL 13G',
+  e_title: '13G R630',
+  e_location: 'DELL Server10ACDSFG',
+  e_iDrac_ip: '20.12.131.24',
+  e_tag: 'HBMNBD2',
+  e_status : 2,
+  booker: 'LOL',
+  start_date: '7/15',
+  end_date: '7/20'
+},{
+  e_id: 25,
+  e_team: 'HWSS',
+  e_servergroup: 'DELL 13G',
+  e_title: '13G R630',
+  e_location: 'DELL Server10',
+  e_iDrac_ip: '20.12.131.24',
+  e_tag: 'HBMNBD2',
+  e_status : 1,
+  booker: 'Cathy',
+  start_date: '7/15',
+  end_date: '7/20'
+},{
+  e_id: 26,
+  e_team: 'HWSS',
+  e_servergroup: 'DELL 13G',
+  e_title: '13G R630',
+  e_location: 'DELL Server10ACDSFG',
+  e_iDrac_ip: '20.12.131.24',
+  e_tag: 'HBMNBD2',
+  e_status : 2,
+  booker: 'LOL',
+  start_date: '7/15',
+  end_date: '7/20'
+},{
+  e_id: 27,
+  e_team: 'HWSS',
+  e_servergroup: 'DELL 13G',
+  e_title: '13G R630',
+  e_location: 'DELL Server10',
+  e_iDrac_ip: '20.12.131.24',
+  e_tag: 'HBMNBD2',
+  e_status : 1,
+  booker: 'Cathy',
+  start_date: '7/15',
+  end_date: '7/20'
+},{
+  e_id: 28,
+  e_team: 'HWSS',
+  e_servergroup: 'DELL 13G',
+  e_title: '13G R630',
+  e_location: 'DELL Server10ACDSFG',
+  e_iDrac_ip: '20.12.131.24',
+  e_tag: 'HBMNBD2',
+  e_status : 2,
+  booker: 'LOL',
+  start_date: '7/15',
+  end_date: '7/20'
+},{
+  e_id: 29,
+  e_team: 'HWSS',
+  e_servergroup: 'DELL 13G',
+  e_title: '13G R630',
+  e_location: 'DELL Server10',
+  e_iDrac_ip: '20.12.131.24',
+  e_tag: 'HBMNBD2',
+  e_status : 1,
+  booker: 'Cathy',
+  start_date: '7/15',
+  end_date: '7/20'
+},{
+  e_id: 30,
+  e_team: 'HWSS',
+  e_servergroup: 'DELL 13G',
+  e_title: '13G R630',
+  e_location: 'DELL Server10ACDSFG',
+  e_iDrac_ip: '20.12.131.24',
+  e_tag: 'HBMNBD2',
+  e_status : 2,
+  booker: 'LOL',
+  start_date: '7/15',
+  end_date: '7/20'
 }
 ]
 
@@ -280,11 +616,11 @@ const BookingList= (props) => {
             <div>
           <Table 
             rowKey='index' 
-            // pagination={{total,defaultPageSize:10, onChange: loadData}} 
+            pagination={{total,defaultPageSize:10, onChange: loadData}} 
             columns={colomns} 
             bordered 
             dataSource={dataSource}
-            pagination={false}
+            // pagination={false}
             />
             
           
@@ -300,11 +636,11 @@ const BookingList= (props) => {
               >
               
                 <Form.Item
-                  label=" Renter"
-                  name="Renter"
+                  label="User"
+                  name="User"
                   placeholder="Select a option and change input text above"
                   initialValue= {InputShown('')}
-                  rules={[{ required: true,   message: 'Please input the name of Renter!' }]}
+                  rules={[{ required: true,   message: 'Please input the terminal user name!' }]}
                 >
                   <Input />
                 </Form.Item>

@@ -1,4 +1,4 @@
-import { Layout, Menu, Breadcrumb, Dropdown, message } from 'antd';
+import { Layout, Menu, Breadcrumb, Dropdown, message, Space, Divider, Typography } from 'antd';
 import MenuItem from 'antd/lib/menu/MenuItem';
 import { withRouter } from 'react-router-dom';
 import { clearToken } from '../../utils/auth';
@@ -36,7 +36,11 @@ function index(props) {
             <Header className="header" style={{background:"white", paddingLeft:"25px"}}>
             {/* <h1 style={{color:'white'}}>DELL EMC</h1> */}
             <div className="white p2 flex a-center" >
-                <img className={['centered']} src='https://www.ashdowngroup.com/wp-content/uploads/2019/06/Dell_EMC_logo.svg.png' width='140px' />
+                <a href='/dashboard'>
+                    <Space split={<Divider type="vertical"/>}>
+                        <img className={['centered']} src='https://www.ashdowngroup.com/wp-content/uploads/2019/06/Dell_EMC_logo.svg.png' width='140px' />
+                    </Space>
+                </a>
             </div>
             {/* <Menu theme="dark" mode="horizontal" defaultSelectedKeys={['2']}>
                 <Menu.Item key="1">nav 1</Menu.Item>
