@@ -358,6 +358,17 @@ const Account= (props) => {
   },{
     title:'Extend Time',
     dataIndex:'extend'
+  },{
+    title: 'Operation',
+    render: (txt,record,index) => {
+      return(
+      <div>
+        <Popconfirm title= 'Sure delete?'>
+          <Button type='primary' danger size='small'>Delete</Button>
+        </Popconfirm>
+      </div>
+      )
+    }
   }
 ]
 
