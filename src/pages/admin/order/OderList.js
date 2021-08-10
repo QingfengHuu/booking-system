@@ -48,13 +48,13 @@ const OrderList=(props) => {
         dataIndex: 'e_id'
     },{
       title: 'Subscribe Date',
-      dataIndex: 'subscribe_time',
+      dataIndex: 'subscribe_date',
     },{
       title: 'Expire Date',
-      dataIndex: 'expire_time'
+      dataIndex: 'expire_date'
     },{
       title: 'End Date',
-      dataIndex: 'end_time'
+      dataIndex: 'end_date'
     },{
       title: 'Extend Times',
       dataIndex: 'extend'
@@ -70,7 +70,7 @@ const OrderList=(props) => {
               <Popconfirm title= 'Extend for 3 days?'>
                 <Button type='primary' size='small' onClick={()=>{
                   OrderExtendApi({b_id : record.b_id}).then(res=>{
-                    if(res.code==='200'){
+                    if(res.data.code==='200'){
                       console.log(record.b_id+'extended!')
                       message.info(res.message)
                       props.history.push('/admin/order')
@@ -83,7 +83,7 @@ const OrderList=(props) => {
               <Popconfirm title= 'Sure Release?'>
                 <Button type='primary' danger size='small' onClick={()=>{
                   OrderEndApi({b_id : record.b_id}).then(res=>{
-                    if(res.code===200){
+                    if(res.data.code===200){
                       console.log(record.b_id+'ended!')
                       message.info(res.message)
                       props.history.push('/admin/order')
