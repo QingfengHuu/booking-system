@@ -15,7 +15,7 @@ const mainDatasource = [{
   name: 'Node1',
 }]
 
-const dataSource = [{
+const dataSource = [{cluster_name:"sdafs",node_list:[{
   e_id: 1,
   e_team: 'HWSS',
   e_servergroup: 'DELL 13G',
@@ -39,7 +39,7 @@ const dataSource = [{
   booker: 'LOL',
   start_date: '7/15',
   end_date: '7/20'
-}
+}]}
 ]
 
 const BookingList= (props) => {
@@ -220,14 +220,13 @@ const BookingList= (props) => {
   //search modules
 
   const mainColumns = [
-    { title: 'Name', dataIndex: 'name', key: 'name' },
+    { title: 'Name', dataIndex: 'e_cluster', key: 'name' },
+    { title: 'Total node number', dataIndex: 'total'},
+    { title: 'Free node number', dataIndex: 'free'}
   ];
   const dateFormat = 'YYYY-MM-DD';
 
-
-
-
-  const expandedRowRender = () => {
+  const expandedRowRender = (record) => {
     const colomns = [{
       title: 'ID',
       dataIndex: 'e_id',
@@ -283,7 +282,7 @@ const BookingList= (props) => {
             // pagination={{total,defaultPageSize:10, onChange: loadData}} 
             columns={colomns} 
             bordered 
-            dataSource={dataSource}
+            dataSource={record.node_list}
             pagination={false}
             />
             
@@ -357,7 +356,7 @@ const BookingList= (props) => {
         className="components-table-demo-nested"
         columns={mainColumns}
         expandable={{ expandedRowRender }}
-        dataSource={mainDatasource}
+        dataSource={dataSource}
       />
       
     </Card>

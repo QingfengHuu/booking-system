@@ -3,7 +3,7 @@ export function getToken(){
 }
 
 export function setToken(token,username){
-    localStorage.setItem("AUTHORIZATION",'jwt'+token);
+    localStorage.setItem("AUTHORIZATION",'jwt '+token);
     localStorage.setItem("Username",username)
 }
 
