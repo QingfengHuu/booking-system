@@ -43,14 +43,20 @@ function TerminalEdit(props) {
             title="Terminal Edit"
             extra={
                 <Button onClick={() => props.history.push("/admin/terminal")}>
-                    返回
+                    Back
                 </Button>
             }
         >
         <Form form={form} 
         onFinish={(values)=>{
           TerminalModifyApi(values.e_id,values).then(res=>{
-            console.log("dd")
+            if(res.data.code===200){
+              console.log(values.e_id+"Modify successful!")
+              message.info("Success!")
+              props.history.push("/admin/terminal")
+            }else{
+              message.info("Something goes wrong, please go check the problems!")
+            }
           }
           )
         }
@@ -131,7 +137,7 @@ function TerminalEdit(props) {
           
           <Form.Item>
           <Button htmlType="submit" type="primary" >
-              保存
+              Submit
           </Button>
           </Form.Item>
         </Form>

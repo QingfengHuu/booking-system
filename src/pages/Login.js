@@ -19,7 +19,7 @@ const Login = (props) => {
         password:values.password
     })
     .then(res=>{
-        if(res.code===200){
+        if(res.data.code===200){
             message.success("Login successfully!")
             setToken(res.data.token,res.data.username)
             props.history.push('/dashboard')

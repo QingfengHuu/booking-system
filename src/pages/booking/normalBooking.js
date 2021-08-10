@@ -19,7 +19,7 @@ moment.tz.setDefault("Asia/Shanghai");
 const {RangePicker} = DatePicker;
 
 
-const dataSource = [{
+const dataSource1 = [{
   e_id: 1,
   e_team: 'HWSS',
   e_servergroup: 'DELL 13G',
@@ -98,6 +98,7 @@ const NormalBookingList= (props) => {
 
   const onFinish = (values) => {
     console.log('Success:', values);
+    console.log(values.range_picker[0]._d)
   };
 
   const onFinishFailed = (errorInfo) => {
@@ -283,7 +284,7 @@ const NormalBookingList= (props) => {
             </Form.Item>
 
             
-            <Form.Item name="range-picker" label="RangePicker" {...rangeConfig}>
+            <Form.Item name="range_picker" label="RangePicker" {...rangeConfig}>
             <RangePicker
                     value={hackValue || value}
                     onCalendarChange={val => setDates(val)}
@@ -335,7 +336,7 @@ const NormalBookingList= (props) => {
         // pagination={{total,defaultPageSize:10, onChange: loadData}} 
         columns={colomns} 
         bordered 
-        dataSource={dataSource}
+        dataSource={dataSource1}
       />
     </Card>
   )
