@@ -188,7 +188,7 @@ const TerminalList=(props) => {
           <Table columns={colomns} 
             columnSelection={{ ...columnSelection, checkStrictly }}
             //checkstrictly cancellation
-            bordered dataSource={dataSource1} />
+            bordered dataSource={dataSource} />
 
         </Card>
 
