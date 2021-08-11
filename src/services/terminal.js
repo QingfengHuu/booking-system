@@ -36,8 +36,8 @@ export function TerminalDelApi(id) {
 }
 
 //dashboard apis
-export function usageListApi(username) {
-    return get(api.userUsage)
+export function usageListApi(params) {
+    return get(api.userUsage,params)
 }
 
 export function equipmentCountApi() {
