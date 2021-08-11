@@ -75,6 +75,7 @@ const UserList=(props) => {
     },{
       title: 'Operation',
       render: (txt,record,index) => {
+          console.log(record)
         return(
           <div>
             <Space split={<Divider type="vertical" />}>
@@ -84,7 +85,7 @@ const UserList=(props) => {
                   if(res.data.code===200){
                     console.log(record.username+' modified!')
                     message.info('Success!')
-                    props.history.push('admin/user')
+                    props.history.push('/admin/user')
                   }else{
                     console.log("Reset failed!")
                     message.info('Failed!')
@@ -99,7 +100,7 @@ const UserList=(props) => {
                   if(res.data.code===200){
                     console.log(record.username+' deleted!')
                     message.info('Success!')
-                    props.history.push('admin/user')
+                    props.history.push('/admin/user')
                   }else{
                     console.log("You dont't have permission")
                     message.info('Failed!')

@@ -20,3 +20,12 @@ export function TerminalModifyApi(id,data) {
 export function TerminalDelApi(id) {
     return del(api.delEquipment+id)
 }
+
+//dashboard apis
+export function usageListApi(params) {
+    return get(api.userUsage,params)
+}
+
+export function equipmentCountApi() {
+    return get(api.equipmentCount)
+}
