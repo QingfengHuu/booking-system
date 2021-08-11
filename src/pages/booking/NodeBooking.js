@@ -1,4 +1,4 @@
-import {Form, Input, DatePicker, Button, Card, Table, Popconfirm, Modal, Radio, Space} from 'antd';
+import {Form, Input, DatePicker, Button, Card, Table, Popconfirm, Modal, Radio, Space, message} from 'antd';
 import React, {useState, useEffect} from 'react'
 import {NodeBookingListApi, NodeBookingListReserveApi} from '../../services/booking';
 import Highlighter from 'react-highlight-words';
@@ -39,6 +39,12 @@ const NodeBookingList = (props) => {
             setDataSource(res.data.data);
         })
     }, [])
+
+    const loadData=(()=>{
+        NodeBookingListApi().then(res => {
+            setDataSource(res.data.data);
+        })
+    })
 
     const [form] = Form.useForm()
     const showModal = (record) => {
@@ -179,12 +185,7 @@ const NodeBookingList = (props) => {
     //search modules
 
     const colomns = [{
-        title: 'ID',
-        key: 'index',
-        render: (txt, record, index) => index + 1,
-    },
-        {
-            title: 'E_ID',
+            title: 'ID',
             dataIndex: 'e_id',
             sorter: (a, b) => a.e_id - b.e_id,
             sortDirections: ['descend', 'ascend'],
@@ -223,8 +224,6 @@ const NodeBookingList = (props) => {
                         <Button type='primary' size='small' onClick={() => {
                             showModal(record)
                         }}>Reserve</Button>
-
-
                     </div>
                 )
             }
@@ -232,13 +231,7 @@ const NodeBookingList = (props) => {
     ]
 
     return (
-        <Card title='BookingList'
-              extra={
-                  <Button type='primary'>
-                      Additional Operation
-                  </Button>
-              }
-        >
+        <Card title='BookingList' >
             <Table
 
                 rowKey='index'
@@ -262,9 +255,14 @@ const NodeBookingList = (props) => {
                             subscribe_date: moment(values.date[0]).format('YYYY-MM-DD HH:mm:ss'),
                             expire_date: moment(values.date[1]).format('YYYY-MM-DD HH:mm:ss')
                         }).then(res => {
-                            console.log(1 + 'reserved!')
+                            if(res.data.msg==200){
+                                console.log(values.e_id + 'has been reserved!')
+                                message.info(values.e_id + 'has been reserved!')
+                                loadData()
+                            }else{
+                                message.info(res.data.msg)
+                            }   
                         })
-                        console.log('Success:', values);
                     }}
                     onFinishFailed={onFinishFailed}
 

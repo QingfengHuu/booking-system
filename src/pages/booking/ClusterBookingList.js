@@ -1,9 +1,9 @@
-import {Form, Input, DatePicker, Button, Card, Table, Popconfirm, Modal, Radio, Space} from 'antd';
+import {Form, Input, DatePicker, Button, Card, Table, Popconfirm, Modal, Radio, Space, message} from 'antd';
 import React, {useState, useEffect} from 'react'
 import Highlighter from 'react-highlight-words';
 import {SearchOutlined} from '@ant-design/icons';
 import moment from 'moment'
-import {ClusterBookingListApi, NodeBookingListReserveApi} from '../../services/booking';
+import {ClusterBookingListApi, NodeBookingListApi, NodeBookingListReserveApi} from '../../services/booking';
 import {getUsername} from '../../utils/auth';
 
 
@@ -40,7 +40,37 @@ const dataSource1 = [
             end_date: '7/20'
         }
         ]
-    }
+    },{
+      e_cluster: "sdafs",
+      total: 2,
+      free: 1,
+      node_list: [{
+          e_id: 1,
+          e_team: 'HWSS',
+          e_servergroup: 'DELL 13G',
+          e_title: '13G R630',
+          e_location: 'DELL Server10',
+          e_iDrac_ip: '20.12.131.24',
+          e_tag: 'HBMNBD2',
+          e_status: 1,
+          booker: 'Cathy',
+          start_date: '7/15',
+          end_date: '7/20'
+      }, {
+          e_id: 2,
+          e_team: 'HWSS',
+          e_servergroup: 'DELL 13G',
+          e_title: '13G R630',
+          e_location: 'DELL Server10ACDSFG',
+          e_iDrac_ip: '20.12.131.24',
+          e_tag: 'HBMNBD2',
+          e_status: 2,
+          booker: 'LOL',
+          start_date: '7/15',
+          end_date: '7/20'
+      }
+      ]
+  }
 ]
 
 const BookingList = (props) => {
@@ -61,6 +91,12 @@ const BookingList = (props) => {
             setDataSource(res.data.data);
         })
     }, [])
+
+    const loadData=(()=>{
+      NodeBookingListApi().then(res => {
+          setDataSource(res.data.data);
+      })
+  })
 
     const [form] = Form.useForm()
     const showModal = (record) => {
@@ -274,15 +310,20 @@ const BookingList = (props) => {
                           wrapperCol={{span: 16}}
                           initialValues={{remember: true}}
                           onFinish={(values) => {
-                              NodeBookingListReserveApi({
-                                  e_id: values.e_id,
-                                  u_id: getUsername(),
-                                  subscribe_date: moment(values.date[0]).format('YYYY-MM-DD HH:mm:ss'),
-                                  expire_date: moment(values.date[1]).format('YYYY-MM-DD HH:mm:ss')
-                              }).then(res => {
-                                  console.log(record.e_id + 'reserved!')
-                              })
-                              console.log('Success:', values);
+                            NodeBookingListReserveApi({
+                              e_id: values.e_id,
+                              u_id: getUsername(),
+                              subscribe_date: moment(values.date[0]).format('YYYY-MM-DD HH:mm:ss'),
+                              expire_date: moment(values.date[1]).format('YYYY-MM-DD HH:mm:ss')
+                            }).then(res => {
+                              if(res.data.msg==200){
+                                  console.log(values.e_id + 'has been reserved!')
+                                  message.info(values.e_id + 'has been reserved!')
+                                  loadData()
+                              }else{
+                                  message.info(res.data.msg)
+                              }   
+                            })
                           }}
                           onFinishFailed={onFinishFailed}
 
@@ -290,7 +331,7 @@ const BookingList = (props) => {
                         <Form.Item
                             label=" e_id"
                             name="e_id"
-                            rules={[{required: true, message: 'Please input the name of Renter!'}]}
+                            rules={[{required: true }]}
                         >
                             <Input disabled='disabled'/>
                         </Form.Item>
@@ -340,19 +381,13 @@ const BookingList = (props) => {
     };
 
     return (
-        <Card title='Node BookingList'
-              extra={
-                  <Button type='primary'>
-                      Additional Operation
-                  </Button>
-              }
-        >
+        <Card title='Node BookingList' >
 
             <Table
                 className="components-table-demo-nested"
                 columns={mainColumns}
                 expandable={{expandedRowRender}}
-                dataSource={dataSource}
+                dataSource={dataSource1}
             />
 
         </Card>

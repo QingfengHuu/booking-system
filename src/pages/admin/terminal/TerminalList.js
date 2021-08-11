@@ -40,6 +40,12 @@ const TerminalList=(props) => {
     })
   }, [])
 
+  const loadData=()=>{
+    TerminalListApi().then(res =>{
+      setDataSource(res.data.data);
+    })
+  }
+
   const [checkStrictly, setCheckStrictly] = React.useState(false);
 
   const onChange = list => {
@@ -152,7 +158,7 @@ const TerminalList=(props) => {
                   if(res.data.code===200){
                     console.log(record.e_title+'deleted!')
                     message.info('Success!')
-                    props.history.push("/admin/terminal")
+                    loadData()
                   }else if(res.data.code===400){
                     console.log("The terminal is in use, can't delete it until it be released!")
                     message.info("The terminal is in use!")
