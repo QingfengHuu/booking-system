@@ -1,6 +1,6 @@
-import {Form, Input, DatePicker, Button, Card, Table, Popconfirm, Modal, Radio, Space} from 'antd';
+import {Form, Input, DatePicker, Button, Card, Table, Popconfirm, Modal, Radio, Space, message} from 'antd';
 import React, {useState, useEffect} from 'react'
-import { NodeBookingListApi,NodeBookingListReserveApi } from '../../services/booking';
+import {NodeBookingListApi, NodeBookingListReserveApi} from '../../services/booking';
 import Highlighter from 'react-highlight-words';
 import {SearchOutlined} from '@ant-design/icons';
 import moment from 'moment';
@@ -15,36 +15,10 @@ moment.tz.setDefault("Asia/Shanghai");
 const {RangePicker} = DatePicker;
 
 
-// const dataSource = [{
-//     e_id: 1,
-//     e_team: 'HWSS',
-//     e_servergroup: 'DELL 13G',
-//     e_title: '13G R630',
-//     e_location: 'DELL Server10',
-//     e_iDrac_ip: '20.12.131.24',
-//     e_tag: 'HBMNBD2',
-//     e_status: 1,
-//     booker: 'Cathy',
-//     start_date: '7/15',
-//     end_date: '7/20'
-// }, {
-//     e_id: 2,
-//     e_team: 'HWSS',
-//     e_servergroup: 'DELL 13G',
-//     e_title: '13G R630',
-//     e_location: 'DELL Server10ACDSFG',
-//     e_iDrac_ip: '20.12.131.24',
-//     e_tag: 'HBMNBD2',
-//     e_status: 2,
-//     booker: 'LOL',
-//     start_date: '7/15',
-//     end_date: '7/20'
-// }
-// ]
-
 const NodeBookingList = (props) => {
 
     const [isModalVisible, setIsModalVisible] = useState(false);
+    const [e_idValue, setE_idValue] = useState();
     const [dataSource, setDataSource] = useState([]);
     const [total, setTotal] = useState(0);
     const [buttonDisabled, setButtonDisabled] = useState(false);
@@ -59,11 +33,6 @@ const NodeBookingList = (props) => {
 
     let searchInput = '';
 
-    // let state = {
-    //   searchText: '',
-    //   searchedColumn: '',
-    // };
-
 
     useEffect(() => {
         NodeBookingListApi().then(res => {
@@ -71,14 +40,15 @@ const NodeBookingList = (props) => {
         })
     }, [])
 
-    // const loadData = (page) =>{
-    //   TerminalListApi(page).then(res =>{
-    //     setDataSource1(res.terminal);
-    //     setTotal(res.totalCount);
-    //   })
-    // }
+    const loadData=(()=>{
+        NodeBookingListApi().then(res => {
+            setDataSource(res.data.data);
+        })
+    })
 
-    const showModal = () => {
+    const [form] = Form.useForm()
+    const showModal = (record) => {
+        form.setFieldsValue(record)
         setIsModalVisible(true);
     };
 
@@ -215,125 +185,140 @@ const NodeBookingList = (props) => {
     //search modules
 
     const colomns = [{
-        title: 'ID',
-        dataIndex: 'e_id',
-        sorter: (a, b) => a.e_id - b.e_id,
-        sortDirections: ['descend', 'ascend'],
-    }, {
-        title: 'Title',
-        dataIndex: 'e_title',
-        ...getColumnSearchProps('e_title'),
-    }, {
-        title: 'Location',
-        dataIndex: 'e_location',
-        ...getColumnSearchProps('e_location'),
-    }, {
-        title: 'iDrac_Ip',
-        dataIndex: 'e_iDrac_ip',
-    }, {
-        title: 'Server Tag',
-        dataIndex: 'e_tag',
-        ...getColumnSearchProps('e_tag'),
-    }, {
-        title: 'Booker',
-        dataIndex: 'u_id',
-        sorter: (a, b) => a.booker.length - b.booker.length,
-        sortDirections: ['descend', 'ascend'],
-    }, {
-        title: 'Start Date',
-        dataIndex: 'subscribe_date'
-    }, {
-        title: 'Expire Date',
-        dataIndex: 'expire_date'
-    }, {
-        title: 'Operation',
+            title: 'ID',
+            dataIndex: 'e_id',
+            sorter: (a, b) => a.e_id - b.e_id,
+            sortDirections: ['descend', 'ascend'],
+        }, {
+            title: 'Title',
+            dataIndex: 'e_title',
+            ...getColumnSearchProps('e_title'),
+        }, {
+            title: 'Location',
+            dataIndex: 'e_location',
+            ...getColumnSearchProps('e_location'),
+        }, {
+            title: 'iDrac_Ip',
+            dataIndex: 'e_iDrac_ip',
+        }, {
+            title: 'Server Tag',
+            dataIndex: 'e_tag',
+            ...getColumnSearchProps('e_tag'),
+        }, {
+            title: 'Booker',
+            dataIndex: 'u_id',
+            sorter: (a, b) => a.booker.length - b.booker.length,
+            sortDirections: ['descend', 'ascend'],
+        }, {
+            title: 'Start Date',
+            dataIndex: 'subscribe_date'
+        }, {
+            title: 'Expire Date',
+            dataIndex: 'expire_date'
+        }, {
+            title: 'Operation',
 
-        render: (txt, record, index) => {
+            render: (txt, record, index) => {
 
-            return (<div>
-                    <Button type='primary' size='small' onClick={showModal}>Reserve</Button>
-                    <Modal title="Reserve an equipment" visible={isModalVisible} onOk={handleOk}
-                           onCancel={handleCancel}>
-                        <Form
-                            name="basic"
-                            labelCol={{span: 8}}
-                            wrapperCol={{span: 16}}
-                            initialValues={{remember: true}}
-                            onFinish={(values) => {
-                                NodeBookingListReserveApi({
-                                    e_id: record.e_id,
-                                    u_id: getUsername(),
-                                    subscribe_date: moment(values.date[0]).format('YYYY-MM-DD HH:mm:ss'),
-                                    expire_date: moment(values.date[1]).format('YYYY-MM-DD HH:mm:ss')
-                                }).then(res => {
-                                    console.log(record.e_id + 'reserved!')
-                                })
-                                console.log('Success:', values);
-                            }}
-                            onFinishFailed={onFinishFailed}
-
-                        >
-                            <Form.Item
-                                label=" Renter"
-                                name="Renter"
-                                placeholder="Select a option and change input text above"
-                                initialValue={InputShown('')}
-                                rules={[{required: true, message: 'Please input the name of Renter!'}]}
-                            >
-                                <Input/>
-                            </Form.Item>
-
-
-                            <Form.Item name="date" label="RangePicker" {...rangeConfig}>
-                                <RangePicker
-                                    value={hackValue || value}
-                                    onCalendarChange={val => setDates(val)}
-                                    onChange={val => setValue(val)}
-                                    onOpenChange={onOpenChange}
-                                    defaultValue={moment()}
-                                    format={dateFormat}
-                                    disabled={[true, false]}
-                                    disabledDate={disabledDate}
-                                />
-                            </Form.Item>
-
-                            <Form.Item
-                                label="Comments"
-                                name="Comments"
-                                rules={[{required: false, message: 'Please input your comments!'}]}
-                            >
-                                <Input.TextArea/>
-                            </Form.Item>
-
-                            <Form.Item wrapperCol={{offset: 8, span: 16}}>
-                                <Button type="primary" htmlType="submit" >
-                                    Submit
-                                </Button>
-                            </Form.Item>
-                        </Form>
-                    </Modal>
-
-                </div>
-            )
+                return (<div>
+                        <Button type='primary' size='small' onClick={() => {
+                            showModal(record)
+                        }}>Reserve</Button>
+                    </div>
+                )
+            }
         }
-    }
     ]
 
     return (
         <Card title='BookingList'
               extra={
-                  <Button type='primary'>
+                  <Button type='primary' >
                       Additional Operation
                   </Button>
               }
         >
             <Table
+
                 rowKey='index'
                 // pagination={{total,defaultPageSize:10, onChange: loadData}}
                 columns={colomns}
                 bordered
                 dataSource={dataSource}
             />
+            <Modal title="Reserve an equipment" visible={isModalVisible} onOk={handleOk}
+                   onCancel={handleCancel}>
+                <Form
+                    form={form}
+                    name="basic"
+                    labelCol={{span: 8}}
+                    wrapperCol={{span: 16}}
+                    initialValues={{remember: true}}
+                    onFinish={(values) => {
+                        NodeBookingListReserveApi({
+                            e_id: values.e_id,
+                            u_id: getUsername(),
+                            subscribe_date: moment(values.date[0]).format('YYYY-MM-DD HH:mm:ss'),
+                            expire_date: moment(values.date[1]).format('YYYY-MM-DD HH:mm:ss')
+                        }).then(res => {
+                            if(res.data.msg==200){
+                                console.log(values.e_id + 'has been reserved!')
+                                message.info(values.e_id + 'has been reserved!')
+                                loadData()
+                            }else{
+                                message.info(res.data.msg)
+                            }   
+                        })
+                    }}
+                    onFinishFailed={onFinishFailed}
+
+                >
+                    <Form.Item
+                        label=" e_id"
+                        name="e_id"
+                        rules={[{required: true, message: 'Please input the name of Renter!'}]}
+                    >
+                        <Input disabled='disabled'/>
+                    </Form.Item>
+                    <Form.Item
+                        label=" Renter"
+                        name="Renter"
+                        placeholder="Select a option and change input text above"
+                        initialValue={getUsername()}
+                        rules={[{required: true, message: 'Please input the name of Renter!'}]}
+                    >
+                        <Input/>
+                    </Form.Item>
+
+
+                    <Form.Item name="date" label="RangePicker" {...rangeConfig}>
+                        <RangePicker
+                            value={hackValue || value}
+                            onCalendarChange={val => setDates(val)}
+                            onChange={val => setValue(val)}
+                            onOpenChange={onOpenChange}
+                            defaultValue={moment()}
+                            format={dateFormat}
+                            disabled={[true, false]}
+                            disabledDate={disabledDate}
+                        />
+                    </Form.Item>
+
+                    <Form.Item
+                        label="Comments"
+                        name="Comments"
+                        rules={[{required: false, message: 'Please input your comments!'}]}
+                    >
+                        <Input.TextArea/>
+                    </Form.Item>
+
+                    <Form.Item wrapperCol={{offset: 8, span: 16}}>
+                        <Button type="primary" htmlType="submit">
+                            Submit
+                        </Button>
+                    </Form.Item>
+                </Form>
+            </Modal>
         </Card>
     )
 }
