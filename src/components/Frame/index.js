@@ -4,7 +4,7 @@ import { withRouter } from 'react-router-dom';
 import { clearToken } from '../../utils/auth';
 import './frame.css';
 import React, { useState } from 'react'
-import { Avatar, Image } from 'antd';
+import { Avatar, Form, Input, Button, Descriptions, Modal } from 'antd';
 import { UserOutlined } from '@ant-design/icons';
 import { adminRoutes, bookingRoutes, DashboardRoutes,userRoutes } from '../../routes';
 
@@ -16,8 +16,6 @@ const routesUserAccount =userRoutes.filter(routes=>routes.isShow);
 
 const { SubMenu } = Menu;
 const { Header, Content, Sider } = Layout;
-
-
 
 
 function Frame(props) {
@@ -46,6 +44,15 @@ function Frame(props) {
         <Menu.Item key="logout">Log out</Menu.Item>
         </Menu>
     );
+
+    const onFinish = (values) => {
+        console.log('Success:', values);
+      };
+    
+      const onFinishFailed = (errorInfo) => {
+        console.log('Failed:', errorInfo);
+      };
+
     return (
         <Layout>
             <Header className="header" style={{background:"white", paddingLeft:"25px"}}>
@@ -76,10 +83,57 @@ function Frame(props) {
                 closable={false}
                 onClose={onClose}
                 visible={visible}
+                width={300}
             >
-                <p>Some contents...</p>
-                <p>Some contents...</p>
-                <p>Some contents...</p>
+                    <Descriptions>
+                        <Descriptions.Item label="UserName"> Zhou Maomao
+                        </Descriptions.Item>
+                    </Descriptions>
+
+                    <Button type="primary" htmlType="submit">
+                        Change Password
+                    </Button>
+
+                <Form name="basic" labelCol={{span: 8,}}
+                wrapperCol={{span: 16,}}
+                initialValues={{remember: true,}}
+                onFinish={onFinish}
+                onFinishFailed={onFinishFailed}
+                >
+                    <Form.Item
+                        label="Username"
+                        name="username"
+                    >
+                        <Input disabled='true'/>
+                    </Form.Item>
+
+                    <Form.Item
+                        label="Password"
+                        name="password"
+                        rules={[
+                        {
+                            required: true,
+                            message: 'Please input your password!',
+                        },
+                        ]}
+                    >
+                        <Input.Password />
+                    </Form.Item>
+
+                    <Form.Item
+                        wrapperCol={{
+                        offset: 8,
+                        span: 16,
+                        }}
+                    >
+                        <Button type="primary" htmlType="submit">
+                        Submit
+                        </Button>
+                    </Form.Item>
+                </Form>
+
+
+
             </Drawer>
             </Header>
             <Layout>
