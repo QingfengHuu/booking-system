@@ -17,6 +17,8 @@ const api = {
     getTotalStatus: '/equipments/',
     getEquipmentDetail: "/equipmentdetail",
 
+    getClusterEquipment: '/equipmentcluster',
+
     //Book
     getAllBook: 'book/allBook/',
     getHistoryBook: 'book/historyBook',

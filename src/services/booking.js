@@ -1,21 +1,16 @@
 import { get, post, put, del } from "../utils/request";
+import api from '../api/api'
 
-export function bookListApi() {
-    return get('')
+//Node booking
+export function NodeBookingListApi() {
+    return get(api.getEquipmentDetail)
 }
 
-export function bookCreateApi(data) {
-    return post('',data)
+export function NodeBookingListReserveApi(data) {
+    return post(api.bookEquipment, data)
 }
 
-export function BookGetOneById(id) {
-    return get(`api/admin/book/${id}`)
-}
-
-export function BookModifyApi(id,data) {
-    return put('/${id}',data)
-}
-
-export function BookDelApi(id) {
-    return del('/${id}')
+//Cluster booking
+export function ClusterBookingListApi() {
+    return get(api.getClusterEquipment)
 }

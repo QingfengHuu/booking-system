@@ -2,8 +2,8 @@ import Account from "../pages/Account";
 import TerminalList from "../pages/admin/terminal/TerminalList";
 import UserList from "../pages/admin/user/UserList";
 import OrderList from "../pages/admin/order/OderList";
-import BookingList from "../pages/booking/nodeBookingList";
-import NormalBookingList from "../pages/booking/normalBooking";
+import BookingList from "../pages/booking/ClusterBookingList";
+import NormalBookingList from "../pages/booking/NodeBooking";
 import Index from "../pages/dashboard/";
 import Login from "../pages/Login";
 import PageNotFound from "../pages/PageNotFound";
@@ -60,14 +60,14 @@ export const adminRoutes=[{
 
 export const bookingRoutes = [
     {
-    path: '/booking',
+    path: '/ClusterBooking',
     component: BookingList,
     exact: true,
     isShow: true,
     title: 'Booking with Clusters',
 },
 {
-    path: '/NormalBookingList',
+    path: '/NodeBookingList',
     component: NormalBookingList,
     isShow: true,
     title: 'Booking with Nodes',
