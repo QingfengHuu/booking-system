@@ -8,6 +8,7 @@ import './frame.css';
 import React, { useState } from 'react'
 import { Avatar, Image } from 'antd';
 import { InfoCircleOutlined, UserOutlined, EditOutlined, SearchOutlined, CheckOutlined } from '@ant-design/icons';
+
 import { adminRoutes, bookingRoutes, DashboardRoutes,userRoutes } from '../../routes';
 import  {getUsername}  from '../../utils/auth';
 import {PwdResetApi} from '../../services/terminal';
@@ -20,8 +21,6 @@ const routesUserAccount =userRoutes.filter(routes=>routes.isShow);
 
 const { SubMenu } = Menu;
 const { Header, Content, Sider } = Layout;
-
-
 
 
 function Frame(props) {
@@ -83,6 +82,7 @@ function Frame(props) {
       const onFinishFailed = (errorInfo: any) => {
         console.log('Failed:', errorInfo);
       };
+
     return (
         <Layout>
             <Header className="header" style={{background:"white", paddingLeft:"25px"}}>
@@ -113,8 +113,8 @@ function Frame(props) {
                 closable={false}
                 onClose={onClose}
                 visible={visible}
-            >
-                
+                width={300}
+            >                
                 <Form
                     name="basic"
                     labelCol={{ span: 8 }}
@@ -167,6 +167,7 @@ function Frame(props) {
                     </Form.Item>
                     </Form>
                     
+
 
             </Drawer>
             </Header>
