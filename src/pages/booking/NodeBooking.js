@@ -231,13 +231,7 @@ const NodeBookingList = (props) => {
     ]
 
     return (
-        <Card title='BookingList'
-              extra={
-                  <Button type='primary' >
-                      Additional Operation
-                  </Button>
-              }
-        >
+        <Card title='BookingList' >
             <Table
 
                 rowKey='index'

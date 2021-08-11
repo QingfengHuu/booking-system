@@ -19,6 +19,12 @@ const OrderList=(props) => {
       })
     },[])
 
+    const loadData=()=>{
+      OrderListApi().then(res=>{
+        setDataSource(res.data.data)
+      })
+    }
+
     const showModal = () => {
       setIsModalVisible(true);
     };
@@ -70,7 +76,7 @@ const OrderList=(props) => {
                   if(res.data.code==='200'){
                     console.log(record.b_id+'extended!')
                     message.info(res.message)
-                    props.history.push('/admin/order')
+                    loadData()
                   }else{
                     message.info(res.message)
                   }
@@ -85,7 +91,7 @@ const OrderList=(props) => {
                   if(res.data.code===200){
                     console.log(record.b_id+'ended!')
                     message.info(res.message)
-                    props.history.push('/admin/order')
+                    loadData()
                   }
                   })
               }}
