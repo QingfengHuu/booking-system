@@ -43,6 +43,15 @@ const Index = () => {
         )
     }, [])
 
+    const calculatePercentage=(total, occupied)=>{
+      occupied = parseFloat(occupied);
+      total = parseFloat(total);
+      if (isNaN(occupied) || isNaN(total)) {
+          return "-";
+      }
+      return total <= 0 ? "0%" : (Math.round(occupied / total * 10000) / 100.00)+"%";
+    }
+
 
     const handleData = (data) => {
         var result = [];
@@ -175,7 +184,7 @@ const Index = () => {
 
 
     const gaugeConfig = {
-        percent: 0.75,
+        percent: calculatePercentage(allEquipmentUsage,occupiedEquipmentUsage),
         type: 'meter',
         innerRadius: 0.75,
         range: {
