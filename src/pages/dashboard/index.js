@@ -22,14 +22,27 @@ import {getUsername} from "../../utils/auth";
 const Index = () => {
 
     const [dataSource, setDataSource] = useState({ data_list: [], total_usage: [], user_usage: [] });
+    const [allEquipmentUsage, setAllEquipmentUsage] = useState();
+    const [avaEquipmentUsage, setAvaEquipmentUsage] = useState();
+    const [occupiedEquipmentUsage, setOccupiedEquipmentUsage] = useState();
+
+
+    
 
 
     useEffect(() => {
         usageListApi({username: getUsername()}).then(res => {
             console.log(res.data.data)
             setDataSource(res.data.data);
-        })
+        }, 
+        equipmentCountApi().then(res => {
+          setAllEquipmentUsage(res.data.ALL_Equipment_usage);
+          setAvaEquipmentUsage(res.data.Available_Equipments);
+          setOccupiedEquipmentUsage(res.data.Occupied_Equipments);
+      })
+        )
     }, [])
+
 
     const handleData = (data) => {
         var result = [];
@@ -207,7 +220,7 @@ const Index = () => {
                                 <Title level={3}>Current Usage </Title>
                             </div>
                             <div className="data_shown">
-                                <Title level={2}>120 </Title>
+                                <Title level={2} >{allEquipmentUsage}</Title>
                             </div>
                         </div>
 
@@ -229,7 +242,7 @@ const Index = () => {
                                 <Title level={3}>Equipments Available </Title>
                             </div>
                             <div className="AE_data_shown">
-                                <Title level={2}>60 </Title>
+                                <Title level={2}>{avaEquipmentUsage} </Title>
                             </div>
                         </div>
 
@@ -249,10 +262,10 @@ const Index = () => {
 
                         <div className="dataGroupC">
                             <div className="OE_Usage_data">
-                                <Title level={3}>Equipments Occupied: </Title>
+                                <Title level={3}>Equipments Occupied </Title>
                             </div>
                             <div className="OE_data_shown">
-                                <Title level={2}>60 </Title>
+                                <Title level={2}>{occupiedEquipmentUsage}</Title>
                             </div>
                         </div>
 
