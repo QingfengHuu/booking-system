@@ -5,6 +5,7 @@ export function TerminalListApi() {
     return get(api.getAllEquipment)
 }
 
+
 export function NormalBookingListApi() {
     return get(api.getEquipmentDetail)
 }
@@ -16,6 +17,7 @@ export function NormalBookingListReserveApi(data) {
 export function PwdResetApi(data) {
     return post(api.resetUserPwd, data)
 }
+
 
 export function TerminalCreateApi(data) {
     return post(api.addEquipment,data)
