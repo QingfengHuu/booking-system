@@ -1,9 +1,6 @@
 import {Form, Input, DatePicker, Button, Card, Table, Popconfirm, Modal, Radio, Space} from 'antd';
 import React, {useState, useEffect} from 'react'
-import {bookListApi} from '../../services/booking';
-import {NormalBookingListApi, NormalBookingListReserveApi} from '../../services/terminal';
-import TerminalList from '../admin/terminal/TerminalList';
-import {listApi} from '../../services/terminal';
+import { NodeBookingListApi,NodeBookingListReserveApi } from '../../services/booking';
 import Highlighter from 'react-highlight-words';
 import {SearchOutlined} from '@ant-design/icons';
 import moment from 'moment';
@@ -18,32 +15,32 @@ moment.tz.setDefault("Asia/Shanghai");
 const {RangePicker} = DatePicker;
 
 
-const dataSource = [{
-    e_id: 1,
-    e_team: 'HWSS',
-    e_servergroup: 'DELL 13G',
-    e_title: '13G R630',
-    e_location: 'DELL Server10',
-    e_iDrac_ip: '20.12.131.24',
-    e_tag: 'HBMNBD2',
-    e_status: 1,
-    booker: 'Cathy',
-    start_date: '7/15',
-    end_date: '7/20'
-}, {
-    e_id: 2,
-    e_team: 'HWSS',
-    e_servergroup: 'DELL 13G',
-    e_title: '13G R630',
-    e_location: 'DELL Server10ACDSFG',
-    e_iDrac_ip: '20.12.131.24',
-    e_tag: 'HBMNBD2',
-    e_status: 2,
-    booker: 'LOL',
-    start_date: '7/15',
-    end_date: '7/20'
-}
-]
+// const dataSource = [{
+//     e_id: 1,
+//     e_team: 'HWSS',
+//     e_servergroup: 'DELL 13G',
+//     e_title: '13G R630',
+//     e_location: 'DELL Server10',
+//     e_iDrac_ip: '20.12.131.24',
+//     e_tag: 'HBMNBD2',
+//     e_status: 1,
+//     booker: 'Cathy',
+//     start_date: '7/15',
+//     end_date: '7/20'
+// }, {
+//     e_id: 2,
+//     e_team: 'HWSS',
+//     e_servergroup: 'DELL 13G',
+//     e_title: '13G R630',
+//     e_location: 'DELL Server10ACDSFG',
+//     e_iDrac_ip: '20.12.131.24',
+//     e_tag: 'HBMNBD2',
+//     e_status: 2,
+//     booker: 'LOL',
+//     start_date: '7/15',
+//     end_date: '7/20'
+// }
+// ]
 
 const NodeBookingList = (props) => {
 
@@ -69,7 +66,7 @@ const NodeBookingList = (props) => {
 
 
     useEffect(() => {
-        NormalBookingListApi().then(res => {
+        NodeBookingListApi().then(res => {
             setDataSource(res.data.data);
         })
     }, [])
@@ -263,7 +260,7 @@ const NodeBookingList = (props) => {
                             wrapperCol={{span: 16}}
                             initialValues={{remember: true}}
                             onFinish={(values) => {
-                                NormalBookingListReserveApi({
+                                NodeBookingListReserveApi({
                                     e_id: record.e_id,
                                     u_id: getUsername(),
                                     subscribe_date: moment(values.date[0]).format('YYYY-MM-DD HH:mm:ss'),

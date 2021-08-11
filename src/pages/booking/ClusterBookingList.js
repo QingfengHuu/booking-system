@@ -1,53 +1,51 @@
 import { Form, Input, DatePicker, Button, Card, Table, Popconfirm, Modal, Radio, Space } from 'antd';
 import React, { useState, useEffect } from 'react'
-import { bookListApi } from '../../services/booking';
-import { TerminalListApi } from '../../services/terminal';
-import TerminalList from '../admin/terminal/TerminalList';
-import { listApi } from '../../services/terminal';
 import Highlighter from 'react-highlight-words';
 import { SearchOutlined } from '@ant-design/icons';
 import moment from 'moment'
+import { ClusterBookingListApi, NodeBookingListReserveApi } from '../../services/booking';
+import {getUsername} from '../../utils/auth';
 
 
 const {RangePicker} = DatePicker;
 
-const mainDatasource = [{
-  name: 'Node1',
-}]
-
-const dataSource = [{cluster_name:"sdafs",node_list:[{
-  e_id: 1,
-  e_team: 'HWSS',
-  e_servergroup: 'DELL 13G',
-  e_title: '13G R630',
-  e_location: 'DELL Server10',
-  e_iDrac_ip: '20.12.131.24',
-  e_tag: 'HBMNBD2',
-  e_status : 1,
-  booker: 'Cathy',
-  start_date: '7/15',
-  end_date: '7/20'
-},{
-  e_id: 2,
-  e_team: 'HWSS',
-  e_servergroup: 'DELL 13G',
-  e_title: '13G R630',
-  e_location: 'DELL Server10ACDSFG',
-  e_iDrac_ip: '20.12.131.24',
-  e_tag: 'HBMNBD2',
-  e_status : 2,
-  booker: 'LOL',
-  start_date: '7/15',
-  end_date: '7/20'
-}]}
+const dataSource1 = [
+  {e_cluster:"sdafs",
+  total:2,
+  free:1,
+  node_list:[{
+    e_id: 1,
+    e_team: 'HWSS',
+    e_servergroup: 'DELL 13G',
+    e_title: '13G R630',
+    e_location: 'DELL Server10',
+    e_iDrac_ip: '20.12.131.24',
+    e_tag: 'HBMNBD2',
+    e_status : 1,
+    booker: 'Cathy',
+    start_date: '7/15',
+    end_date: '7/20'
+  },{
+    e_id: 2,
+    e_team: 'HWSS',
+    e_servergroup: 'DELL 13G',
+    e_title: '13G R630',
+    e_location: 'DELL Server10ACDSFG',
+    e_iDrac_ip: '20.12.131.24',
+    e_tag: 'HBMNBD2',
+    e_status : 2,
+    booker: 'LOL',
+    start_date: '7/15',
+    end_date: '7/20'
+  }
+]
+}
 ]
 
 const BookingList= (props) => {
 
   const [isModalVisible, setIsModalVisible] = useState(false);
-  const [dataSource1, setDataSource1] = useState([]);
-  const [total,setTotal] = useState(0);
-  const [buttonDisabled,setButtonDisabled] = useState(false);
+  const [dataSource, setDataSource] = useState([]);
   //states for range picker
   const [dates, setDates] = useState([]);
   const [hackValue, setHackValue] = useState();
@@ -57,27 +55,11 @@ const BookingList= (props) => {
 
   let searchInput ='';
 
-  // let state = {
-  //   searchText: '',
-  //   searchedColumn: '',
-  // };
-
-
-
-
   useEffect(() => {
-    TerminalListApi().then(res =>{
-      setDataSource1(res.terminal);
-      setTotal(res.totalCount);
+    ClusterBookingListApi().then(res =>{
+      setDataSource(res.data.data);
     })
   }, [])
-
-  const loadData = (page) =>{
-    TerminalListApi(page).then(res =>{
-      setDataSource1(res.terminal);
-      setTotal(res.totalCount);
-    })
-  }
 
   const showModal = () => {
     setIsModalVisible(true);
@@ -89,10 +71,6 @@ const BookingList= (props) => {
 
   const handleCancel = () => {
     setIsModalVisible(false);
-  };
-
-  const onFinish = (values) => {
-    console.log('Success:', values);
   };
 
   const onFinishFailed = (errorInfo) => {
@@ -274,7 +252,6 @@ const BookingList= (props) => {
       }
     }
     ]
-
           return(
             <div>
           <Table 
@@ -290,51 +267,60 @@ const BookingList= (props) => {
             <Modal title="Reserve an equipment" visible={isModalVisible} onOk={handleOk} onCancel={handleCancel}>
               <Form
                 name="basic"
-                labelCol={{ span: 8 }}
-                wrapperCol={{ span: 16 }}
-                initialValues={{ remember: true }}
-                onFinish={onFinish}
+                labelCol={{span: 8}}
+                wrapperCol={{span: 16}}
+                initialValues={{remember: true}}
+                onFinish={(values) => {
+                    NodeBookingListReserveApi({
+                        e_id: record.e_id,
+                        u_id: getUsername(),
+                        subscribe_date: moment(values.date[0]).format('YYYY-MM-DD HH:mm:ss'),
+                        expire_date: moment(values.date[1]).format('YYYY-MM-DD HH:mm:ss')
+                    }).then(res => {
+                        console.log(record.e_id + 'reserved!')
+                    })
+                    console.log('Success:', values);
+                }}
                 onFinishFailed={onFinishFailed}
-                
-              >
-              
-                <Form.Item
-                  label=" Renter"
-                  name="Renter"
-                  placeholder="Select a option and change input text above"
-                  initialValue= {InputShown('')}
-                  rules={[{ required: true,   message: 'Please input the name of Renter!' }]}
-                >
-                  <Input />
-                </Form.Item>
-  
-                
-                <Form.Item name="range-picker" label="RangePicker" {...rangeConfig}>
-                <RangePicker
-                    value={hackValue || value}
-                    onCalendarChange={val => setDates(val)}
-                    onChange={val => setValue(val)}
-                    onOpenChange={onOpenChange}
-                    defaultValue={moment()} 
-                    format={dateFormat}
-                    disabled={[true, false]}
-                    disabledDate={disabledDate}
-                  />
-                </Form.Item>
-  
-                <Form.Item
-                  label="Comments"
-                  name="Comments"
-                  rules={[{ required: false, message: 'Please input your comments!' }]}
-                >
-                  <Input.TextArea />
-                </Form.Item>
-  
-                <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
-                  <Button type="primary" htmlType="submit">
-                    Submit
-                  </Button>
-                </Form.Item>
+
+            >
+                  <Form.Item
+                      label=" Renter"
+                      name="Renter"
+                      placeholder="Select a option and change input text above"
+                      initialValue={InputShown('')}
+                      rules={[{required: true, message: 'Please input the name of Renter!'}]}
+                  >
+                      <Input/>
+                  </Form.Item>
+
+
+                  <Form.Item name="date" label="RangePicker" {...rangeConfig}>
+                      <RangePicker
+                          value={hackValue || value}
+                          onCalendarChange={val => setDates(val)}
+                          onChange={val => setValue(val)}
+                          onOpenChange={onOpenChange}
+                          defaultValue={moment()}
+                          format={dateFormat}
+                          disabled={[true, false]}
+                          disabledDate={disabledDate}
+                      />
+                  </Form.Item>
+
+                  <Form.Item
+                      label="Comments"
+                      name="Comments"
+                      rules={[{required: false, message: 'Please input your comments!'}]}
+                  >
+                      <Input.TextArea/>
+                  </Form.Item>
+
+                  <Form.Item wrapperCol={{offset: 8, span: 16}}>
+                      <Button type="primary" htmlType="submit" >
+                          Submit
+                      </Button>
+                  </Form.Item>
               </Form>
             </Modal>
           </div>
