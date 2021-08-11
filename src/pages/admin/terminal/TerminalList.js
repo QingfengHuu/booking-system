@@ -123,8 +123,8 @@ const TerminalList=(props) => {
       dataIndex: 'e_id',
       key:'index'
     },{
-      title: 'Group',
-      dataIndex: 'e_group',
+      title: 'Server Group',
+      dataIndex: 'e_servergroup',
     },{
       title: 'Title',
       dataIndex: 'e_title',
@@ -137,9 +137,6 @@ const TerminalList=(props) => {
     },{
       title: 'iDrac Ip',
       dataIndex: 'e_iDrac_ip',
-    },{
-      title: 'Team',
-      dataIndex: 'e_team',
     },{
       title: 'Location',
       dataIndex: 'e_location',
@@ -186,18 +183,18 @@ const TerminalList=(props) => {
             </Button>
           }
         >
-          <>
-            <Checkbox indeterminate={indeterminate} onChange={onCheckAllChange} checked={checkAll}>
-              Check all
-            </Checkbox>
-            <Divider />
-            <CheckboxGroup options={plainOptions} value={checkedList} onChange={onChange} />
-          </>
-          <Divider />
+          {/*<>*/}
+          {/*  <Checkbox indeterminate={indeterminate} onChange={onCheckAllChange} checked={checkAll}>*/}
+          {/*    Check all*/}
+          {/*  </Checkbox>*/}
+          {/*  <Divider />*/}
+          {/*  <CheckboxGroup options={plainOptions} value={checkedList} onChange={onChange} />*/}
+          {/*</>*/}
+          {/*<Divider />*/}
 
-          <Space align="center" style={{ marginBottom: 16 }}>
-            CheckStrictly: <Switch checked={checkStrictly} onChange={setCheckStrictly} />
-          </Space>
+          {/*<Space align="center" style={{ marginBottom: 16 }}>*/}
+          {/*  CheckStrictly: <Switch checked={checkStrictly} onChange={setCheckStrictly} />*/}
+          {/*</Space>*/}
           <Table columns={colomns} 
             columnSelection={{ ...columnSelection, checkStrictly }}
             //checkstrictly cancellation

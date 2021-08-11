@@ -387,7 +387,7 @@ const BookingList = (props) => {
                 className="components-table-demo-nested"
                 columns={mainColumns}
                 expandable={{expandedRowRender}}
-                dataSource={dataSource1}
+                dataSource={dataSource}
             />
 
         </Card>

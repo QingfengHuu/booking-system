@@ -59,11 +59,8 @@ const OrderList=(props) => {
       title: 'Expire Date',
       dataIndex: 'expire_date'
     },{
-      title: 'End Date',
-      dataIndex: 'end_date'
-    },{
-      title: 'Status',
-      dataIndex: 'b_status'
+      title: 'Extend Time',
+      dataIndex: 'extend'
     },{
       title: 'Operation',
       render: (txt,record,index) => {
