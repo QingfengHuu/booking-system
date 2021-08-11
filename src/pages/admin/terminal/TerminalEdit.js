@@ -4,53 +4,37 @@ import { TerminalGetOneById, TerminalModifyApi } from "../../../services/termina
 
 
 function TerminalEdit(props) {
-    // const dataSource1 = [{
-    //     e_id: 1,
-    //     e_team: 'HWSS',
-    //     e_group:'DELL 13G',
-    //     e_cluster:'cluster',
-    //     e_servergroup: 'DELL 13G',
-    //     e_title: '13G R630',
-    //     e_location: 'DELL Server10',
-    //     e_iDrac_ip: '20.12.131.24',
-    //     e_tag: 'HBMNBD2'
-    // }]
 
-    const [currentData, setCurrentData] = useState([]);
-    const [dataSource, setDataSource]=useState([])
     const [form] = Form.useForm()
     
     useLayoutEffect(()=>{
       if(props.match.params.id){
         TerminalGetOneById(props.match.params.id).then(res=>{
+          console.log(res.data.data[0])
           form.setFieldsValue(res.data.data[0])
         })
       }
     })
-
-    useEffect(() => {
-      if (props.match.params.id) {
-        TerminalGetOneById(props.match.params.id).then(res => {
-          setCurrentData(res.data.data);
-        });
-      }
-    }, []);
-
-      
 
     return(
         <Card
             title="Terminal Edit"
             extra={
                 <Button onClick={() => props.history.push("/admin/terminal")}>
-                    返回
+                    Back
                 </Button>
             }
         >
         <Form form={form} 
         onFinish={(values)=>{
           TerminalModifyApi(values.e_id,values).then(res=>{
-            console.log("dd")
+            if(res.data.code===200){
+              console.log(values.e_id+"Modify successful!")
+              message.info("Success!")
+              props.history.push("/admin/terminal")
+            }else{
+              message.info("Something goes wrong, please go check the problems!")
+            }
           }
           )
         }
@@ -131,7 +115,7 @@ function TerminalEdit(props) {
           
           <Form.Item>
           <Button htmlType="submit" type="primary" >
-              保存
+              Submit
           </Button>
           </Form.Item>
         </Form>

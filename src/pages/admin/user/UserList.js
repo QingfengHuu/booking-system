@@ -23,7 +23,7 @@ import { UserListApi,UserCreateApi, UserDelApi, UserResetApi } from '../../../se
 //   approver: 'Tom Liu'
 // }]
 
-const UserList=() => {
+const UserList=(props) => {
     // Drawer Trigger Setting
     const [isFormVisible, setIsFormVisble] = useState(false);
     const [dataSource1, setDataSource1] = useState([]);
@@ -81,7 +81,14 @@ const UserList=() => {
               <Popconfirm title= 'Sure Reset?'
               onConfirm={()=>{
                 UserResetApi(record.username).then(res=>{
-                  console.log(record.username+' modified!')
+                  if(res.data.code===200){
+                    console.log(record.username+' modified!')
+                    message.info('Success!')
+                    props.history.push('/admin/user')
+                  }else{
+                    console.log("Reset failed!")
+                    message.info('Failed!')
+                  }
                 })
               }}>
               <Button type='primary' size='small' >Reset</Button>
@@ -89,10 +96,13 @@ const UserList=() => {
               <Popconfirm title= 'Sure Delete?'
               onConfirm={()=>{
                 UserDelApi(record.username).then(res=>{
-                  if(res.code===200){
+                  if(res.data.code===200){
                     console.log(record.username+' deleted!')
+                    message.info('Success!')
+                    props.history.push('/admin/user')
                   }else{
                     console.log("You dont't have permission")
+                    message.info('Failed!')
                   }    
                 })
               }}>
@@ -140,11 +150,12 @@ const UserList=() => {
           <Form layout="vertical"  hideRequiredMark onFinish={(values) => {
             UserCreateApi(values).then(res=>{
               console.log(values)
-              message.log("success!")
               if(res.data.code===200){
-                message.log(res.data.message)
+                console.log('Add successful!')
+                message.info(res.data.message)
+                props.history.push('/admin/user')
               }else if(res.data.code===400){
-                message.log(res.data.message)
+                message.info(res.data.message)
               }
             })
     }} >

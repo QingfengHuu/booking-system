@@ -15,10 +15,12 @@ const api = {
     editEquipment: '/equipments/',
     delEquipment: '/equipments/',
     getTotalStatus: '/equipments/',
-    getEquipmentDetail: "/equimentdetail",
+    getEquipmentDetail: "/equipmentdetail",
+
+    getClusterEquipment: '/equipmentcluster',
 
     //Book
-    getAllBook: 'book/allBook',
+    getAllBook: 'book/allBook/',
     getHistoryBook: 'book/historyBook',
     getNowBook: 'book/nowBook',
     extendBook: 'book/extendBook',

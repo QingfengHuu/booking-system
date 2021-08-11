@@ -1,7 +1,7 @@
 
 import React, { useState, useEffect } from 'react'
 
-import { Drawer, Form, Button, Col, Row, Input, Select, Switch, Card, Table, Popconfirm, Modal, Space, Divider, Descriptions, Checkbox  } from 'antd';
+import { Drawer, Form, Button, Col, Row, Input, Select, Switch, Card, Table, Popconfirm, Modal, Space, Divider, Descriptions, Checkbox, message  } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 import { TerminalCreateApi, TerminalDelApi, TerminalListApi } from '../../../services/terminal';
 
@@ -150,7 +150,14 @@ const TerminalList=(props) => {
               <Popconfirm title= 'Sure Delete?'
               onConfirm={()=>{
                 TerminalDelApi(record.e_id).then(res=>{
-                  console.log(record.e_title+'deleted!')
+                  if(res.data.code===200){
+                    console.log(record.e_title+'deleted!')
+                    message.info('Success!')
+                    props.history.push("/admin/terminal")
+                  }else if(res.data.code===400){
+                    console.log("The terminal is in use, can't delete it until it be released!")
+                    message.info("The terminal is in use!")
+                  }
                 })
               }}
               >
@@ -189,12 +196,8 @@ const TerminalList=(props) => {
           <Table columns={colomns} 
             columnSelection={{ ...columnSelection, checkStrictly }}
             //checkstrictly cancellation
-            bordered dataSource={dataSource1} />
-
+            bordered dataSource={dataSource} />
         </Card>
-
-
-
         <Drawer
           title="Create a new user terminal"
           width={720}
