@@ -1,4 +1,6 @@
-import {Form, Input, DatePicker, Button, Card, Table, Popconfirm, Modal, Radio, Space, message} from 'antd';
+
+import {Form, Input, DatePicker, Button, Card, Table, Popconfirm, Modal, Radio, Space, Divider, Drawer, message} from 'antd';
+
 import React, {useState, useEffect} from 'react'
 import {NodeBookingListApi, NodeBookingListReserveApi} from '../../services/booking';
 import Highlighter from 'react-highlight-words';
@@ -18,8 +20,10 @@ const {RangePicker} = DatePicker;
 const NodeBookingList = (props) => {
 
     const [isModalVisible, setIsModalVisible] = useState(false);
+
     const [e_idValue, setE_idValue] = useState();
     const [dataSource, setDataSource] = useState([]);
+
     const [total, setTotal] = useState(0);
     const [buttonDisabled, setButtonDisabled] = useState(false);
     //states for range picker
@@ -28,10 +32,12 @@ const NodeBookingList = (props) => {
     const [value, setValue] = useState();
     const [searchedColumn, setSearchedColumn] = useState('');
     const [searchText, setSearchText] = useState('');
+    const [visible, setVisible] = useState(false);
 
     const dateFormat = 'YYYY-MM-DD';
 
     let searchInput = '';
+
 
 
     useEffect(() => {
@@ -39,6 +45,7 @@ const NodeBookingList = (props) => {
             setDataSource(res.data.data);
         })
     }, [])
+
 
     const loadData=(()=>{
         NodeBookingListApi().then(res => {
@@ -59,6 +66,13 @@ const NodeBookingList = (props) => {
     const handleCancel = () => {
         setIsModalVisible(false);
     };
+
+    const showDrawer = () => {
+        setVisible(true);
+      };
+      const onClose = () => {
+        setVisible(false);
+      };
 
 
     const onFinishFailed = (errorInfo) => {
@@ -185,6 +199,7 @@ const NodeBookingList = (props) => {
     //search modules
 
     const colomns = [{
+
             title: 'ID',
             dataIndex: 'e_id',
             sorter: (a, b) => a.e_id - b.e_id,

@@ -5,6 +5,20 @@ export function TerminalListApi() {
     return get(api.getAllEquipment)
 }
 
+
+export function NormalBookingListApi() {
+    return get(api.getEquipmentDetail)
+}
+
+export function NormalBookingListReserveApi(data) {
+    return post(api.bookEquipment, data)
+}
+
+export function PwdResetApi(data) {
+    return post(api.resetUserPwd, data)
+}
+
+
 export function TerminalCreateApi(data) {
     return post(api.addEquipment,data)
 }
@@ -19,4 +33,13 @@ export function TerminalModifyApi(id,data) {
 
 export function TerminalDelApi(id) {
     return del(api.delEquipment+id)
+}
+
+//dashboard apis
+export function usageListApi(username) {
+    return get(api.userUsage)
+}
+
+export function equipmentCountApi() {
+    return get(api.equipmentCount)
 }
