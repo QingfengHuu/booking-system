@@ -1,4 +1,4 @@
-import {Form, Input, DatePicker, Button, Card, Table, Popconfirm, Modal, Radio, Space} from 'antd';
+import {Form, Input, DatePicker, Button, Card, Table, Popconfirm, Modal, Radio, Space, Divider, Drawer} from 'antd';
 import React, {useState, useEffect} from 'react'
 import {bookListApi} from '../../services/booking';
 import {NormalBookingListApi, NormalBookingListReserveApi} from '../../services/terminal';
@@ -48,7 +48,7 @@ const dataSource = [{
 const NodeBookingList = (props) => {
 
     const [isModalVisible, setIsModalVisible] = useState(false);
-    const [dataSource, setDataSource] = useState([]);
+    // const [dataSource, setDataSource] = useState([]);
     const [total, setTotal] = useState(0);
     const [buttonDisabled, setButtonDisabled] = useState(false);
     //states for range picker
@@ -57,6 +57,7 @@ const NodeBookingList = (props) => {
     const [value, setValue] = useState();
     const [searchedColumn, setSearchedColumn] = useState('');
     const [searchText, setSearchText] = useState('');
+    const [visible, setVisible] = useState(false);
 
     const dateFormat = 'YYYY-MM-DD';
 
@@ -68,11 +69,11 @@ const NodeBookingList = (props) => {
     // };
 
 
-    useEffect(() => {
-        NormalBookingListApi().then(res => {
-            setDataSource(res.data.data);
-        })
-    }, [])
+    // useEffect(() => {
+    //     NormalBookingListApi().then(res => {
+    //         setDataSource(res.data.data);
+    //     })
+    // }, [])
 
     // const loadData = (page) =>{
     //   TerminalListApi(page).then(res =>{
@@ -92,6 +93,13 @@ const NodeBookingList = (props) => {
     const handleCancel = () => {
         setIsModalVisible(false);
     };
+
+    const showDrawer = () => {
+        setVisible(true);
+      };
+      const onClose = () => {
+        setVisible(false);
+      };
 
 
     const onFinishFailed = (errorInfo) => {
@@ -254,7 +262,25 @@ const NodeBookingList = (props) => {
         render: (txt, record, index) => {
 
             return (<div>
+                    <Space split={<Divider type="vertical" />}>
                     <Button type='primary' size='small' onClick={showModal}>Reserve</Button>
+                    <Button type='primary' size='small' onClick={showDrawer}>View</Button>
+                    </Space>
+                    <Drawer
+                        title="Detail"
+                        placement="top"
+                        closable={false}
+                        onClose={onClose}
+                        visible={visible}
+                    >
+                        {/* <Table
+                            // rowKey='index'
+                            // pagination={{total,defaultPageSize:10, onChange: loadData}}
+                            columns={colomns}
+                            // bordered
+                            dataSource={dataSource}
+                        /> */}
+                    </Drawer>
                     <Modal title="Reserve an equipment" visible={isModalVisible} onOk={handleOk}
                            onCancel={handleCancel}>
                         <Form

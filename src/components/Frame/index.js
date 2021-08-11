@@ -8,6 +8,7 @@ import { Avatar, Image } from 'antd';
 import { InfoCircleOutlined, UserOutlined, EditOutlined, SearchOutlined, CheckOutlined } from '@ant-design/icons';
 import { adminRoutes, bookingRoutes, DashboardRoutes,userRoutes } from '../../routes';
 import  {getUsername}  from '../../utils/auth';
+import {PwdResetApi} from '../../services/terminal';
 
 
 const routes = bookingRoutes.filter(route=>route.isShow);
@@ -113,7 +114,15 @@ function Frame(props) {
                     labelCol={{ span: 8 }}
                     wrapperCol={{ span: 16 }}
                     initialValues={{ remember: true }}
-                    onFinish={onFinish}
+                    onFinish={(values) => {
+                        PwdResetApi({
+                            u_id: getUsername(),
+                            pwd: values
+                        }).then(res => {
+                            // console.log(record.e_id + 'changed')
+                        })
+                        console.log('Success:', values);
+                    }}
                     onFinishFailed={onFinishFailed}
                     >
 
