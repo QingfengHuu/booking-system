@@ -40,7 +40,7 @@ const NodeBookingList = (props) => {
         })
     }, [])
 
-    const loadData=(()=>{
+    const loadData = (() => {
         NodeBookingListApi().then(res => {
             setDataSource(res.data.data);
         })
@@ -185,53 +185,57 @@ const NodeBookingList = (props) => {
     //search modules
 
     const colomns = [{
-            title: 'ID',
-            dataIndex: 'e_id',
-            sorter: (a, b) => a.e_id - b.e_id,
-            sortDirections: ['descend', 'ascend'],
-        }, {
-            title: 'Title',
-            dataIndex: 'e_title',
-            ...getColumnSearchProps('e_title'),
-        }, {
-            title: 'Location',
-            dataIndex: 'e_location',
-            ...getColumnSearchProps('e_location'),
-        }, {
-            title: 'iDrac_Ip',
-            dataIndex: 'e_iDrac_ip',
-        }, {
-            title: 'Server Tag',
-            dataIndex: 'e_tag',
-            ...getColumnSearchProps('e_tag'),
-        }, {
-            title: 'Booker',
-            dataIndex: 'u_id',
-            sorter: (a, b) => a.booker.length - b.booker.length,
-            sortDirections: ['descend', 'ascend'],
-        }, {
-            title: 'Start Date',
-            dataIndex: 'subscribe_date'
-        }, {
-            title: 'Expire Date',
-            dataIndex: 'expire_date'
-        }, {
-            title: 'Operation',
+        title: 'ID',
+        dataIndex: 'e_id',
+        sorter: (a, b) => a.e_id - b.e_id,
+        sortDirections: ['descend', 'ascend'],
+    }, {
+        title: 'Title',
+        dataIndex: 'e_title',
+        ...getColumnSearchProps('e_title'),
+    }, {
+        title: 'Location',
+        dataIndex: 'e_location',
+        ...getColumnSearchProps('e_location'),
+    }, {
+        title: 'iDrac_Ip',
+        dataIndex: 'e_iDrac_ip',
+    }, {
+        title: 'Server Tag',
+        dataIndex: 'e_tag',
+        ...getColumnSearchProps('e_tag'),
+    }, {
+        title: 'Cluster',
+        dataIndex: 'e_cluster',
+        ...getColumnSearchProps('e_tag'),
+    }, {
+        title: 'Booker',
+        dataIndex: 'u_id',
+        sorter: (a, b) => a.booker.length - b.booker.length,
+        sortDirections: ['descend', 'ascend'],
+    }, {
+        title: 'Start Date',
+        dataIndex: 'subscribe_date'
+    }, {
+        title: 'Expire Date',
+        dataIndex: 'expire_date'
+    }, {
+        title: 'Operation',
 
-            render: (txt, record, index) => {
+        render: (txt, record, index) => {
 
-                return (<div>
-                        <Button type='primary' size='small' onClick={() => {
-                            showModal(record)
-                        }}>Reserve</Button>
-                    </div>
-                )
-            }
+            return (<div>
+                    <Button type='primary' size='small' onClick={() => {
+                        showModal(record)
+                    }}>Reserve</Button>
+                </div>
+            )
         }
+    }
     ]
 
     return (
-        <Card title='BookingList' >
+        <Card title='BookingList'>
             <Table
 
                 rowKey='index'
@@ -255,13 +259,13 @@ const NodeBookingList = (props) => {
                             subscribe_date: moment(values.date[0]).format('YYYY-MM-DD HH:mm:ss'),
                             expire_date: moment(values.date[1]).format('YYYY-MM-DD HH:mm:ss')
                         }).then(res => {
-                            if(res.data.msg==200){
+                            if (res.data.msg == 200) {
                                 console.log(values.e_id + 'has been reserved!')
                                 message.info(values.e_id + 'has been reserved!')
                                 loadData()
-                            }else{
+                            } else {
                                 message.info(res.data.msg)
-                            }   
+                            }
                         })
                     }}
                     onFinishFailed={onFinishFailed}

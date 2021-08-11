@@ -33,7 +33,8 @@ function TerminalEdit(props) {
               message.info("Success!")
               props.history.push("/admin/terminal")
             }else{
-              message.info("Something goes wrong, please go check the problems!")
+                console.log(res.data)
+              message.info(res.data.msg)
             }
           }
           )

@@ -25,9 +25,13 @@ const api = {
     getNowBook: 'book/nowBook',
     extendBook: 'book/extendBook',
     endBook: 'book/endBook',
-    bookEquipment: "book/bookEquipment"
+    bookEquipment: "book/bookEquipment",
+
+    //dashboard
+    userUsage:"/book/bookStatistics",
+    equipmentCount:"/equipmentcounts ",
 
 
-    }
+}
 
 export default api
