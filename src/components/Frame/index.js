@@ -53,6 +53,20 @@ function Frame(props) {
         console.log('Failed:', errorInfo);
       };
 
+      const [isModalVisible, setIsModalVisible] = useState(false);
+
+    const showModal = () => {
+        setIsModalVisible(true);
+    };
+
+    const handleOk = () => {
+        setIsModalVisible(false);
+    };
+
+    const handleCancel = () => {
+        setIsModalVisible(false);
+    };
+
     return (
         <Layout>
             <Header className="header" style={{background:"white", paddingLeft:"25px"}}>
@@ -86,15 +100,17 @@ function Frame(props) {
                 width={300}
             >
                     <Descriptions>
-                        <Descriptions.Item label="UserName"> Zhou Maomao
+                        <Descriptions.Item label="UserName"> XXX XXX
+                        </Descriptions.Item>
+                        <Descriptions.Item label="UserName"> XXX XXX
                         </Descriptions.Item>
                     </Descriptions>
 
-                    <Button type="primary" htmlType="submit">
+                    <Button type="primary" onClick={showModal}>
                         Change Password
                     </Button>
-
-                <Form name="basic" labelCol={{span: 8,}}
+                    <Modal title="Basic Modal" visible={isModalVisible} onOk={handleOk} onCancel={handleCancel}>
+                    <Form name="basic" labelCol={{span: 8,}}
                 wrapperCol={{span: 16,}}
                 initialValues={{remember: true,}}
                 onFinish={onFinish}
@@ -131,6 +147,9 @@ function Frame(props) {
                         </Button>
                     </Form.Item>
                 </Form>
+                    </Modal>
+
+                
 
 
 
