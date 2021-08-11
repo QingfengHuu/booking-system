@@ -64,29 +64,33 @@ const OrderList=(props) => {
         return(
           <div>
             <Space split={<Divider type="vertical" />}>
-              <Popconfirm title= 'Extend for 3 days?'>
-                <Button type='primary' size='small' onClick={()=>{
-                  OrderExtendApi({b_id : record.b_id}).then(res=>{
-                    if(res.data.code==='200'){
-                      console.log(record.b_id+'extended!')
-                      message.info(res.message)
-                      props.history.push('/admin/order')
-                    }else{
-                      message.info(res.message)
-                    }
-                  })
-                }}> Extend </Button>
+              <Popconfirm title= 'Extend for 3 days?' 
+              onConfirm={()=>{
+                OrderExtendApi({b_id : record.b_id}).then(res=>{
+                  if(res.data.code==='200'){
+                    console.log(record.b_id+'extended!')
+                    message.info(res.message)
+                    props.history.push('/admin/order')
+                  }else{
+                    message.info(res.message)
+                  }
+                })
+              }}
+              >
+                <Button type='primary' size='small' > Extend </Button>
               </Popconfirm>
-              <Popconfirm title= 'Sure Release?'>
-                <Button type='primary' danger size='small' onClick={()=>{
-                  OrderEndApi({b_id : record.b_id}).then(res=>{
-                    if(res.data.code===200){
-                      console.log(record.b_id+'ended!')
-                      message.info(res.message)
-                      props.history.push('/admin/order')
-                    }
-                    })
-                }}> Release </Button>
+              <Popconfirm title= 'Sure Release?'
+              onConfirm={()=>{
+                OrderEndApi({b_id : record.b_id}).then(res=>{
+                  if(res.data.code===200){
+                    console.log(record.b_id+'ended!')
+                    message.info(res.message)
+                    props.history.push('/admin/order')
+                  }
+                  })
+              }}
+              >
+                <Button type='primary' danger size='small' > Release </Button>
               </Popconfirm>
             </Space>
 
