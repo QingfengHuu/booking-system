@@ -70,8 +70,8 @@ const UserList=(props) => {
       title: 'Email',
       dataIndex: 'email',
     },{
-      title: 'Group',
-      dataIndex: 'group_name'
+      title: 'Access Level',
+      dataIndex: 'access'
     },{
       title: 'Operation',
       render: (txt,record,index) => {
@@ -110,7 +110,6 @@ const UserList=(props) => {
               </Popconfirm>
             </Space>
           </div>
-          
         )
       }
     }
@@ -173,13 +172,12 @@ const UserList=(props) => {
 
               <Col span={12}>
                 <Form.Item
-                  name="group_name"
-                  label="Group"
-                  rules={[{ required: true, message: 'Please choose the group' }]}
+                  name="email"
+                  label="Email"
+                  rules={[{ required: true, message: 'Please enter the email' }]}
                 >
                   <Input
-                    style={{ width: '100%' }}
-                    placeholder="Please enter group name"
+                    placeholder="Please enter the email"
                   />
                 </Form.Item>
               </Col>

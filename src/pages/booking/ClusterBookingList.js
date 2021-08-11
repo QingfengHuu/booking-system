@@ -260,7 +260,7 @@ const BookingList= (props) => {
             columns={colomns} 
             bordered 
             dataSource={record.node_list}
-            pagination={false}
+            // pagination={false}
             />
             
           

@@ -1,8 +1,11 @@
-import { Form, Input, Button, DatePicker, Card, Table, Popconfirm, Modal, Space, Divider} from 'antd'
+import { Form, Input, Button, DatePicker, Card, Table, Popconfirm, Modal, Space, Divider, message} from 'antd'
 import React, { useState } from 'react'
 // import { listApi } from '../../services/terminal';
 import Highlighter from 'react-highlight-words';
 import { SearchOutlined } from '@ant-design/icons';
+
+import { OrderEndApi, OrderExtendApi, OrderListApi } from '../services/order';
+
 
 const {RangePicker} = DatePicker;
 
@@ -261,62 +264,34 @@ const Account= (props) => {
     render: (txt,record,index) => {
       return(<div>
         <Space split={<Divider type="vertical" />}>
-        <Button type='primary' size='small' onClick={showModal}>Reserve</Button>
-        
-        <Modal title="Reserve an equipment" visible={isModalVisible} onOk={handleOk} onCancel={handleCancel}>
-          <Form
-            name="basic"
-            labelCol={{ span: 8 }}
-            wrapperCol={{ span: 16 }}
-            initialValues={{ remember: true }}
-            onFinish={onFinish}
-            onFinishFailed={onFinishFailed}
-            
-          >
-            
-
-            
-            <Form.Item
-              label=" Renter"
-              name="Renter"
-              placeholder="Select a option and change input text above"
-              initialValue= {InputShown('')}
-              rules={[{ required: true,   message: 'Please input the name of Renter!' }]}
-            >
-              <Input />
-            </Form.Item>
-
-            
-            <Form.Item name="range-picker" label="RangePicker" {...rangeConfig}>
-            <RangePicker
-                value={hackValue || value}
-                disabledDate={disabledDate}
-                onCalendarChange={val => setDates(val)}
-                onChange={val => setValue(val)}
-                onOpenChange={onOpenChange}
-              />
-            </Form.Item>
-
-            <Form.Item
-              label="Comments"
-              name="Comments"
-              rules={[{ required: false, message: 'Please input your comments!' }]}
-            >
-              <Input.TextArea />
-            </Form.Item>
-
-            <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
-              <Button type="primary" htmlType="submit">
-                Submit
-              </Button>
-            </Form.Item>
-          </Form>
-        </Modal>
+          <Popconfirm title= 'Extend for 3 days?'
+          onConfirm={()=>{
+            OrderExtendApi({b_id : record.b_id}).then(res=>{
+              if(res.code==='200'){
+                console.log(record.b_id+'extended!')
+                message.info(res.message)
+                props.history.push('/admin/order')
+              }else{
+                message.info(res.message)
+              }
+            }) 
+          }}>
+            <Button type='primary' size='small' onClick={showModal}> Extend </Button>
+          </Popconfirm>
+          <Popconfirm title= 'Sure release?'
+          onConfirm={()=>{
+            OrderEndApi({b_id : record.b_id}).then(res=>{
+              if(res.code===200){
+                console.log(record.b_id+'ended!')
+                message.info(res.message)
+                props.history.push('/admin/order')
+              }
+              })
+            }
+          }>
+            <Button type='primary' danger size='small'>Release</Button>
+          </Popconfirm>
         </Space>
-        <Popconfirm title= 'Sure release?'>
-        <Button type='primary' danger size='small'>Release</Button>
-        </Popconfirm>
-        
       </div>
       )
     }
