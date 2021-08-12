@@ -1,5 +1,5 @@
 
-import { Layout, Menu, Breadcrumb, Dropdown, message, Drawer, Button, Input, Tooltip, Form, Space, Divider, Typography } from 'antd';
+import { Layout, Menu, Breadcrumb, Dropdown, message, Drawer, Button, Input, Tooltip, Form, Space, Divider, Typography, Descriptions, Modal } from 'antd';
 
 import MenuItem from 'antd/lib/menu/MenuItem';
 import { withRouter } from 'react-router-dom';
@@ -28,6 +28,11 @@ function Frame(props) {
     const [inputDisabled,setInputDisabled] = useState(true);
     const [buttonRevealed,setButtonRevealed] = useState(true);
 
+    const [newPwdReveal,setnewPwdReveal] = useState(false);
+
+    const revealNewPwd = () =>{
+        setnewPwdReveal(true);
+    }
 
     const showDrawer = () => {
         setVisible(true);
@@ -35,19 +40,21 @@ function Frame(props) {
     
     const revealInput = () =>{
         setInputDisabled(false);
+        setButtonRevealed(false);
     }
 
     const hideInput = () =>{
         setInputDisabled(true);
-    }
-
-    const revealButton = () =>{
-        setButtonRevealed(false);
-    }
-
-    const hideButton = () =>{
         setButtonRevealed(true);
     }
+
+    // const revealButton = () =>{
+    //     setButtonRevealed(false);
+    // }
+
+    // const hideButton = () =>{
+    //     setButtonRevealed(true);
+    // }
     
     const onClose = () => {
         setVisible(false);
@@ -61,12 +68,30 @@ function Frame(props) {
             // props.history.push('/user/account');
         }
       };
-    const checkEmpty = (str) =>{
-        hideButton();
+    // const checkEmpty = (str) =>{
+    //     hideButton();
+    //     if(str !== ""){
+    //         revealButton();
+    //     }
+    // }
+
+    const checkPwd= (str) =>{
+        // Connect API
         if(str !== ""){
-            revealButton();
+            console.log('result is '+ newPwdReveal)
+            return newPwdReveal;
         }
     }
+
+    const [isModalVisible, setIsModalVisible] = useState(false);
+
+    const showModal = () => {
+        setIsModalVisible(true);
+    };
+
+    const handleCancel = () => {
+        setIsModalVisible(false);
+    };
       
     const menu = (
         <Menu onClick={onClick}>
@@ -75,27 +100,6 @@ function Frame(props) {
         <Menu.Item key="logout">Log out</Menu.Item>
         </Menu>
     );
-    const onFinish = (values: any) => {
-        console.log('Success:', values);
-      };
-    
-      const onFinishFailed = (errorInfo: any) => {
-        console.log('Failed:', errorInfo);
-      };
-
-      const [isModalVisible, setIsModalVisible] = useState(false);
-
-    const showModal = () => {
-        setIsModalVisible(true);
-    };
-
-    const handleOk = () => {
-        setIsModalVisible(false);
-    };
-
-    const handleCancel = () => {
-        setIsModalVisible(false);
-    };
 
     return (
         <Layout>
@@ -126,32 +130,40 @@ function Frame(props) {
                 placement="left"
                 closable={false}
                 onClose={onClose}
+                destroyOnClose={true}
                 visible={visible}
-                width={300}
             >
-                    <Descriptions>
-                        <Descriptions.Item label="UserName"> XXX XXX
-                        </Descriptions.Item>
-                        <Descriptions.Item label="UserName"> XXX XXX
-                        </Descriptions.Item>
-                    </Descriptions>
+                
+                <Form
+                    name="basic"
+                    labelCol={{ span: 8 }}
+                    wrapperCol={{ span: 16 }}
+                    initialValues={{ remember: true }}
+                    onFinish={(values) => {
+                        PwdResetApi({
+                            u_id: getUsername(),
+                            pwd: values
+                        }).then(res => {
+                            // console.log(record.e_id + 'changed')
+                        })
+                        console.log('Success:', values);
+                    }}
+                    // onFinishFailed={onFinishFailed}
+                    >
 
-                    <Button type="primary" onClick={showModal}>
-                        Change Password
-                    </Button>
-                    <Modal title="Basic Modal" visible={isModalVisible} onOk={handleOk} onCancel={handleCancel}>
-                    <Form name="basic" labelCol={{span: 8,}}
-                wrapperCol={{span: 16,}}
-                initialValues={{remember: true,}}
-                onFinish={onFinish}
-                onFinishFailed={onFinishFailed}
-                >
+                    <Tooltip title="Edit">
+                        <Button shape="circle" icon={<EditOutlined />} style={{float:'right'}} onClick={revealInput}/>
+                    </Tooltip>
+                        <br />
+                        <br />
                     <Form.Item
                         // label="Username"
                         name="username"
                         rules={[{ required: true, message: 'Please input your username!' }]}
                     >
-                        <Input suffix={
+                        <Input 
+                        initialValues={getUsername}
+                        suffix={
                         <Tooltip title="Click the button to change your username">
                         <InfoCircleOutlined style={{ color: 'rgba(0,0,0,.45)' }} />
                         </Tooltip>
@@ -165,19 +177,32 @@ function Frame(props) {
                         name="password"
                         rules={[{ required: true, message: 'Please input your password!' }]}
                     >
-                        <Input.Password style={{width: '205px'}} disabled ={inputDisabled}/>
+                        <Input.Password style={{width: '205px'}} placeholder='Type in old password here!' disabled ={inputDisabled}/>
                     </Form.Item>
 
+                    
 
+                    <Form.Item
+                            // label=" New Password"
+                            name="newPassword"
+                            
+                            rules={[{ required: true, message: 'Please input your password!' }]}
+                        >
+                            <Input.Password 
+                            placeholder='Type in new password here!'
+                            style={{width: '205px'}} disabled ={inputDisabled}/>
+                        </Form.Item>
+
+                        
+
+                    
                     <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
-                        <Button type="primary" htmlType="submit" style={{float:'right'}} onClick={hideInput} >
+                        <Button type="primary" htmlType="submit" style={{float:'right'}} onClick={hideInput} disabled={buttonRevealed}>
                         Submit
                         </Button>
                     </Form.Item>
-                </Form>
-                    </Modal>
-
-                
+                    </Form>
+                    
 
             </Drawer>
             </Header>
