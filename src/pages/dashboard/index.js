@@ -282,17 +282,21 @@ const Index = () => {
                 </Col>
             </Row>
 
-            <div className="cardWrapperA">
-                <Card className="line_chart_space" style={{width: 1100, borderRadius: "10px"}}>
-                    <Line className="line_chart" {...handleData(dataSource)} />
-                </Card>
-            </div>
+            <div className='chartsBlock'>
 
-            <div className="cardWrapperB">
-                <Card className="flow_chart_space"
-                      style={{width: 560, background: "#FFFF", borderRadius: "10px", border: "false"}}>
-                    <Gauge {...gaugeConfig} />
-                </Card>
+                <div className="cardWrapperA" style={{width: '70%'}}>
+                    <Card className="line_chart_space" style={{width: '100%', borderRadius: "10px"}}>
+                        <Line className="line_chart" {...handleData(dataSource)} />
+                    </Card>
+                </div>
+
+                <div className="cardWrapperB" style={{width: '30%'}}>
+                    <Card className="flow_chart_space"
+                        style={{width: '90%', background: "#FFFF", borderRadius: "10px", border: "false"}}>
+                        <Gauge {...gaugeConfig} />
+                    </Card>
+                </div>
+
             </div>
 
 

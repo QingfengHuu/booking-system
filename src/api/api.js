@@ -2,7 +2,7 @@ const api = {
     //Login
     login: '/login',
 
-    //User
+    //admin User
     getAllUser: '/admin/users',
     addUser: '/admin/users',
     delUser: '/admin/users/',
@@ -30,6 +30,9 @@ const api = {
     //dashboard
     userUsage:"/book/bookStatistics",
     equipmentCount:"/equipmentcounts ",
+
+    //User action 
+    userResetPwd:'/userInfo',
 
 
     }
