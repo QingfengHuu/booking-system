@@ -242,7 +242,7 @@ const Account= (props) => {
     title: 'Booker ID',
     dataIndex: 'u_id'
   },{
-    title: 'Terminal ID',
+    title: 'Server Tag',
     dataIndex: 'e_id'
   },{
     title: 'Subscribe Date',
@@ -304,7 +304,7 @@ const Account= (props) => {
     title: 'Booker ID',
     dataIndex: 'u_id'
   },{
-    title: 'Terminal ID',
+    title: 'Server Tag',
     dataIndex: 'e_id'
   },{
     title: 'Subscribe Date',
@@ -319,10 +319,22 @@ const Account= (props) => {
   return (
     <Card title='Account' >
         <Card type='inner' title='Reserving terminal' >
-            <Table rowKey='index' columns={currColumns} bordered dataSource={dataSource}/>
+            <Table rowKey='index' columns={currColumns} bordered 
+            pagination={{
+              onchange: ()=>{
+                loadData()
+              }
+            }}
+            dataSource={dataSource}/>
         </Card>
         <Card type='inner' title='Reservation history' >
-            <Table rowKey='index' columns={histColums} bordered dataSource={dataSourceHis}/>
+            <Table rowKey='index' columns={histColums} bordered 
+            pagination={{
+              onchange: ()=>{
+                loadData()
+              }
+            }}
+            dataSource={dataSourceHis}/>
         </Card>
     </Card>
   )
