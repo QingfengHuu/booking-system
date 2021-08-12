@@ -1,12 +1,17 @@
-import { Layout, Menu, Breadcrumb, Dropdown, message, Space, Divider, Typography, Drawer } from 'antd';
+
+import { Layout, Menu, Breadcrumb, Dropdown, message, Drawer, Button, Input, Tooltip, Form, Space, Divider, Typography, Descriptions, Modal } from 'antd';
+
 import MenuItem from 'antd/lib/menu/MenuItem';
 import { withRouter } from 'react-router-dom';
 import { clearToken } from '../../utils/auth';
 import './frame.css';
 import React, { useState } from 'react'
-import { Avatar, Form, Input, Button, Descriptions, Modal } from 'antd';
-import { UserOutlined } from '@ant-design/icons';
+import { Avatar, Image } from 'antd';
+import { InfoCircleOutlined, UserOutlined, EditOutlined, SearchOutlined, CheckOutlined } from '@ant-design/icons';
+
 import { adminRoutes, bookingRoutes, DashboardRoutes,userRoutes } from '../../routes';
+import  {getUsername}  from '../../utils/auth';
+import {PwdResetApi} from '../../services/terminal';
 
 
 const routes = bookingRoutes.filter(route=>route.isShow);
@@ -20,9 +25,36 @@ const { Header, Content, Sider } = Layout;
 
 function Frame(props) {
     const [visible, setVisible] = useState(false);
+    const [inputDisabled,setInputDisabled] = useState(true);
+    const [buttonRevealed,setButtonRevealed] = useState(true);
+
+    const [newPwdReveal,setnewPwdReveal] = useState(false);
+
+    const revealNewPwd = () =>{
+        setnewPwdReveal(true);
+    }
+
     const showDrawer = () => {
         setVisible(true);
       };
+    
+    const revealInput = () =>{
+        setInputDisabled(false);
+        setButtonRevealed(false);
+    }
+
+    const hideInput = () =>{
+        setInputDisabled(true);
+        setButtonRevealed(true);
+    }
+
+    // const revealButton = () =>{
+    //     setButtonRevealed(false);
+    // }
+
+    // const hideButton = () =>{
+    //     setButtonRevealed(true);
+    // }
     
     const onClose = () => {
         setVisible(false);
@@ -36,6 +68,30 @@ function Frame(props) {
             // props.history.push('/user/account');
         }
       };
+    // const checkEmpty = (str) =>{
+    //     hideButton();
+    //     if(str !== ""){
+    //         revealButton();
+    //     }
+    // }
+
+    const checkPwd= (str) =>{
+        // Connect API
+        if(str !== ""){
+            console.log('result is '+ newPwdReveal)
+            return newPwdReveal;
+        }
+    }
+
+    const [isModalVisible, setIsModalVisible] = useState(false);
+
+    const showModal = () => {
+        setIsModalVisible(true);
+    };
+
+    const handleCancel = () => {
+        setIsModalVisible(false);
+    };
       
     const menu = (
         <Menu onClick={onClick}>
@@ -44,28 +100,6 @@ function Frame(props) {
         <Menu.Item key="logout">Log out</Menu.Item>
         </Menu>
     );
-
-    const onFinish = (values) => {
-        console.log('Success:', values);
-      };
-    
-      const onFinishFailed = (errorInfo) => {
-        console.log('Failed:', errorInfo);
-      };
-
-      const [isModalVisible, setIsModalVisible] = useState(false);
-
-    const showModal = () => {
-        setIsModalVisible(true);
-    };
-
-    const handleOk = () => {
-        setIsModalVisible(false);
-    };
-
-    const handleCancel = () => {
-        setIsModalVisible(false);
-    };
 
     return (
         <Layout>
@@ -96,62 +130,79 @@ function Frame(props) {
                 placement="left"
                 closable={false}
                 onClose={onClose}
+                destroyOnClose={true}
                 visible={visible}
-                width={400}
             >
-                    <Descriptions bordered="true" column={1}>
-                        <Descriptions.Item label="UserName"> XXX XXX</Descriptions.Item>
-                        <Descriptions.Item label="Email"> XXXXXXXXXX@Dellteam.com</Descriptions.Item>
-                    </Descriptions>
-
-                    <br />
-
-                    <Button type="primary" onClick={showModal}>
-                        Change Password
-                    </Button>
-                    <Modal title="Basic Modal" visible={isModalVisible} onOk={handleOk} onCancel={handleCancel}>
-                        <Form name="basic" labelCol={{span: 8,}}
-                            wrapperCol={{span: 16,}}
-                            initialValues={{remember: true,}}
-                            onFinish={onFinish}
-                            onFinishFailed={onFinishFailed}
-                        >
-                            <Form.Item
-                                label="Username"
-                                name="username"
-                            >
-                                <Input disabled='true'/>
-                            </Form.Item>
-
-                            <Form.Item
-                                label="New Password"
-                                name="new_password"
-                                rules={[
-                                {
-                                    required: true,
-                                    message: 'Please the new password!',
-                                },
-                                ]}
-                            >
-                                <Input.Password />
-                            </Form.Item>
-
-                            <Form.Item
-                                wrapperCol={{
-                                offset: 8,
-                                span: 16,
-                                }}
-                            >
-                                <Button type="primary" htmlType="submit">
-                                    Submit
-                                </Button>
-                            </Form.Item>
-                        </Form>
-                    </Modal>
-
                 
+                <Form
+                    name="basic"
+                    labelCol={{ span: 8 }}
+                    wrapperCol={{ span: 16 }}
+                    initialValues={{ remember: true }}
+                    onFinish={(values) => {
+                        PwdResetApi({
+                            u_id: getUsername(),
+                            pwd: values
+                        }).then(res => {
+                            // console.log(record.e_id + 'changed')
+                        })
+                        console.log('Success:', values);
+                    }}
+                    // onFinishFailed={onFinishFailed}
+                    >
 
+                    <Tooltip title="Edit">
+                        <Button shape="circle" icon={<EditOutlined />} style={{float:'right'}} onClick={revealInput}/>
+                    </Tooltip>
+                        <br />
+                        <br />
+                    <Form.Item
+                        // label="Username"
+                        name="username"
+                        rules={[{ required: true, message: 'Please input your username!' }]}
+                    >
+                        <Input 
+                        initialValues={getUsername}
+                        suffix={
+                        <Tooltip title="Click the button to change your username">
+                        <InfoCircleOutlined style={{ color: 'rgba(0,0,0,.45)' }} />
+                        </Tooltip>
+                    }
+                    style={{width: '205px'}}
+                    disabled ={true}/>
+                    </Form.Item>
 
+                    <Form.Item
+                        // label="Password"
+                        name="password"
+                        rules={[{ required: true, message: 'Please input your password!' }]}
+                    >
+                        <Input.Password style={{width: '205px'}} placeholder='Type in old password here!' disabled ={inputDisabled}/>
+                    </Form.Item>
+
+                    
+
+                    <Form.Item
+                            // label=" New Password"
+                            name="newPassword"
+                            
+                            rules={[{ required: true, message: 'Please input your password!' }]}
+                        >
+                            <Input.Password 
+                            placeholder='Type in new password here!'
+                            style={{width: '205px'}} disabled ={inputDisabled}/>
+                        </Form.Item>
+
+                        
+
+                    
+                    <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
+                        <Button type="primary" htmlType="submit" style={{float:'right'}} onClick={hideInput} disabled={buttonRevealed}>
+                        Submit
+                        </Button>
+                    </Form.Item>
+                    </Form>
+                    
 
             </Drawer>
             </Header>
