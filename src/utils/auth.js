@@ -3,12 +3,13 @@ export function getToken(){
 }
 
 export function setToken(token,username){
-    localStorage.setItem("AUTHORIZATION",'jwt'+token);
+    localStorage.setItem("AUTHORIZATION",'jwt '+token);
     localStorage.setItem("Username",username)
 }
 
 export function clearToken() {
     localStorage.removeItem("AUTHORIZATION")
+    localStorage.removeItem("Username")
 }
 
 export function isLogined(){
@@ -20,4 +21,9 @@ export function isLogined(){
 
 export function getUsername(){
     return localStorage.getItem("Username");
+}
+
+export function getUserRole(){
+    return localStorage.getItem("userRole");
+    //ture is admin
 }

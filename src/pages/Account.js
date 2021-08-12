@@ -1,12 +1,14 @@
-import { Form, Input, Button, DatePicker, Card, Table, Popconfirm, Modal, Space, Divider} from 'antd'
-import React, { useState } from 'react'
+import { Form, Input, Button, DatePicker, Card, Table, Popconfirm, Modal, Space, Divider, message} from 'antd'
+import React, { useState, useEffect } from 'react'
 // import { listApi } from '../../services/terminal';
 import Highlighter from 'react-highlight-words';
 import { SearchOutlined } from '@ant-design/icons';
 
-const {RangePicker} = DatePicker;
+import { OrderEndApi, OrderExtendApi, OrderHistoryListApi, OrderListApi, OrderNowListApi } from '../services/order';
 
-const dataSource = [{
+import { getUsername } from '../utils/auth';
+
+const dataSource1 = [{
   index: 1,
   team: 'HWSS',
   group: 'DELL 13G',
@@ -32,7 +34,7 @@ const dataSource = [{
   extend:2
 }]
 
-const dataSourceBeta = [{
+const dataSourceBeta1 = [{
   index: 1,
   team: 'HWSS',
   group: 'DELL 13G',
@@ -61,7 +63,8 @@ const dataSourceBeta = [{
 const Account= (props) => {
 
   const [isModalVisible, setIsModalVisible] = useState(false);
-  const [dataSource1, setDataSource1] = useState([]);
+  const [dataSource, setDataSource] = useState([]);
+  const [dataSourceHis, setDataSourceHis]= useState([])
   const [total,setTotal] = useState(0);
   const [buttonDisabled,setButtonDisabled] = useState(false);
   //states for range picker
@@ -73,19 +76,25 @@ const Account= (props) => {
 
   let searchInput ='';
 
-  // useEffect(() => {
-  //   listApi().then(res =>{
-  //     setDataSource1(res.terminal);
-  //     setTotal(res.totalCount);
-  //   })
-  // }, [])
+  useEffect(() => {
+    OrderNowListApi({u_id: getUsername()}).then(res =>{
+      setDataSource(res.data.data);
+    },
+    OrderHistoryListApi({u_id: getUsername()}).then(res=>{
+      setDataSourceHis(res.data.data)
+    })
+    )
+  }, [])
 
-  // const loadData = (page) =>{
-  //   listApi(page).then(res =>{
-  //     setDataSource1(res.terminal);
-  //     setTotal(res.totalCount);
-  //   })
-  // }
+  const loadData = () =>{
+    OrderNowListApi({u_id: getUsername()}).then(res =>{
+      setDataSource(res.data.data);
+    },
+    OrderHistoryListApi({u_id: getUsername()}).then(res=>{
+      setDataSourceHis(res.data.data)
+    })
+    )
+  }
 
   const showModal = () => {
     setIsModalVisible(true);
@@ -222,177 +231,110 @@ const Account= (props) => {
   //search modules
 
   const currColumns = [{
-    title: 'index',
-    key: 'index',
-    align: 'center',
-    render: (txt,record,index) => index+1
+    title: 'ID',
+    key:'index',
+    render: (txt, record, index) => index + 1,
   },{
-    title: 'Team',
-    dataIndex: 'team'
+    title: 'Order ID',
+    dataIndex: 'b_id',
+    className:'tableHidden'
   },{
-    title: 'Server Group',
-    dataIndex: 'group',
-  },{
-    title: 'Title',
-    dataIndex: 'title',
-    ...getColumnSearchProps('title'),
-  },{
-    title: 'Location',
-    dataIndex: 'location',
-    ...getColumnSearchProps('location'),
-  },{
-    title: 'iDrac_ip',
-    dataIndex: 'idrac_ip'
+    title: 'Booker ID',
+    dataIndex: 'u_id'
   },{
     title: 'Server Tag',
-    dataIndex: 'server_tag',
-    ...getColumnSearchProps('server_tag'),
+    dataIndex: 'e_id'
   },{
-    title: 'Start Date',
-    dataIndex: 'start_date',
+    title: 'Subscribe Date',
+    dataIndex: 'subscribe_date',
   },{
-    title: 'End Date',
-    dataIndex: 'end_date',
+    title: 'Expire Date',
+    dataIndex: 'expire_date'
   },{
-    title:'Extend Time',
-    dataIndex:'extend'
+    title: 'Extend Time',
+    dataIndex: 'extend'
   },{
     title: 'Operation',
     render: (txt,record,index) => {
       return(<div>
         <Space split={<Divider type="vertical" />}>
-        <Button type='primary' size='small' onClick={showModal}>Reserve</Button>
-        
-        <Modal title="Reserve an equipment" visible={isModalVisible} onOk={handleOk} onCancel={handleCancel}>
-          <Form
-            name="basic"
-            labelCol={{ span: 8 }}
-            wrapperCol={{ span: 16 }}
-            initialValues={{ remember: true }}
-            onFinish={onFinish}
-            onFinishFailed={onFinishFailed}
-            
-          >
-            
-
-            
-            <Form.Item
-              label=" Renter"
-              name="Renter"
-              placeholder="Select a option and change input text above"
-              initialValue= {InputShown('')}
-              rules={[{ required: true,   message: 'Please input the name of Renter!' }]}
-            >
-              <Input />
-            </Form.Item>
-
-            
-            <Form.Item name="range-picker" label="RangePicker" {...rangeConfig}>
-            <RangePicker
-                value={hackValue || value}
-                disabledDate={disabledDate}
-                onCalendarChange={val => setDates(val)}
-                onChange={val => setValue(val)}
-                onOpenChange={onOpenChange}
-              />
-            </Form.Item>
-
-            <Form.Item
-              label="Comments"
-              name="Comments"
-              rules={[{ required: false, message: 'Please input your comments!' }]}
-            >
-              <Input.TextArea />
-            </Form.Item>
-
-            <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
-              <Button type="primary" htmlType="submit">
-                Submit
-              </Button>
-            </Form.Item>
-          </Form>
-        </Modal>
+          <Popconfirm title= 'Extend for 3 days?'
+          onConfirm={()=>{
+            OrderExtendApi({b_id : record.b_id}).then(res=>{
+              if(res.code==='200'){
+                console.log(record.b_id+'extended!')
+                message.info(res.message)
+                loadData()
+              }else{
+                message.info(res.message)
+              }
+            }) 
+          }}>
+            <Button type='primary' size='small' onClick={showModal}> Extend </Button>
+          </Popconfirm>
+          <Popconfirm title= 'Sure release?'
+          onConfirm={()=>{
+            OrderEndApi({b_id : record.b_id}).then(res=>{
+              if(res.code===200){
+                console.log(record.b_id+'ended!')
+                message.info(res.message)
+                loadData()
+              }
+              })
+            }
+          }>
+            <Button type='primary' danger size='small'>Release</Button>
+          </Popconfirm>
         </Space>
-        <Popconfirm title= 'Sure release?'>
-        <Button type='primary' danger size='small'>Release</Button>
-        </Popconfirm>
-        
       </div>
       )
     }
   }
 ]
 
-  const histColums = [{
-    title: 'index',
-    key: 'index',
-    align: 'center',
-    render: (txt,record,index) => index+1
+  const histColums= [{
+    title: 'ID',
+    key:'index',
+    render: (txt, record, index) => index + 1,
   },{
-    title: 'Team',
-    dataIndex: 'team'
+    title: 'Order ID',
+    dataIndex: 'b_id',
+    className:'tableHidden'
   },{
-    title: 'Server Group',
-    dataIndex: 'group',
-  },{
-    title: 'Title',
-    dataIndex: 'title',
-    ...getColumnSearchProps('title'),
-  },{
-    title: 'Location',
-    dataIndex: 'location',
-    ...getColumnSearchProps('location'),
-  },{
-    title: 'iDrac_ip',
-    dataIndex: 'idrac_ip'
+    title: 'Booker ID',
+    dataIndex: 'u_id'
   },{
     title: 'Server Tag',
-    dataIndex: 'server_tag',
-    ...getColumnSearchProps('server_tag'),
+    dataIndex: 'e_id'
   },{
-    title: 'Start Date',
-    dataIndex: 'start_date',
+    title: 'Subscribe Date',
+    dataIndex: 'subscribe_date',
   },{
     title: 'End Date',
-    dataIndex: 'end_date',
-  },{
-    title:'Extend Time',
-    dataIndex:'extend'
-  },{
-    title: 'Operation',
-    render: (txt,record,index) => {
-      return(
-      <div>
-        <Popconfirm title= 'Sure delete?'>
-          <Button type='primary' danger size='small'>Delete</Button>
-        </Popconfirm>
-      </div>
-      )
-    }
+    dataIndex: 'end_time'
   }
+
 ]
 
   return (
-    <Card title='Account' 
-      // extra={
-      //   <Button type='primary'>
-      //     Change password
-      //   </Button>
-      // }
-    >
-        <Card type='inner' title='Reserving terminal'extra={
-            <Button type='primary'>
-            Additional Operation
-            </Button>
-        }>
-            <Table rowKey='index' columns={currColumns} bordered dataSource={dataSource}/>
+    <Card title='Account' >
+        <Card type='inner' title='Reserving terminal' >
+            <Table rowKey='index' columns={currColumns} bordered 
+            pagination={{
+              onchange: ()=>{
+                loadData()
+              }
+            }}
+            dataSource={dataSource}/>
         </Card>
-        <Card type='inner' title='Reservation history'extra={
-            <Button type='primary'>
-            Additional Operation
-            </Button>
-        }>
-            <Table rowKey='index' columns={histColums} bordered dataSource={dataSourceBeta}/>
+        <Card type='inner' title='Reservation history' >
+            <Table rowKey='index' columns={histColums} bordered 
+            pagination={{
+              onchange: ()=>{
+                loadData()
+              }
+            }}
+            dataSource={dataSourceHis}/>
         </Card>
     </Card>
   )

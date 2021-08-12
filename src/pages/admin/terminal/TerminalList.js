@@ -1,9 +1,9 @@
-
 import React, { useState, useEffect } from 'react'
 
-import { Drawer, Form, Button, Col, Row, Input, Select, Switch, Card, Table, Popconfirm, Modal, Space, Divider, Descriptions, Checkbox  } from 'antd';
+import { Drawer, Form, Button, Col, Row, Input, Select, Switch, Card, Table, Popconfirm, Modal, Space, Divider, Descriptions, Checkbox, message  } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 import { TerminalCreateApi, TerminalDelApi, TerminalListApi } from '../../../services/terminal';
+import "./terminal.css"
 
 const { Option } = Select;
 
@@ -40,6 +40,12 @@ const TerminalList=(props) => {
       setDataSource(res.data.data);
     })
   }, [])
+
+  const loadData=()=>{
+    TerminalListApi().then(res =>{
+      setDataSource(res.data.data);
+    })
+  }
 
   const [checkStrictly, setCheckStrictly] = React.useState(false);
 
@@ -93,33 +99,20 @@ const TerminalList=(props) => {
         console.log(selected, selectedColumns, changeColumns);
       },
     };
-    //checkstrictly cancellation
-
-    // function TreeData() {
-    //   const [checkStrictly, setCheckStrictly] = React.useState(false);
-    //   return (
-    //     <>
-    //       <Space align="center" style={{ marginBottom: 16 }}>
-    //         CheckStrictly: <Switch checked={checkStrictly} onChange={setCheckStrictly} />
-    //       </Space>
-    //       <Table
-    //         columns={columns}
-    //         columnSelection={{ ...columnSelection, checkStrictly }}
-    //         dataSource={dataSource}
-    //       />
-    //     </>
-    //   );
-    // }
 
 
     // Table Collection Data
     const colomns = [{
       title: 'ID',
-      dataIndex: 'e_id',
-      key:'index'
+      key:'e_id',
+      render: (txt, record, index) => index + 1,
     },{
-      title: 'Group',
-      dataIndex: 'e_group',
+      title: 'E_ID',
+      className:'tableHidden',
+      dataIndex: 'e_id'
+    },{
+      title: 'Server Group',
+      dataIndex: 'e_servergroup',
     },{
       title: 'Title',
       dataIndex: 'e_title',
@@ -132,9 +125,6 @@ const TerminalList=(props) => {
     },{
       title: 'iDrac Ip',
       dataIndex: 'e_iDrac_ip',
-    },{
-      title: 'Team',
-      dataIndex: 'e_team',
     },{
       title: 'Location',
       dataIndex: 'e_location',
@@ -150,7 +140,13 @@ const TerminalList=(props) => {
               <Popconfirm title= 'Sure Delete?'
               onConfirm={()=>{
                 TerminalDelApi(record.e_id).then(res=>{
-                  console.log(record.e_title+'deleted!')
+                  if(res.data.code===200){
+                    console.log(record.e_title+'deleted!')
+                    message.info(res.data.msg)
+                    loadData()
+                  }else if(res.data.code===400){
+                    message.info(res.data.msg)
+                  }
                 })
               }}
               >
@@ -174,23 +170,17 @@ const TerminalList=(props) => {
             </Button>
           }
         >
-          <>
-            <Checkbox indeterminate={indeterminate} onChange={onCheckAllChange} checked={checkAll}>
-              Check all
-            </Checkbox>
-            <Divider />
-            <CheckboxGroup options={plainOptions} value={checkedList} onChange={onChange} />
-          </>
-          <Divider />
-
-          <Space align="center" style={{ marginBottom: 16 }}>
-            CheckStrictly: <Switch checked={checkStrictly} onChange={setCheckStrictly} />
-          </Space>
           <Table columns={colomns} 
+            rowKey= "e_id"
             columnSelection={{ ...columnSelection, checkStrictly }}
             //checkstrictly cancellation
-            bordered dataSource={dataSource1} />
-
+            bordered 
+            pagination={{
+              onchange: ()=>{
+                loadData()
+              }
+            }}
+            dataSource={dataSource} />
         </Card>
 
 
@@ -199,6 +189,7 @@ const TerminalList=(props) => {
           title="Create a new user terminal"
           width={720}
           onClose={onClose}
+          destroyOnClose={true}
           visible={isFormVisible}
           bodyStyle={{ paddingBottom: 80 }}
           footer={
@@ -216,96 +207,75 @@ const TerminalList=(props) => {
           <Form layout="vertical" hideRequiredMark onFinish={(value)=>{
             TerminalCreateApi(value).then(res=>{
               console.log(res)
+              if(res.data.code===200){
+                message.info(res.data.msg)
+                console.log('Success!')
+              }
             }
             )
           }}>
-            <Row gutter={16}>
-              <Col span={12}>
-                <Form.Item
-                  name="group"
-                  label="Group"
-                  rules={[{ required: true, message: 'Please enter the group' }]}
-                >
-                  <Input placeholder="Please enter group" />
-                </Form.Item>
-              </Col>
-              <Col span={12}>
-                <Form.Item
-                  name="title"
+
+              <Form.Item
+                  name="e_id"
+                  label="E ID"
+                  rules={[{ required: true, message: 'Please enter the e_id' }]}
+              >
+                  <Input placeholder="Please enter the e_id" />
+              </Form.Item>
+              <Form.Item
+                  name="e_title"
                   label="Title"
-                  rules={[{ required: true, message: 'Please enter terminal title' }]}
-                >
-                  <Input placeholder="Please enter terminal title" />
-                </Form.Item>
-              </Col>
-            </Row>
-
-            <Row gutter={16}>
-              <Col span={12}>
-                <Form.Item
-                  name="server_tag"
-                  label="Server Tag"
-                  rules={[{ required: true, message: 'Please choose the server tag' }]}
-                >
-                  <Input placeholder="Please enter terminal server tag" />
-                </Form.Item>
-              </Col>
-              <Col span={12}>
-                <Form.Item
-                  name="cluster"
-                  label="Cluster"
-                  rules={[{ required: true, message: 'Please choose the cluster' }]}
-                >
-                  <Input placeholder="Please enter terminal cluster" />
-                </Form.Item>
-              </Col>
-            </Row>
-
-            <Row gutter={16}>
-              <Col span={12}>
-                <Form.Item
-                  name="idrac Ip"
-                  label="iDrac Ip"
-                  rules={[{ required: true, message: 'Please enter terminal idrac ip' }]}
-                >
-                  <Input placeholder="Please enter terminal idrac ip" />
-                </Form.Item>
-              </Col>
-              <Col span={12}>
-                <Form.Item
-                  name="team"
-                  label="Team"
-                  rules={[{ required: true, message: 'Please choose terminal team' }]}
-                >
-                  <Input placeholder="Please enter terminal team" />
-                </Form.Item>
-              </Col>
-            </Row>
-          
-          <Row gutter={16}>
-            <Col span={12}>
-                <Form.Item
-                  name="location"
+                  rules={[{ required: true, message: 'Please enter the title' }]}
+              >
+                  <Input placeholder="Please enter the title" />
+              </Form.Item>
+              <Form.Item
+                  name="e_location"
                   label="Location"
-                  rules={[{ required: true, message: 'Please enter terminal location' }]}
-                >
-                  <Input placeholder="Please enter terminal location" />
-                </Form.Item>
-            </Col>
-          </Row>
-
-          <Row gutter={16}>
-              <Col span={12}>
-                <Form.Item>
-                    {/* <Popconfirm title= 'Sure add?'> */}
-                      <Button htmlType='submit'  type="primary" >
-                        Submit
-                      </Button>
-                    {/* </Popconfirm> */}
-                </Form.Item>
-              </Col>
-            </Row>
-            
+                  rules={[{ required: true, message: 'Please enter the location' }]}
+              >
+                  <Input placeholder="Please enter the location" />
+              </Form.Item>
+              <Form.Item
+                  name="e_iDrac_ip"
+                  label="iDrac_ip"
+                  rules={[{ required: true, message: 'Please enter the iDrac_ip' }]}
+              >
+                  <Input placeholder="Please enter the iDrac_ip" />
+              </Form.Item>
+              <Form.Item
+                  name="e_tag"
+                  label="Server Tag"
+                  rules={[{ required: true, message: 'Please enter the Server Tag' }]}
+              >
+                  <Input placeholder="Please enter the Server Tag" />
+              </Form.Item>
+              <Form.Item
+                  name="e_servergroup"
+                  label="Server Group"
+                  rules={[{ required: true, message: 'Please enter the Server Group' }]}
+              >
+                  <Input placeholder="Please enter the Server Group" />
+              </Form.Item>
+              <Form.Item
+                  name="e_geolocation"
+                  label="Geo Location"
+                  rules={[{ required: true, message: 'Please enter the Geo Location' }]}
+              >
+                  <Input placeholder="Please enter the Geo Location" />
+              </Form.Item>
+              <Form.Item
+                  name="e_cluster"
+                  label="Cluster"
+                  rules={[{ required: true, message: 'Please enter the Cluster' }]}
+              >
+                  <Input placeholder="Please enter the Cluster" />
+              </Form.Item>
+              <Form.Item>
+                    <Button htmlType='submit'  type="primary" >
+                      Submit
+                    </Button>
+              </Form.Item>            
           </Form>
         </Drawer>
       </div>
@@ -313,4 +283,3 @@ const TerminalList=(props) => {
 }
 
 export default TerminalList
-

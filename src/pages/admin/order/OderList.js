@@ -19,6 +19,12 @@ const OrderList=(props) => {
       })
     },[])
 
+    const loadData=()=>{
+      OrderListApi().then(res=>{
+        setDataSource(res.data.data)
+      })
+    }
+
     const showModal = () => {
       setIsModalVisible(true);
     };
@@ -34,7 +40,7 @@ const OrderList=(props) => {
     // Table Collection Data
     const colomns = [{
       title: 'ID',
-      key:'index',
+      key:'b_id',
       render: (txt, record, index) => index + 1,
     },{
       title: 'Order ID',
@@ -48,48 +54,46 @@ const OrderList=(props) => {
         dataIndex: 'e_id'
     },{
       title: 'Subscribe Date',
-      dataIndex: 'subscribe_time',
+      dataIndex: 'subscribe_date',
     },{
       title: 'Expire Date',
-      dataIndex: 'expire_time'
+      dataIndex: 'expire_date'
     },{
-      title: 'End Date',
-      dataIndex: 'end_time'
-    },{
-      title: 'Extend Times',
+      title: 'Extend Time',
       dataIndex: 'extend'
-    },{
-      title: 'Status',
-      dataIndex: 'b_status'
     },{
       title: 'Operation',
       render: (txt,record,index) => {
         return(
           <div>
             <Space split={<Divider type="vertical" />}>
-              <Popconfirm title= 'Extend for 3 days?'>
-                <Button type='primary' size='small' onClick={()=>{
-                  OrderExtendApi({b_id : record.b_id}).then(res=>{
-                    if(res.code==='200'){
-                      console.log(record.b_id+'extended!')
-                      message.info(res.message)
-                      props.history.push('/admin/order')
-                    }else{
-                      message.info(res.message)
-                    }
-                  })
-                }}> Extend </Button>
+              <Popconfirm title= 'Extend for 3 days?' 
+              onConfirm={()=>{
+                OrderExtendApi({b_id : record.b_id}).then(res=>{
+                  if(res.data.code==='200'){
+                    console.log(record.b_id+'extended!')
+                    message.info(res.msg)
+                    loadData()
+                  }else{
+                    message.info(res.msg)
+                  }
+                })
+              }}
+              >
+                <Button type='primary' size='small' > Extend </Button>
               </Popconfirm>
-              <Popconfirm title= 'Sure Release?'>
-                <Button type='primary' danger size='small' onClick={()=>{
-                  OrderEndApi({b_id : record.b_id}).then(res=>{
-                    if(res.code===200){
-                      console.log(record.b_id+'ended!')
-                      message.info(res.message)
-                      props.history.push('/admin/order')
-                    }
-                    })
-                }}> Release </Button>
+              <Popconfirm title= 'Sure Release?'
+              onConfirm={()=>{
+                OrderEndApi({b_id : record.b_id}).then(res=>{
+                  if(res.data.code===200){
+                    console.log(record.b_id+'ended!')
+                    message.info(res.msg)
+                    loadData()
+                  }
+                  })
+              }}
+              >
+                <Button type='primary' danger size='small' > Release </Button>
               </Popconfirm>
             </Space>
 
@@ -103,7 +107,13 @@ const OrderList=(props) => {
     return (
         <div>
           <Card title='Order List'>
-            <Table rowKey='index' columns={colomns} bordered dataSource={dataSource}/>
+            <Table rowKey='b_id' columns={colomns} bordered 
+            pagination={{
+              onchange: ()=>{
+                loadData()
+              }
+            }}
+            dataSource={dataSource}/>
           </Card>
         </div>
     )

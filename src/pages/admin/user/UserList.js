@@ -5,34 +5,40 @@ import { PlusOutlined } from '@ant-design/icons';
 import { UserListApi,UserCreateApi, UserDelApi, UserResetApi } from '../../../services/user';
 
 // Account DataSource: due to the disconnection with the backend
-// const dataSource = [{
-//   id:'1',
-//   password:'********',
-//   last_login:'2021/07/30',
-//   is_superuser:'false',
-//   username:'Javis',
-//   first_name:'Javis',
-//   last_name:'Huang',
-//   email:'javis_huang@dell.com',
-//   is_staff:'false',
-//   is_active:'true',
-//   date_joined:'2021/07/01',
-//   group_name: 'VxRail Day0 Team',
-//   location: 'Wu Jiao Chang',
+const dataSource1 = [{
+  id:'1',
+  password:'********',
+  last_login:'2021/07/30',
+  is_superuser:'false',
+  username:'Javi3s',
+  first_name:'Javis',
+  last_name:'Huang',
+  email:'javis_huang@dell.com',
+  is_staff:'false',
+  is_active:'true',
+  date_joined:'2021/07/01',
+  group_name: 'VxRail Day0 Team',
+  location: 'Wu Jiao Chang',
 
-//   approver: 'Tom Liu'
-// }]
+  approver: 'Tom Liu'
+}]
 
-const UserList=() => {
+const UserList=(props) => {
     // Drawer Trigger Setting
     const [isFormVisible, setIsFormVisble] = useState(false);
-    const [dataSource1, setDataSource1] = useState([]);
+    const [dataSource, setDataSource] = useState([]);
 
     useEffect(() => {
       UserListApi().then(res =>{
-        setDataSource1(res.data.data);
+        setDataSource(res.data.data);
       })
     }, [])
+
+    const loadData=()=>{
+      UserListApi().then(res =>{
+        setDataSource(res.data.data);
+      })
+    }
     
     const onClose = () => {
       setIsFormVisble(false)
@@ -60,18 +66,17 @@ const UserList=() => {
     // Table Collection Data
     const colomns = [{
       title: 'ID',
-      key:'index',
+      key:'username',
       render: (txt, record, index) => index + 1,
     },{
       title: 'User Name',
-      key: 'username',
       dataIndex: 'username'
     },{
       title: 'Email',
       dataIndex: 'email',
     },{
-      title: 'Group',
-      dataIndex: 'group_name'
+      title: 'Access Level',
+      dataIndex: 'access'
     },{
       title: 'Operation',
       render: (txt,record,index) => {
@@ -81,7 +86,14 @@ const UserList=() => {
               <Popconfirm title= 'Sure Reset?'
               onConfirm={()=>{
                 UserResetApi(record.username).then(res=>{
-                  console.log(record.username+' modified!')
+                  if(res.data.code===200){
+                    console.log(res.data.msg)
+                    message.info(res.data.msg)
+                    loadData()
+                  }else{
+                    console.log(res.data.msg)
+                    message.info(res.data.msg)
+                  }
                 })
               }}>
               <Button type='primary' size='small' >Reset</Button>
@@ -89,10 +101,13 @@ const UserList=() => {
               <Popconfirm title= 'Sure Delete?'
               onConfirm={()=>{
                 UserDelApi(record.username).then(res=>{
-                  if(res.code===200){
-                    console.log(record.username+' deleted!')
+                  if(res.data.code===200){
+                    console.log(res.data.msg)
+                    message.info(res.data.msg)
+                    loadData()
                   }else{
-                    console.log("You dont't have permission")
+                    console.log(res.data.msg)
+                    message.info(res.data.msg)
                   }    
                 })
               }}>
@@ -100,7 +115,6 @@ const UserList=() => {
               </Popconfirm>
             </Space>
           </div>
-          
         )
       }
     }
@@ -116,12 +130,19 @@ const UserList=() => {
             </Button>
           }
         >
-          <Table rowKey='index' columns={colomns} bordered dataSource={dataSource1}/>
+          <Table rowKey='username' columns={colomns} bordered 
+          pagination={{
+            onchange: ()=>{
+              loadData()
+            }
+          }}
+          dataSource={dataSource}/>
         </Card>
 
         <Drawer
           title="Create a new user account"
           width={720}
+          destroyOnClose ={true}
           onClose={onClose}
           visible={isFormVisible}
           bodyStyle={{ paddingBottom: 80 }}
@@ -141,11 +162,12 @@ const UserList=() => {
           <Form layout="vertical"  hideRequiredMark onFinish={(values) => {
             UserCreateApi(values).then(res=>{
               console.log(values)
-              message.log("success!")
               if(res.data.code===200){
-                message.log(res.data.message)
+                console.log('Add successful!')
+                message.info(res.data.msg)
+                loadData()
               }else if(res.data.code===400){
-                message.log(res.data.message)
+                message.info(res.data.msg)
               }
             })
     }} >
@@ -163,12 +185,11 @@ const UserList=() => {
               <Col span={12}>
                 <Form.Item
                   name="group_name"
-                  label="Group"
-                  rules={[{ required: true, message: 'Please choose the group' }]}
+                  label="Group Name"
+                  rules={[{ required: true, message: 'Please enter the group name' }]}
                 >
                   <Input
-                    style={{ width: '100%' }}
-                    placeholder="Please enter group name"
+                    placeholder="Please enter the group name"
                   />
                 </Form.Item>
               </Col>

@@ -2,7 +2,7 @@ const api = {
     //Login
     login: '/login',
 
-    //User
+    //admin User
     getAllUser: '/admin/users',
     addUser: '/admin/users',
     delUser: '/admin/users/',
@@ -15,17 +15,26 @@ const api = {
     editEquipment: '/equipments/',
     delEquipment: '/equipments/',
     getTotalStatus: '/equipments/',
-    getEquipmentDetail: "/equimentdetail",
+    getEquipmentDetail: "/equipmentdetail",
+
+    getClusterEquipment: '/equipmentcluster',
 
     //Book
-    getAllBook: 'book/allBook',
+    getAllBook: 'book/allBook/',
     getHistoryBook: 'book/historyBook',
     getNowBook: 'book/nowBook',
     extendBook: 'book/extendBook',
     endBook: 'book/endBook',
-    bookEquipment: "book/bookEquipment"
+    bookEquipment: "book/bookEquipment",
+  
+    //dashboard
+    userUsage:"/book/bookStatistics",
+    equipmentCount:"/equipmentcounts ",
+
+    //User action 
+    userResetPwd:'/userInfo',
 
 
-    }
+}
 
 export default api
