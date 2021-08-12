@@ -15,7 +15,7 @@ export function NormalBookingListReserveApi(data) {
 }
 
 export function PwdResetApi(data) {
-    return post(api.resetUserPwd, data)
+    return post(api.userResetPwd, data)
 }
 
 

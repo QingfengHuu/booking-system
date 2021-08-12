@@ -65,8 +65,8 @@
 }
 .cardWrapperB{
     padding-top: 3%;
-    float: right;
-    margin-right: 0px;
+    /* float: right; */
+    padding-left: 2%;
     display: inline-block;
 }
 /* .line_chart_space{

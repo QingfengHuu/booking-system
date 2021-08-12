@@ -1,5 +1,5 @@
 
-import { Layout, Menu, Breadcrumb, Dropdown, message, Drawer, Button, Input, Tooltip, Form, Space, Divider, Typography } from 'antd';
+import { Layout, Menu, Breadcrumb, Dropdown, message, Drawer, Button, Input, Tooltip, Form, Space, Divider, Typography, Descriptions, Modal } from 'antd';
 
 import MenuItem from 'antd/lib/menu/MenuItem';
 import { withRouter } from 'react-router-dom';
@@ -10,7 +10,7 @@ import { Avatar, Image } from 'antd';
 import { InfoCircleOutlined, UserOutlined, EditOutlined, SearchOutlined, CheckOutlined } from '@ant-design/icons';
 
 import { adminRoutes, bookingRoutes, DashboardRoutes,userRoutes } from '../../routes';
-import  {getUsername}  from '../../utils/auth';
+import {getUsername, getUserRole}  from '../../utils/auth';
 import {PwdResetApi} from '../../services/terminal';
 
 
@@ -27,7 +27,12 @@ function Frame(props) {
     const [visible, setVisible] = useState(false);
     const [inputDisabled,setInputDisabled] = useState(true);
     const [buttonRevealed,setButtonRevealed] = useState(true);
+    const [menuRevealed,setMenuRevealed] = useState(true);
+    const [newPwdReveal,setnewPwdReveal] = useState(false);
 
+    const revealNewPwd = () =>{
+        setnewPwdReveal(true);
+    }
 
     const showDrawer = () => {
         setVisible(true);
@@ -35,19 +40,25 @@ function Frame(props) {
     
     const revealInput = () =>{
         setInputDisabled(false);
+        setButtonRevealed(false);
     }
 
     const hideInput = () =>{
         setInputDisabled(true);
-    }
-
-    const revealButton = () =>{
-        setButtonRevealed(false);
-    }
-
-    const hideButton = () =>{
         setButtonRevealed(true);
     }
+
+    const showMenu = () =>{
+        setMenuRevealed(false);
+    }
+
+    // const revealButton = () =>{
+    //     setButtonRevealed(false);
+    // }
+
+    // const hideButton = () =>{
+    //     setButtonRevealed(true);
+    // }
     
     const onClose = () => {
         setVisible(false);
@@ -61,12 +72,38 @@ function Frame(props) {
             // props.history.push('/user/account');
         }
       };
-    const checkEmpty = (str) =>{
-        hideButton();
-        if(str !== ""){
-            revealButton();
+
+    const checkUserRole =()=>{
+        if (getUserRole() == false){
+            showMenu();
         }
     }
+
+    checkUserRole();
+    // const checkEmpty = (str) =>{
+    //     hideButton();
+    //     if(str !== ""){
+    //         revealButton();
+    //     }
+    // }
+
+    // const checkPwd= (str) =>{
+    //     // Connect API
+    //     if(str !== ""){
+    //         console.log('result is '+ newPwdReveal)
+    //         return newPwdReveal;
+    //     }
+    // }
+
+    const [isModalVisible, setIsModalVisible] = useState(false);
+
+    const showModal = () => {
+        setIsModalVisible(true);
+    };
+
+    const handleCancel = () => {
+        setIsModalVisible(false);
+    };
       
     const menu = (
         <Menu onClick={onClick}>
@@ -75,13 +112,6 @@ function Frame(props) {
         <Menu.Item key="logout">Log out</Menu.Item>
         </Menu>
     );
-    const onFinish = (values: any) => {
-        console.log('Success:', values);
-      };
-    
-      const onFinishFailed = (errorInfo: any) => {
-        console.log('Failed:', errorInfo);
-      };
 
     return (
         <Layout>
@@ -94,27 +124,22 @@ function Frame(props) {
                     </Space>
                 </a>
             </div>
-            {/* <Menu theme="dark" mode="horizontal" defaultSelectedKeys={['2']}>
-                <Menu.Item key="1">nav 1</Menu.Item>
-                <Menu.Item key="2">nav 2</Menu.Item>
-                <Menu.Item key="3">nav 3</Menu.Item>
-            </Menu> */}
+       
             <Dropdown overlay={menu} trigger={['click']} >
                 <span className="avatar place">
                 <Avatar className= "avatarIcon" style={{ color: '#f56a00', backgroundColor: '#fde3cf' }}  size= 'large'  onClick={e => e.preventDefault()}>U</Avatar>
-                {/* <a style={{color:'black'}} onClick={e => e.preventDefault()}>
-                    User
-                </a> */}
+                
                 </span>
             </Dropdown>
             <Drawer
                 title="Profile Drawer"
-                placement="left"
+                placement="right"
                 closable={false}
                 onClose={onClose}
+                destroyOnClose={true}
                 visible={visible}
-                width={300}
-            >                
+            >
+                
                 <Form
                     name="basic"
                     labelCol={{ span: 8 }}
@@ -122,14 +147,22 @@ function Frame(props) {
                     initialValues={{ remember: true }}
                     onFinish={(values) => {
                         PwdResetApi({
-                            u_id: getUsername(),
-                            pwd: values
+                            username:values.username,
+                            oldPassword:values.password, 
+                            newPassword:values.newPassword,
                         }).then(res => {
-                            // console.log(record.e_id + 'changed')
+                            if(res.data.code===200){
+                                message.success("changed successfully!");
+                                clearToken();
+                                props.history.push('/login')
+                            }else{
+                                message.info(res.data.msg)
+                            }
+                            console.log(res)
                         })
                         console.log('Success:', values);
                     }}
-                    onFinishFailed={onFinishFailed}
+                    // onFinishFailed={onFinishFailed}
                     >
 
                     <Tooltip title="Edit">
@@ -141,14 +174,16 @@ function Frame(props) {
                         // label="Username"
                         name="username"
                         rules={[{ required: true, message: 'Please input your username!' }]}
+                        initialValue={getUsername()}
                     >
-                        <Input suffix={
+                        <Input 
+                        suffix={
                         <Tooltip title="Click the button to change your username">
                         <InfoCircleOutlined style={{ color: 'rgba(0,0,0,.45)' }} />
                         </Tooltip>
-                    }
-                    style={{width: '205px'}}
-                    disabled ={true}/>
+                        }
+                        style={{width: '205px'}}
+                        disabled ={true}/>
                     </Form.Item>
 
                     <Form.Item
@@ -156,18 +191,32 @@ function Frame(props) {
                         name="password"
                         rules={[{ required: true, message: 'Please input your password!' }]}
                     >
-                        <Input.Password style={{width: '205px'}} disabled ={inputDisabled}/>
+                        <Input.Password style={{width: '205px'}} placeholder='Type in old password here!' disabled ={inputDisabled}/>
                     </Form.Item>
 
+                    
 
+                    <Form.Item
+                            // label=" New Password"
+                            name="newPassword"
+                            
+                            rules={[{ required: true, message: 'Please input your password!' }]}
+                        >
+                            <Input.Password 
+                            placeholder='Type in new password here!'
+                            style={{width: '205px'}} disabled ={inputDisabled}/>
+                        </Form.Item>
+
+                        
+
+                    
                     <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
-                        <Button type="primary" htmlType="submit" style={{float:'right'}} onClick={hideInput} >
+                        <Button type="primary" htmlType="submit" style={{float:'right'}} onClick={hideInput} disabled={buttonRevealed}>
                         Submit
                         </Button>
                     </Form.Item>
                     </Form>
                     
-
 
             </Drawer>
             </Header>
@@ -204,7 +253,7 @@ function Frame(props) {
                     )
                 })}
 
-                    <SubMenu key="admin" title="Admin">
+                    <SubMenu key="admin" title="Admin" disabled={menuRevealed}>
                         {routesAdmin.map(route=>{
                             return(
                                 <MenuItem key={route.path} onClick={p=>props.history.push(p.key)}>
@@ -216,11 +265,6 @@ function Frame(props) {
                 </Menu>
             </Sider>
             <Layout >
-                {/* <Breadcrumb style={{ margin: '12px 0' }}>
-                <Breadcrumb.Item>Home</Breadcrumb.Item>
-                <Breadcrumb.Item>List</Breadcrumb.Item>
-                <Breadcrumb.Item>App</Breadcrumb.Item>
-                </Breadcrumb> */}
                 <Content
                 className="site-layout-background"
                 style={{

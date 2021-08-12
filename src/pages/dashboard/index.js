@@ -22,14 +22,36 @@ import {getUsername} from "../../utils/auth";
 const Index = () => {
 
     const [dataSource, setDataSource] = useState({ data_list: [], total_usage: [], user_usage: [] });
+    const [allEquipmentUsage, setAllEquipmentUsage] = useState();
+    const [avaEquipmentUsage, setAvaEquipmentUsage] = useState();
+    const [occupiedEquipmentUsage, setOccupiedEquipmentUsage] = useState();
+
+
+    
 
 
     useEffect(() => {
         usageListApi({username: getUsername()}).then(res => {
             console.log(res.data.data)
             setDataSource(res.data.data);
-        })
+        }, 
+        equipmentCountApi().then(res => {
+          setAllEquipmentUsage(res.data.ALL_Equipment_usage);
+          setAvaEquipmentUsage(res.data.Available_Equipments);
+          setOccupiedEquipmentUsage(res.data.Occupied_Equipments);
+      })
+        )
     }, [])
+
+    const calculatePercentage=(total, occupied)=>{
+      occupied = parseFloat(occupied);
+      total = parseFloat(total);
+      if (isNaN(occupied) || isNaN(total)) {
+          return "-";
+      }
+      return total <= 0 ? "0%" : (Math.round(occupied / total * 10000) / 100.00)+"%";
+    }
+
 
     const handleData = (data) => {
         var result = [];
@@ -162,7 +184,7 @@ const Index = () => {
 
 
     const gaugeConfig = {
-        percent: 0.75,
+        percent: calculatePercentage(allEquipmentUsage,occupiedEquipmentUsage),
         type: 'meter',
         innerRadius: 0.75,
         range: {
@@ -207,7 +229,7 @@ const Index = () => {
                                 <Title level={3}>Current Usage </Title>
                             </div>
                             <div className="data_shown">
-                                <Title level={2}>120 </Title>
+                                <Title level={2} >{allEquipmentUsage}</Title>
                             </div>
                         </div>
 
@@ -229,7 +251,7 @@ const Index = () => {
                                 <Title level={3}>Equipments Available </Title>
                             </div>
                             <div className="AE_data_shown">
-                                <Title level={2}>60 </Title>
+                                <Title level={2}>{avaEquipmentUsage} </Title>
                             </div>
                         </div>
 
@@ -249,10 +271,10 @@ const Index = () => {
 
                         <div className="dataGroupC">
                             <div className="OE_Usage_data">
-                                <Title level={3}>Equipments Occupied: </Title>
+                                <Title level={3}>Equipments Occupied </Title>
                             </div>
                             <div className="OE_data_shown">
-                                <Title level={2}>60 </Title>
+                                <Title level={2}>{occupiedEquipmentUsage}</Title>
                             </div>
                         </div>
 
@@ -260,17 +282,21 @@ const Index = () => {
                 </Col>
             </Row>
 
-            <div className="cardWrapperA">
-                <Card className="line_chart_space" style={{width: 1100, borderRadius: "10px"}}>
-                    <Line className="line_chart" {...handleData(dataSource)} />
-                </Card>
-            </div>
+            <div className='chartsBlock'>
 
-            <div className="cardWrapperB">
-                <Card className="flow_chart_space"
-                      style={{width: 560, background: "#FFFF", borderRadius: "10px", border: "false"}}>
-                    <Gauge {...gaugeConfig} />
-                </Card>
+                <div className="cardWrapperA" style={{width: '70%'}}>
+                    <Card className="line_chart_space" style={{width: '100%', borderRadius: "10px"}}>
+                        <Line className="line_chart" {...handleData(dataSource)} />
+                    </Card>
+                </div>
+
+                <div className="cardWrapperB" style={{width: '30%'}}>
+                    <Card className="flow_chart_space"
+                        style={{width: '90%', background: "#FFFF", borderRadius: "10px", border: "false"}}>
+                        <Gauge {...gaugeConfig} />
+                    </Card>
+                </div>
+
             </div>
 
 
