@@ -19,6 +19,12 @@ const OrderList=(props) => {
       })
     },[])
 
+    const loadData=()=>{
+      OrderListApi().then(res=>{
+        setDataSource(res.data.data)
+      })
+    }
+
     const showModal = () => {
       setIsModalVisible(true);
     };
@@ -53,11 +59,8 @@ const OrderList=(props) => {
       title: 'Expire Date',
       dataIndex: 'expire_date'
     },{
-      title: 'End Date',
-      dataIndex: 'end_date'
-    },{
-      title: 'Status',
-      dataIndex: 'b_status'
+      title: 'Extend Time',
+      dataIndex: 'extend'
     },{
       title: 'Operation',
       render: (txt,record,index) => {
@@ -70,7 +73,7 @@ const OrderList=(props) => {
                   if(res.data.code==='200'){
                     console.log(record.b_id+'extended!')
                     message.info(res.message)
-                    props.history.push('/admin/order')
+                    loadData()
                   }else{
                     message.info(res.message)
                   }
@@ -85,7 +88,7 @@ const OrderList=(props) => {
                   if(res.data.code===200){
                     console.log(record.b_id+'ended!')
                     message.info(res.message)
-                    props.history.push('/admin/order')
+                    loadData()
                   }
                   })
               }}

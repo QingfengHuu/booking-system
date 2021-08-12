@@ -1,12 +1,17 @@
-import { Layout, Menu, Breadcrumb, Dropdown, message, Space, Divider, Typography, Drawer } from 'antd';
+
+import { Layout, Menu, Breadcrumb, Dropdown, message, Drawer, Button, Input, Tooltip, Form, Space, Divider, Typography } from 'antd';
+
 import MenuItem from 'antd/lib/menu/MenuItem';
 import { withRouter } from 'react-router-dom';
 import { clearToken } from '../../utils/auth';
 import './frame.css';
 import React, { useState } from 'react'
-import { Avatar, Form, Input, Button, Descriptions, Modal } from 'antd';
-import { UserOutlined } from '@ant-design/icons';
+import { Avatar, Image } from 'antd';
+import { InfoCircleOutlined, UserOutlined, EditOutlined, SearchOutlined, CheckOutlined } from '@ant-design/icons';
+
 import { adminRoutes, bookingRoutes, DashboardRoutes,userRoutes } from '../../routes';
+import  {getUsername}  from '../../utils/auth';
+import {PwdResetApi} from '../../services/terminal';
 
 
 const routes = bookingRoutes.filter(route=>route.isShow);
@@ -20,9 +25,29 @@ const { Header, Content, Sider } = Layout;
 
 function Frame(props) {
     const [visible, setVisible] = useState(false);
+    const [inputDisabled,setInputDisabled] = useState(true);
+    const [buttonRevealed,setButtonRevealed] = useState(true);
+
+
     const showDrawer = () => {
         setVisible(true);
       };
+    
+    const revealInput = () =>{
+        setInputDisabled(false);
+    }
+
+    const hideInput = () =>{
+        setInputDisabled(true);
+    }
+
+    const revealButton = () =>{
+        setButtonRevealed(false);
+    }
+
+    const hideButton = () =>{
+        setButtonRevealed(true);
+    }
     
     const onClose = () => {
         setVisible(false);
@@ -36,6 +61,12 @@ function Frame(props) {
             // props.history.push('/user/account');
         }
       };
+    const checkEmpty = (str) =>{
+        hideButton();
+        if(str !== ""){
+            revealButton();
+        }
+    }
       
     const menu = (
         <Menu onClick={onClick}>
@@ -44,12 +75,11 @@ function Frame(props) {
         <Menu.Item key="logout">Log out</Menu.Item>
         </Menu>
     );
-
-    const onFinish = (values) => {
+    const onFinish = (values: any) => {
         console.log('Success:', values);
       };
     
-      const onFinishFailed = (errorInfo) => {
+      const onFinishFailed = (errorInfo: any) => {
         console.log('Failed:', errorInfo);
       };
 
@@ -117,32 +147,30 @@ function Frame(props) {
                 onFinishFailed={onFinishFailed}
                 >
                     <Form.Item
-                        label="Username"
+                        // label="Username"
                         name="username"
+                        rules={[{ required: true, message: 'Please input your username!' }]}
                     >
-                        <Input disabled='true'/>
+                        <Input suffix={
+                        <Tooltip title="Click the button to change your username">
+                        <InfoCircleOutlined style={{ color: 'rgba(0,0,0,.45)' }} />
+                        </Tooltip>
+                    }
+                    style={{width: '205px'}}
+                    disabled ={true}/>
                     </Form.Item>
 
                     <Form.Item
-                        label="Password"
+                        // label="Password"
                         name="password"
-                        rules={[
-                        {
-                            required: true,
-                            message: 'Please input your password!',
-                        },
-                        ]}
+                        rules={[{ required: true, message: 'Please input your password!' }]}
                     >
-                        <Input.Password />
+                        <Input.Password style={{width: '205px'}} disabled ={inputDisabled}/>
                     </Form.Item>
 
-                    <Form.Item
-                        wrapperCol={{
-                        offset: 8,
-                        span: 16,
-                        }}
-                    >
-                        <Button type="primary" htmlType="submit">
+
+                    <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
+                        <Button type="primary" htmlType="submit" style={{float:'right'}} onClick={hideInput} >
                         Submit
                         </Button>
                     </Form.Item>
@@ -150,8 +178,6 @@ function Frame(props) {
                     </Modal>
 
                 
-
-
 
             </Drawer>
             </Header>

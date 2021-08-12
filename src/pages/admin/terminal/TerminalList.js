@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react'
 
 import { Drawer, Form, Button, Col, Row, Input, Select, Switch, Card, Table, Popconfirm, Modal, Space, Divider, Descriptions, Checkbox, message  } from 'antd';
@@ -40,6 +39,12 @@ const TerminalList=(props) => {
       setDataSource(res.data.data);
     })
   }, [])
+
+  const loadData=()=>{
+    TerminalListApi().then(res =>{
+      setDataSource(res.data.data);
+    })
+  }
 
   const [checkStrictly, setCheckStrictly] = React.useState(false);
 
@@ -118,8 +123,8 @@ const TerminalList=(props) => {
       dataIndex: 'e_id',
       key:'index'
     },{
-      title: 'Group',
-      dataIndex: 'e_group',
+      title: 'Server Group',
+      dataIndex: 'e_servergroup',
     },{
       title: 'Title',
       dataIndex: 'e_title',
@@ -132,9 +137,6 @@ const TerminalList=(props) => {
     },{
       title: 'iDrac Ip',
       dataIndex: 'e_iDrac_ip',
-    },{
-      title: 'Team',
-      dataIndex: 'e_team',
     },{
       title: 'Location',
       dataIndex: 'e_location',
@@ -153,7 +155,7 @@ const TerminalList=(props) => {
                   if(res.data.code===200){
                     console.log(record.e_title+'deleted!')
                     message.info('Success!')
-                    props.history.push("/admin/terminal")
+                    loadData()
                   }else if(res.data.code===400){
                     console.log("The terminal is in use, can't delete it until it be released!")
                     message.info("The terminal is in use!")
@@ -181,23 +183,26 @@ const TerminalList=(props) => {
             </Button>
           }
         >
-          <>
-            <Checkbox indeterminate={indeterminate} onChange={onCheckAllChange} checked={checkAll}>
-              Check all
-            </Checkbox>
-            <Divider />
-            <CheckboxGroup options={plainOptions} value={checkedList} onChange={onChange} />
-          </>
-          <Divider />
+          {/*<>*/}
+          {/*  <Checkbox indeterminate={indeterminate} onChange={onCheckAllChange} checked={checkAll}>*/}
+          {/*    Check all*/}
+          {/*  </Checkbox>*/}
+          {/*  <Divider />*/}
+          {/*  <CheckboxGroup options={plainOptions} value={checkedList} onChange={onChange} />*/}
+          {/*</>*/}
+          {/*<Divider />*/}
 
-          <Space align="center" style={{ marginBottom: 16 }}>
-            CheckStrictly: <Switch checked={checkStrictly} onChange={setCheckStrictly} />
-          </Space>
+          {/*<Space align="center" style={{ marginBottom: 16 }}>*/}
+          {/*  CheckStrictly: <Switch checked={checkStrictly} onChange={setCheckStrictly} />*/}
+          {/*</Space>*/}
           <Table columns={colomns} 
             columnSelection={{ ...columnSelection, checkStrictly }}
             //checkstrictly cancellation
             bordered dataSource={dataSource} />
         </Card>
+
+
+
         <Drawer
           title="Create a new user terminal"
           width={720}
@@ -316,4 +321,3 @@ const TerminalList=(props) => {
 }
 
 export default TerminalList
-

@@ -33,6 +33,12 @@ const UserList=(props) => {
         setDataSource1(res.data.data);
       })
     }, [])
+
+    const loadData=()=>{
+      UserListApi().then(res =>{
+        setDataSource1(res.data.data);
+      })
+    }
     
     const onClose = () => {
       setIsFormVisble(false)
@@ -82,12 +88,12 @@ const UserList=(props) => {
               onConfirm={()=>{
                 UserResetApi(record.username).then(res=>{
                   if(res.data.code===200){
-                    console.log(record.username+' modified!')
-                    message.info('Success!')
-                    props.history.push('/admin/user')
+                    console.log(res.data.msg)
+                    message.info(res.data.msg)
+                    loadData()
                   }else{
-                    console.log("Reset failed!")
-                    message.info('Failed!')
+                    console.log(res.data.msg)
+                    message.info(res.data.msg)
                   }
                 })
               }}>
@@ -97,12 +103,12 @@ const UserList=(props) => {
               onConfirm={()=>{
                 UserDelApi(record.username).then(res=>{
                   if(res.data.code===200){
-                    console.log(record.username+' deleted!')
-                    message.info('Success!')
-                    props.history.push('/admin/user')
+                    console.log(res.data.msg)
+                    message.info(res.data.msg)
+                    loadData()
                   }else{
-                    console.log("You dont't have permission")
-                    message.info('Failed!')
+                    console.log(res.data.msg)
+                    message.info(res.data.msg)
                   }    
                 })
               }}>
@@ -153,7 +159,8 @@ const UserList=(props) => {
               if(res.data.code===200){
                 console.log('Add successful!')
                 message.info(res.data.message)
-                props.history.push('/admin/user')
+                loadData()
+                onClose()
               }else if(res.data.code===400){
                 message.info(res.data.message)
               }

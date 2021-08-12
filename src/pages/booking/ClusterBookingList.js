@@ -381,19 +381,13 @@ const BookingList = (props) => {
     };
 
     return (
-        <Card title='Node BookingList'
-              extra={
-                  <Button type='primary'>
-                      Additional Operation
-                  </Button>
-              }
-        >
+        <Card title='Node BookingList' >
 
             <Table
                 className="components-table-demo-nested"
                 columns={mainColumns}
                 expandable={{expandedRowRender}}
-                dataSource={dataSource1}
+                dataSource={dataSource}
             />
 
         </Card>

@@ -1,15 +1,14 @@
 import { Form, Input, Button, DatePicker, Card, Table, Popconfirm, Modal, Space, Divider, message} from 'antd'
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 // import { listApi } from '../../services/terminal';
 import Highlighter from 'react-highlight-words';
 import { SearchOutlined } from '@ant-design/icons';
 
-import { OrderEndApi, OrderExtendApi, OrderListApi } from '../services/order';
+import { OrderEndApi, OrderExtendApi, OrderHistoryListApi, OrderListApi, OrderNowListApi } from '../services/order';
 
+import { getUsername } from '../utils/auth';
 
-const {RangePicker} = DatePicker;
-
-const dataSource = [{
+const dataSource1 = [{
   index: 1,
   team: 'HWSS',
   group: 'DELL 13G',
@@ -35,7 +34,7 @@ const dataSource = [{
   extend:2
 }]
 
-const dataSourceBeta = [{
+const dataSourceBeta1 = [{
   index: 1,
   team: 'HWSS',
   group: 'DELL 13G',
@@ -64,7 +63,8 @@ const dataSourceBeta = [{
 const Account= (props) => {
 
   const [isModalVisible, setIsModalVisible] = useState(false);
-  const [dataSource1, setDataSource1] = useState([]);
+  const [dataSource, setDataSource] = useState([]);
+  const [dataSourceHis, setDataSourceHis]= useState([])
   const [total,setTotal] = useState(0);
   const [buttonDisabled,setButtonDisabled] = useState(false);
   //states for range picker
@@ -76,19 +76,25 @@ const Account= (props) => {
 
   let searchInput ='';
 
-  // useEffect(() => {
-  //   listApi().then(res =>{
-  //     setDataSource1(res.terminal);
-  //     setTotal(res.totalCount);
-  //   })
-  // }, [])
+  useEffect(() => {
+    OrderNowListApi({u_id: getUsername()}).then(res =>{
+      setDataSource(res.data.data);
+    },
+    OrderHistoryListApi({u_id: getUsername()}).then(res=>{
+      setDataSourceHis(res.data.data)
+    })
+    )
+  }, [])
 
-  // const loadData = (page) =>{
-  //   listApi(page).then(res =>{
-  //     setDataSource1(res.terminal);
-  //     setTotal(res.totalCount);
-  //   })
-  // }
+  const loadData = () =>{
+    OrderNowListApi({u_id: getUsername()}).then(res =>{
+      setDataSource(res.data.data);
+    },
+    OrderHistoryListApi({u_id: getUsername()}).then(res=>{
+      setDataSourceHis(res.data.data)
+    })
+    )
+  }
 
   const showModal = () => {
     setIsModalVisible(true);
@@ -225,40 +231,28 @@ const Account= (props) => {
   //search modules
 
   const currColumns = [{
-    title: 'index',
-    key: 'index',
-    align: 'center',
-    render: (txt,record,index) => index+1
+    title: 'ID',
+    key:'index',
+    render: (txt, record, index) => index + 1,
   },{
-    title: 'Team',
-    dataIndex: 'team'
+    title: 'Order ID',
+    dataIndex: 'b_id',
+    className:'tableHidden'
   },{
-    title: 'Server Group',
-    dataIndex: 'group',
+    title: 'Booker ID',
+    dataIndex: 'u_id'
   },{
-    title: 'Title',
-    dataIndex: 'title',
-    ...getColumnSearchProps('title'),
+    title: 'Terminal ID',
+    dataIndex: 'e_id'
   },{
-    title: 'Location',
-    dataIndex: 'location',
-    ...getColumnSearchProps('location'),
+    title: 'Subscribe Date',
+    dataIndex: 'subscribe_date',
   },{
-    title: 'iDrac_ip',
-    dataIndex: 'idrac_ip'
+    title: 'Expire Date',
+    dataIndex: 'expire_date'
   },{
-    title: 'Server Tag',
-    dataIndex: 'server_tag',
-    ...getColumnSearchProps('server_tag'),
-  },{
-    title: 'Start Date',
-    dataIndex: 'start_date',
-  },{
-    title: 'End Date',
-    dataIndex: 'end_date',
-  },{
-    title:'Extend Time',
-    dataIndex:'extend'
+    title: 'Extend Time',
+    dataIndex: 'extend'
   },{
     title: 'Operation',
     render: (txt,record,index) => {
@@ -270,7 +264,7 @@ const Account= (props) => {
               if(res.code==='200'){
                 console.log(record.b_id+'extended!')
                 message.info(res.message)
-                props.history.push('/admin/order')
+                loadData()
               }else{
                 message.info(res.message)
               }
@@ -284,7 +278,7 @@ const Account= (props) => {
               if(res.code===200){
                 console.log(record.b_id+'ended!')
                 message.info(res.message)
-                props.history.push('/admin/order')
+                loadData()
               }
               })
             }
@@ -298,76 +292,37 @@ const Account= (props) => {
   }
 ]
 
-  const histColums = [{
-    title: 'index',
-    key: 'index',
-    align: 'center',
-    render: (txt,record,index) => index+1
+  const histColums= [{
+    title: 'ID',
+    key:'index',
+    render: (txt, record, index) => index + 1,
   },{
-    title: 'Team',
-    dataIndex: 'team'
+    title: 'Order ID',
+    dataIndex: 'b_id',
+    className:'tableHidden'
   },{
-    title: 'Server Group',
-    dataIndex: 'group',
+    title: 'Booker ID',
+    dataIndex: 'u_id'
   },{
-    title: 'Title',
-    dataIndex: 'title',
-    ...getColumnSearchProps('title'),
+    title: 'Terminal ID',
+    dataIndex: 'e_id'
   },{
-    title: 'Location',
-    dataIndex: 'location',
-    ...getColumnSearchProps('location'),
-  },{
-    title: 'iDrac_ip',
-    dataIndex: 'idrac_ip'
-  },{
-    title: 'Server Tag',
-    dataIndex: 'server_tag',
-    ...getColumnSearchProps('server_tag'),
-  },{
-    title: 'Start Date',
-    dataIndex: 'start_date',
+    title: 'Subscribe Date',
+    dataIndex: 'subscribe_date',
   },{
     title: 'End Date',
-    dataIndex: 'end_date',
-  },{
-    title:'Extend Time',
-    dataIndex:'extend'
-  },{
-    title: 'Operation',
-    render: (txt,record,index) => {
-      return(
-      <div>
-        <Popconfirm title= 'Sure delete?'>
-          <Button type='primary' danger size='small'>Delete</Button>
-        </Popconfirm>
-      </div>
-      )
-    }
+    dataIndex: 'end_time'
   }
+
 ]
 
   return (
-    <Card title='Account' 
-      // extra={
-      //   <Button type='primary'>
-      //     Change password
-      //   </Button>
-      // }
-    >
-        <Card type='inner' title='Reserving terminal'extra={
-            <Button type='primary'>
-            Additional Operation
-            </Button>
-        }>
+    <Card title='Account' >
+        <Card type='inner' title='Reserving terminal' >
             <Table rowKey='index' columns={currColumns} bordered dataSource={dataSource}/>
         </Card>
-        <Card type='inner' title='Reservation history'extra={
-            <Button type='primary'>
-            Additional Operation
-            </Button>
-        }>
-            <Table rowKey='index' columns={histColums} bordered dataSource={dataSourceBeta}/>
+        <Card type='inner' title='Reservation history' >
+            <Table rowKey='index' columns={histColums} bordered dataSource={dataSourceHis}/>
         </Card>
     </Card>
   )
