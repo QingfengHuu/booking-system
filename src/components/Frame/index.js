@@ -1,5 +1,5 @@
 
-import { Layout, Menu, Breadcrumb, Dropdown, message, Drawer, Button, Input, Tooltip, Form, Space, Divider, Typography } from 'antd';
+import { Layout, Menu, Breadcrumb, Dropdown, message, Drawer, Button, Input, Tooltip, Form, Space, Divider, Typography, Descriptions, Modal } from 'antd';
 
 import MenuItem from 'antd/lib/menu/MenuItem';
 import { withRouter } from 'react-router-dom';
@@ -8,6 +8,7 @@ import './frame.css';
 import React, { useState } from 'react'
 import { Avatar, Image } from 'antd';
 import { InfoCircleOutlined, UserOutlined, EditOutlined, SearchOutlined, CheckOutlined } from '@ant-design/icons';
+
 import { adminRoutes, bookingRoutes, DashboardRoutes,userRoutes } from '../../routes';
 import  {getUsername}  from '../../utils/auth';
 import {PwdResetApi} from '../../services/terminal';
@@ -22,13 +23,16 @@ const { SubMenu } = Menu;
 const { Header, Content, Sider } = Layout;
 
 
-
-
 function Frame(props) {
     const [visible, setVisible] = useState(false);
     const [inputDisabled,setInputDisabled] = useState(true);
     const [buttonRevealed,setButtonRevealed] = useState(true);
 
+    const [newPwdReveal,setnewPwdReveal] = useState(false);
+
+    const revealNewPwd = () =>{
+        setnewPwdReveal(true);
+    }
 
     const showDrawer = () => {
         setVisible(true);
@@ -36,19 +40,21 @@ function Frame(props) {
     
     const revealInput = () =>{
         setInputDisabled(false);
+        setButtonRevealed(false);
     }
 
     const hideInput = () =>{
         setInputDisabled(true);
-    }
-
-    const revealButton = () =>{
-        setButtonRevealed(false);
-    }
-
-    const hideButton = () =>{
         setButtonRevealed(true);
     }
+
+    // const revealButton = () =>{
+    //     setButtonRevealed(false);
+    // }
+
+    // const hideButton = () =>{
+    //     setButtonRevealed(true);
+    // }
     
     const onClose = () => {
         setVisible(false);
@@ -62,12 +68,30 @@ function Frame(props) {
             // props.history.push('/user/account');
         }
       };
-    const checkEmpty = (str) =>{
-        hideButton();
+    // const checkEmpty = (str) =>{
+    //     hideButton();
+    //     if(str !== ""){
+    //         revealButton();
+    //     }
+    // }
+
+    const checkPwd= (str) =>{
+        // Connect API
         if(str !== ""){
-            revealButton();
+            console.log('result is '+ newPwdReveal)
+            return newPwdReveal;
         }
     }
+
+    const [isModalVisible, setIsModalVisible] = useState(false);
+
+    const showModal = () => {
+        setIsModalVisible(true);
+    };
+
+    const handleCancel = () => {
+        setIsModalVisible(false);
+    };
       
     const menu = (
         <Menu onClick={onClick}>
@@ -76,13 +100,7 @@ function Frame(props) {
         <Menu.Item key="logout">Log out</Menu.Item>
         </Menu>
     );
-    const onFinish = (values: any) => {
-        console.log('Success:', values);
-      };
-    
-      const onFinishFailed = (errorInfo: any) => {
-        console.log('Failed:', errorInfo);
-      };
+
     return (
         <Layout>
             <Header className="header" style={{background:"white", paddingLeft:"25px"}}>
@@ -112,6 +130,7 @@ function Frame(props) {
                 placement="left"
                 closable={false}
                 onClose={onClose}
+                destroyOnClose={true}
                 visible={visible}
             >
                 
@@ -129,7 +148,7 @@ function Frame(props) {
                         })
                         console.log('Success:', values);
                     }}
-                    onFinishFailed={onFinishFailed}
+                    // onFinishFailed={onFinishFailed}
                     >
 
                     <Tooltip title="Edit">
@@ -142,7 +161,9 @@ function Frame(props) {
                         name="username"
                         rules={[{ required: true, message: 'Please input your username!' }]}
                     >
-                        <Input suffix={
+                        <Input 
+                        initialValues={getUsername}
+                        suffix={
                         <Tooltip title="Click the button to change your username">
                         <InfoCircleOutlined style={{ color: 'rgba(0,0,0,.45)' }} />
                         </Tooltip>
@@ -156,12 +177,27 @@ function Frame(props) {
                         name="password"
                         rules={[{ required: true, message: 'Please input your password!' }]}
                     >
-                        <Input.Password style={{width: '205px'}} disabled ={inputDisabled}/>
+                        <Input.Password style={{width: '205px'}} placeholder='Type in old password here!' disabled ={inputDisabled}/>
                     </Form.Item>
 
+                    
 
+                    <Form.Item
+                            // label=" New Password"
+                            name="newPassword"
+                            
+                            rules={[{ required: true, message: 'Please input your password!' }]}
+                        >
+                            <Input.Password 
+                            placeholder='Type in new password here!'
+                            style={{width: '205px'}} disabled ={inputDisabled}/>
+                        </Form.Item>
+
+                        
+
+                    
                     <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
-                        <Button type="primary" htmlType="submit" style={{float:'right'}} onClick={hideInput} >
+                        <Button type="primary" htmlType="submit" style={{float:'right'}} onClick={hideInput} disabled={buttonRevealed}>
                         Submit
                         </Button>
                     </Form.Item>

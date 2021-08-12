@@ -77,20 +77,20 @@ const Account= (props) => {
   let searchInput ='';
 
   useEffect(() => {
-    OrderNowListApi({u_id: getUsername}).then(res =>{
+    OrderNowListApi({u_id: getUsername()}).then(res =>{
       setDataSource(res.data.data);
     },
-    OrderHistoryListApi({u_id: getUsername}).then(res=>{
+    OrderHistoryListApi({u_id: getUsername()}).then(res=>{
       setDataSourceHis(res.data.data)
     })
     )
   }, [])
 
   const loadData = () =>{
-    OrderNowListApi({u_id: getUsername}).then(res =>{
+    OrderNowListApi({u_id: getUsername()}).then(res =>{
       setDataSource(res.data.data);
     },
-    OrderHistoryListApi({u_id: getUsername}).then(res=>{
+    OrderHistoryListApi({u_id: getUsername()}).then(res=>{
       setDataSourceHis(res.data.data)
     })
     )
@@ -231,40 +231,28 @@ const Account= (props) => {
   //search modules
 
   const currColumns = [{
-    title: 'index',
-    key: 'index',
-    align: 'center',
-    render: (txt,record,index) => index+1
+    title: 'ID',
+    key:'index',
+    render: (txt, record, index) => index + 1,
   },{
-    title: 'Team',
-    dataIndex: 'team'
+    title: 'Order ID',
+    dataIndex: 'b_id',
+    className:'tableHidden'
   },{
-    title: 'Server Group',
-    dataIndex: 'group',
-  },{
-    title: 'Title',
-    dataIndex: 'title',
-    ...getColumnSearchProps('title'),
-  },{
-    title: 'Location',
-    dataIndex: 'location',
-    ...getColumnSearchProps('location'),
-  },{
-    title: 'iDrac_ip',
-    dataIndex: 'idrac_ip'
+    title: 'Booker ID',
+    dataIndex: 'u_id'
   },{
     title: 'Server Tag',
-    dataIndex: 'server_tag',
-    ...getColumnSearchProps('server_tag'),
+    dataIndex: 'e_id'
   },{
-    title: 'Start Date',
-    dataIndex: 'start_date',
+    title: 'Subscribe Date',
+    dataIndex: 'subscribe_date',
   },{
-    title: 'End Date',
-    dataIndex: 'end_date',
+    title: 'Expire Date',
+    dataIndex: 'expire_date'
   },{
-    title:'Extend Time',
-    dataIndex:'extend'
+    title: 'Extend Time',
+    dataIndex: 'extend'
   },{
     title: 'Operation',
     render: (txt,record,index) => {
@@ -304,62 +292,49 @@ const Account= (props) => {
   }
 ]
 
-  const histColums = [{
-    title: 'index',
-    key: 'index',
-    align: 'center',
-    render: (txt,record,index) => index+1
+  const histColums= [{
+    title: 'ID',
+    key:'index',
+    render: (txt, record, index) => index + 1,
   },{
-    title: 'Team',
-    dataIndex: 'team'
+    title: 'Order ID',
+    dataIndex: 'b_id',
+    className:'tableHidden'
   },{
-    title: 'Server Group',
-    dataIndex: 'group',
-  },{
-    title: 'Title',
-    dataIndex: 'title',
-    ...getColumnSearchProps('title'),
-  },{
-    title: 'Location',
-    dataIndex: 'location',
-    ...getColumnSearchProps('location'),
-  },{
-    title: 'iDrac_ip',
-    dataIndex: 'idrac_ip'
+    title: 'Booker ID',
+    dataIndex: 'u_id'
   },{
     title: 'Server Tag',
-    dataIndex: 'server_tag',
-    ...getColumnSearchProps('server_tag'),
+    dataIndex: 'e_id'
   },{
-    title: 'Start Date',
-    dataIndex: 'start_date',
+    title: 'Subscribe Date',
+    dataIndex: 'subscribe_date',
   },{
     title: 'End Date',
-    dataIndex: 'end_date',
-  },{
-    title:'Extend Time',
-    dataIndex:'extend'
-  },{
-    title: 'Operation',
-    render: (txt,record,index) => {
-      return(
-      <div>
-        <Popconfirm title= 'Sure delete?'>
-          <Button type='primary' danger size='small'>Delete</Button>
-        </Popconfirm>
-      </div>
-      )
-    }
+    dataIndex: 'end_time'
   }
+
 ]
 
   return (
     <Card title='Account' >
         <Card type='inner' title='Reserving terminal' >
-            <Table rowKey='index' columns={currColumns} bordered dataSource={dataSource}/>
+            <Table rowKey='index' columns={currColumns} bordered 
+            pagination={{
+              onchange: ()=>{
+                loadData()
+              }
+            }}
+            dataSource={dataSource}/>
         </Card>
         <Card type='inner' title='Reservation history' >
-            <Table rowKey='index' columns={histColums} bordered dataSource={dataSourceHis}/>
+            <Table rowKey='index' columns={histColums} bordered 
+            pagination={{
+              onchange: ()=>{
+                loadData()
+              }
+            }}
+            dataSource={dataSourceHis}/>
         </Card>
     </Card>
   )

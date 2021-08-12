@@ -5,38 +5,38 @@ import { PlusOutlined } from '@ant-design/icons';
 import { UserListApi,UserCreateApi, UserDelApi, UserResetApi } from '../../../services/user';
 
 // Account DataSource: due to the disconnection with the backend
-// const dataSource = [{
-//   id:'1',
-//   password:'********',
-//   last_login:'2021/07/30',
-//   is_superuser:'false',
-//   username:'Javis',
-//   first_name:'Javis',
-//   last_name:'Huang',
-//   email:'javis_huang@dell.com',
-//   is_staff:'false',
-//   is_active:'true',
-//   date_joined:'2021/07/01',
-//   group_name: 'VxRail Day0 Team',
-//   location: 'Wu Jiao Chang',
+const dataSource1 = [{
+  id:'1',
+  password:'********',
+  last_login:'2021/07/30',
+  is_superuser:'false',
+  username:'Javi3s',
+  first_name:'Javis',
+  last_name:'Huang',
+  email:'javis_huang@dell.com',
+  is_staff:'false',
+  is_active:'true',
+  date_joined:'2021/07/01',
+  group_name: 'VxRail Day0 Team',
+  location: 'Wu Jiao Chang',
 
-//   approver: 'Tom Liu'
-// }]
+  approver: 'Tom Liu'
+}]
 
 const UserList=(props) => {
     // Drawer Trigger Setting
     const [isFormVisible, setIsFormVisble] = useState(false);
-    const [dataSource1, setDataSource1] = useState([]);
+    const [dataSource, setDataSource] = useState([]);
 
     useEffect(() => {
       UserListApi().then(res =>{
-        setDataSource1(res.data.data);
+        setDataSource(res.data.data);
       })
     }, [])
 
     const loadData=()=>{
       UserListApi().then(res =>{
-        setDataSource1(res.data.data);
+        setDataSource(res.data.data);
       })
     }
     
@@ -66,11 +66,10 @@ const UserList=(props) => {
     // Table Collection Data
     const colomns = [{
       title: 'ID',
-      key:'index',
+      key:'username',
       render: (txt, record, index) => index + 1,
     },{
       title: 'User Name',
-      key: 'username',
       dataIndex: 'username'
     },{
       title: 'Email',
@@ -131,12 +130,19 @@ const UserList=(props) => {
             </Button>
           }
         >
-          <Table rowKey='index' columns={colomns} bordered dataSource={dataSource1}/>
+          <Table rowKey='username' columns={colomns} bordered 
+          pagination={{
+            onchange: ()=>{
+              loadData()
+            }
+          }}
+          dataSource={dataSource}/>
         </Card>
 
         <Drawer
           title="Create a new user account"
           width={720}
+          destroyOnClose ={true}
           onClose={onClose}
           visible={isFormVisible}
           bodyStyle={{ paddingBottom: 80 }}
@@ -160,7 +166,6 @@ const UserList=(props) => {
                 console.log('Add successful!')
                 message.info(res.data.message)
                 loadData()
-                onClose()
               }else if(res.data.code===400){
                 message.info(res.data.message)
               }
@@ -179,12 +184,12 @@ const UserList=(props) => {
 
               <Col span={12}>
                 <Form.Item
-                  name="email"
-                  label="Email"
-                  rules={[{ required: true, message: 'Please enter the email' }]}
+                  name="group_name"
+                  label="Group Name"
+                  rules={[{ required: true, message: 'Please enter the group name' }]}
                 >
                   <Input
-                    placeholder="Please enter the email"
+                    placeholder="Please enter the group name"
                   />
                 </Form.Item>
               </Col>

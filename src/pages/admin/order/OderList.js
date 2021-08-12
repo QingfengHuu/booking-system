@@ -59,11 +59,8 @@ const OrderList=(props) => {
       title: 'Expire Date',
       dataIndex: 'expire_date'
     },{
-      title: 'End Date',
-      dataIndex: 'end_date'
-    },{
-      title: 'Status',
-      dataIndex: 'b_status'
+      title: 'Extend Time',
+      dataIndex: 'extend'
     },{
       title: 'Operation',
       render: (txt,record,index) => {
@@ -110,7 +107,13 @@ const OrderList=(props) => {
     return (
         <div>
           <Card title='Order List'>
-            <Table rowKey='index' columns={colomns} bordered dataSource={dataSource}/>
+            <Table rowKey='index' columns={colomns} bordered 
+            pagination={{
+              onchange: ()=>{
+                loadData()
+              }
+            }}
+            dataSource={dataSource}/>
           </Card>
         </div>
     )
