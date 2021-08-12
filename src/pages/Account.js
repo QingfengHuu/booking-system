@@ -242,7 +242,7 @@ const Account= (props) => {
     title: 'Booker ID',
     dataIndex: 'u_id'
   },{
-    title: 'Terminal ID',
+    title: 'Server Tag',
     dataIndex: 'e_id'
   },{
     title: 'Subscribe Date',
@@ -304,7 +304,7 @@ const Account= (props) => {
     title: 'Booker ID',
     dataIndex: 'u_id'
   },{
-    title: 'Terminal ID',
+    title: 'Server Tag',
     dataIndex: 'e_id'
   },{
     title: 'Subscribe Date',

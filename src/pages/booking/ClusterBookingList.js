@@ -5,10 +5,74 @@ import {SearchOutlined} from '@ant-design/icons';
 import moment from 'moment'
 import {ClusterBookingListApi, NodeBookingListApi, NodeBookingListReserveApi} from '../../services/booking';
 import {getUsername} from '../../utils/auth';
+import "./Booking.css"
 
 
 const {RangePicker} = DatePicker;
 
+const dataSource1 = [
+    {
+        e_cluster: "sdsd",
+        total: 2,
+        free: 1,
+        node_list: [{
+            e_id: 1,
+            e_team: 'HWSS',
+            e_servergroup: 'DELL 13G',
+            e_title: '13G R630',
+            e_location: 'DELL Server10',
+            e_iDrac_ip: '20.12.131.24',
+            e_tag: 'HBMNBD2',
+            e_status: 1,
+            booker: 'Cathy',
+            start_date: '7/15',
+            end_date: '7/20'
+        }, {
+            e_id: 2,
+            e_team: 'HWSS',
+            e_servergroup: 'DELL 13G',
+            e_title: '13G R630',
+            e_location: 'DELL Server10ACDSFG',
+            e_iDrac_ip: '20.12.131.24',
+            e_tag: 'HBMNBD2',
+            e_status: 2,
+            booker: 'LOL',
+            start_date: '7/15',
+            end_date: '7/20'
+        }
+        ]
+    },{
+      e_cluster: "sdafs",
+      total: 2,
+      free: 1,
+      node_list: [{
+          e_id: 1,
+          e_team: 'HWSS',
+          e_servergroup: 'DELL 13G',
+          e_title: '13G R630',
+          e_location: 'DELL Server10',
+          e_iDrac_ip: '20.12.131.24',
+          e_tag: 'HBMNBD2',
+          e_status: 1,
+          booker: 'Cathy',
+          start_date: '7/15',
+          end_date: '7/20'
+      }, {
+          e_id: 2,
+          e_team: 'HWSS',
+          e_servergroup: 'DELL 13G',
+          e_title: '13G R630',
+          e_location: 'DELL Server10ACDSFG',
+          e_iDrac_ip: '20.12.131.24',
+          e_tag: 'HBMNBD2',
+          e_status: 2,
+          booker: 'LOL',
+          start_date: '7/15',
+          end_date: '7/20'
+      }
+      ]
+  }
+]
 
 const BookingList = (props) => {
 
@@ -173,7 +237,8 @@ const BookingList = (props) => {
     //search modules
 
     const mainColumns = [
-        {title: 'Name', dataIndex: 'e_cluster', key: 'name'},
+        {title: 'ID', key: 'e_cluster', render: (txt, record, index) => index + 1},
+        {title: 'Name', dataIndex: 'e_cluster', key:"cluster"},
         {title: 'Total node number', dataIndex: 'total'},
         {title: 'Free node number', dataIndex: 'free'}
     ];
@@ -182,6 +247,11 @@ const BookingList = (props) => {
     const expandedRowRender = (record) => {
         const colomns = [{
             title: 'ID',
+            key: 'e_id',
+            render: (txt, record, index) => index + 1
+        },{
+            title: 'E_ID',
+            className:'tableHidden',
             dataIndex: 'e_id',
             sorter: (a, b) => a.e_id - b.e_id,
             sortDirections: ['descend', 'ascend'],
@@ -231,7 +301,7 @@ const BookingList = (props) => {
         return (
             <div>
                 <Table
-                    rowKey={(index)=>index}
+                    rowKey="e_id"
                     // pagination={{total,defaultPageSize:10, onChange: loadData}}
                     columns={colomns}
                     bordered
@@ -321,8 +391,8 @@ const BookingList = (props) => {
         <Card title='Node BookingList' >
 
             <Table
+                rowKey="e_cluster"
                 className="components-table-demo-nested"
-                rowKey={(index)=>index}
                 columns={mainColumns}
                 expandable={{expandedRowRender}}
                 dataSource={dataSource}

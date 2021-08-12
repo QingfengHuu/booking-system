@@ -8,6 +8,7 @@ import {SearchOutlined} from '@ant-design/icons';
 import moment from 'moment';
 import 'moment-timezone';
 import {getUsername} from '../../utils/auth';
+import "./Booking.css"
 
 
 moment.tz.setDefault("Asia/Shanghai");
@@ -199,6 +200,11 @@ const NodeBookingList = (props) => {
 
     const colomns = [{
         title: 'ID',
+        key:'index',
+        render: (txt, record, index) => index + 1,
+      },{
+        title: 'E_ID',
+        className:'tableHidden',
         dataIndex: 'e_id',
         sorter: (a, b) => a.e_id - b.e_id,
         sortDirections: ['descend', 'ascend'],
@@ -250,7 +256,6 @@ const NodeBookingList = (props) => {
     return (
         <Card title='BookingList'>
             <Table
-
                 rowKey='index'
                 // pagination={{total,defaultPageSize:10, onChange: loadData}}
                 columns={colomns}

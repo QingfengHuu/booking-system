@@ -26,17 +26,17 @@ import { UserListApi,UserCreateApi, UserDelApi, UserResetApi } from '../../../se
 const UserList=(props) => {
     // Drawer Trigger Setting
     const [isFormVisible, setIsFormVisble] = useState(false);
-    const [dataSource1, setDataSource1] = useState([]);
+    const [dataSource, setDataSource] = useState([]);
 
     useEffect(() => {
       UserListApi().then(res =>{
-        setDataSource1(res.data.data);
+        setDataSource(res.data.data);
       })
     }, [])
 
     const loadData=()=>{
       UserListApi().then(res =>{
-        setDataSource1(res.data.data);
+        setDataSource(res.data.data);
       })
     }
     
@@ -66,7 +66,7 @@ const UserList=(props) => {
     // Table Collection Data
     const colomns = [{
       title: 'ID',
-      key:'index',
+      key:'username',
       render: (txt, record, index) => index + 1,
     },{
       title: 'User Name',
@@ -131,7 +131,14 @@ const UserList=(props) => {
             </Button>
           }
         >
-          <Table rowKey='index' columns={colomns} bordered dataSource={dataSource1}/>
+          <Table rowKey='username' columns={colomns} bordered
+          pagination={{
+            defaultPageSize: 5,
+            onchange: ()=>{
+              loadData()
+            }
+          }}
+          dataSource={dataSource}/>
         </Card>
 
         <Drawer
@@ -180,11 +187,11 @@ const UserList=(props) => {
               <Col span={12}>
                 <Form.Item
                   name="group_name"
-                  label="Group"
-                  rules={[{ required: true, message: 'Please enter the group' }]}
+                  label="Group Name"
+                  rules={[{ required: true, message: 'Please enter the group name' }]}
                 >
                   <Input
-                    placeholder="Please enter the group"
+                    placeholder="Please enter the group name"
                   />
                 </Form.Item>
               </Col>
