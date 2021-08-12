@@ -20,6 +20,7 @@ const {RangePicker} = DatePicker;
 
 const NodeBookingList = (props) => {
 
+    const [isDetailedModalVisible, setIsDetailedModalVisible] =useState(false);
     const [isModalVisible, setIsModalVisible] = useState(false);
 
     const [e_idValue, setE_idValue] = useState();
@@ -54,8 +55,15 @@ const NodeBookingList = (props) => {
     })
 
     const [form] = Form.useForm()
+
+    //Detail
+    const showModalDetail = (record) => {
+        setIsDetailedModalVisible(true);
+    }
+
+    //Reserve
     const showModal = (record) => {
-        form.setFieldsValue(record)
+        form.setFieldsValue(record);
         setIsModalVisible(true);
     };
 
@@ -67,22 +75,9 @@ const NodeBookingList = (props) => {
         setIsModalVisible(false);
     };
 
-    const showDrawer = () => {
-        setVisible(true);
-      };
-      const onClose = () => {
-        setVisible(false);
-      };
-
 
     const onFinishFailed = (errorInfo) => {
         console.log('Failed:', errorInfo);
-    };
-
-    const InputShown = (value) => {
-        if (value != null && value === '') {
-            return 'LOL';
-        }
     };
 
 
@@ -267,6 +262,13 @@ const NodeBookingList = (props) => {
                   }}
                 dataSource={dataSource}
             />
+
+            <Modal title="Terminal Detailed Information"
+                visible={isDetailedModalVisible}
+            >
+                
+            </Modal>
+
             <Modal title="Reserve an equipment" 
                 visible={isModalVisible} 
                 onOk={handleOk}

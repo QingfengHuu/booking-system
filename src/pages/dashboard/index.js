@@ -21,22 +21,25 @@ import {getUsername} from "../../utils/auth";
 
 const Index = () => {
 
-    const [dataSource, setDataSource] = useState({data_list: [], total_usage: [], user_usage: []});
+    const [dataSource, setDataSource] = useState({ data_list: [], total_usage: [], user_usage: [] });
     const [allEquipmentUsage, setAllEquipmentUsage] = useState();
     const [avaEquipmentUsage, setAvaEquipmentUsage] = useState();
     const [occupiedEquipmentUsage, setOccupiedEquipmentUsage] = useState();
 
 
+    
+
+
     useEffect(() => {
         usageListApi({username: getUsername()}).then(res => {
-                console.log(res.data.data)
-                setDataSource(res.data.data);
-            },
-            equipmentCountApi().then(res => {
-                setAllEquipmentUsage(res.data.ALL_Equipment_usage);
-                setAvaEquipmentUsage(res.data.Available_Equipments);
-                setOccupiedEquipmentUsage(res.data.Occupied_Equipments);
-            })
+            console.log(res.data.data)
+            setDataSource(res.data.data);
+        }, 
+        equipmentCountApi().then(res => {
+          setAllEquipmentUsage(res.data.ALL_Equipment_usage);
+          setAvaEquipmentUsage(res.data.Available_Equipments);
+          setOccupiedEquipmentUsage(res.data.Occupied_Equipments);
+      })
         )
     }, [])
 
@@ -282,11 +285,13 @@ const Index = () => {
                 </Col>
             </Row>
 
-            <div className="cardWrapperA">
-                <Card className="line_chart_space" style={{width: 1100, borderRadius: "10px"}}>
-                    <Line className="line_chart" {...handleData(dataSource)} />
-                </Card>
-            </div>
+            <div className='chartsBlock'>
+
+                <div className="cardWrapperA" style={{width: '70%'}}>
+                    <Card className="line_chart_space" style={{width: '100%', borderRadius: "10px"}}>
+                        <Line className="line_chart" {...handleData(dataSource)} />
+                    </Card>
+                </div>
 
             <div className="cardWrapperB">
                 <Card className="flow_chart_space"
