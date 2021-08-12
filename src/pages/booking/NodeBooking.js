@@ -8,6 +8,7 @@ import {SearchOutlined} from '@ant-design/icons';
 import moment from 'moment';
 import 'moment-timezone';
 import {getUsername} from '../../utils/auth';
+import "./Booking.css"
 
 
 moment.tz.setDefault("Asia/Shanghai");
@@ -46,8 +47,7 @@ const NodeBookingList = (props) => {
         })
     }, [])
 
-
-    const loadData=(()=>{
+    const loadData = (() => {
         NodeBookingListApi().then(res => {
             setDataSource(res.data.data);
         })
@@ -199,64 +199,79 @@ const NodeBookingList = (props) => {
     //search modules
 
     const colomns = [{
+        title: 'ID',
+        key:'index',
+        render: (txt, record, index) => index + 1,
+      },{
+        title: 'E_ID',
+        className:'tableHidden',
+        dataIndex: 'e_id',
+        sorter: (a, b) => a.e_id - b.e_id,
+        sortDirections: ['descend', 'ascend'],
+    }, {
+        title: 'Title',
+        dataIndex: 'e_title',
+        ...getColumnSearchProps('e_title'),
+    }, {
+        title: 'Location',
+        dataIndex: 'e_location',
+        ...getColumnSearchProps('e_location'),
+    }, {
+        title: 'iDrac_Ip',
+        dataIndex: 'e_iDrac_ip',
+    }, {
+        title: 'Server Tag',
+        dataIndex: 'e_tag',
+        ...getColumnSearchProps('e_tag'),
+    }, {
+        title: 'Cluster',
+        dataIndex: 'e_cluster',
+        ...getColumnSearchProps('e_tag'),
+    }, {
+        title: 'Booker',
+        dataIndex: 'u_id',
+        sorter: (a, b) => a.booker.length - b.booker.length,
+        sortDirections: ['descend', 'ascend'],
+    }, {
+        title: 'Start Date',
+        dataIndex: 'subscribe_date'
+    }, {
+        title: 'Expire Date',
+        dataIndex: 'expire_date'
+    }, {
+        title: 'Operation',
 
-            title: 'ID',
-            dataIndex: 'e_id',
-            sorter: (a, b) => a.e_id - b.e_id,
-            sortDirections: ['descend', 'ascend'],
-        }, {
-            title: 'Title',
-            dataIndex: 'e_title',
-            ...getColumnSearchProps('e_title'),
-        }, {
-            title: 'Location',
-            dataIndex: 'e_location',
-            ...getColumnSearchProps('e_location'),
-        }, {
-            title: 'iDrac_Ip',
-            dataIndex: 'e_iDrac_ip',
-        }, {
-            title: 'Server Tag',
-            dataIndex: 'e_tag',
-            ...getColumnSearchProps('e_tag'),
-        }, {
-            title: 'Booker',
-            dataIndex: 'u_id',
-            sorter: (a, b) => a.booker.length - b.booker.length,
-            sortDirections: ['descend', 'ascend'],
-        }, {
-            title: 'Start Date',
-            dataIndex: 'subscribe_date'
-        }, {
-            title: 'Expire Date',
-            dataIndex: 'expire_date'
-        }, {
-            title: 'Operation',
+        render: (txt, record, index) => {
 
-            render: (txt, record, index) => {
-
-                return (<div>
-                        <Button type='primary' size='small' onClick={() => {
-                            showModal(record)
-                        }}>Reserve</Button>
-                    </div>
-                )
-            }
+            return (<div>
+                    <Button type='primary' size='small' onClick={() => {
+                        showModal(record)
+                    }}>Reserve</Button>
+                </div>
+            )
         }
+    }
     ]
 
     return (
-        <Card title='BookingList' >
+        <Card title='BookingList'>
             <Table
-
                 rowKey='index'
                 // pagination={{total,defaultPageSize:10, onChange: loadData}}
                 columns={colomns}
                 bordered
+                pagination={{
+                    onchange: ()=>{
+                      loadData()
+                    }
+                  }}
                 dataSource={dataSource}
             />
-            <Modal title="Reserve an equipment" visible={isModalVisible} onOk={handleOk}
-                   onCancel={handleCancel}>
+            <Modal title="Reserve an equipment" 
+                visible={isModalVisible} 
+                onOk={handleOk}
+                onCancel={handleCancel}
+                destroyOnClose={true}>
                 <Form
                     form={form}
                     name="basic"
@@ -270,13 +285,13 @@ const NodeBookingList = (props) => {
                             subscribe_date: moment(values.date[0]).format('YYYY-MM-DD HH:mm:ss'),
                             expire_date: moment(values.date[1]).format('YYYY-MM-DD HH:mm:ss')
                         }).then(res => {
-                            if(res.data.msg==200){
+                            if (res.data.msg == 200) {
                                 console.log(values.e_id + 'has been reserved!')
                                 message.info(values.e_id + 'has been reserved!')
                                 loadData()
-                            }else{
+                            } else {
                                 message.info(res.data.msg)
-                            }   
+                            }
                         })
                     }}
                     onFinishFailed={onFinishFailed}

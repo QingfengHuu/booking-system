@@ -26,7 +26,7 @@ const api = {
     extendBook: 'book/extendBook',
     endBook: 'book/endBook',
     bookEquipment: "book/bookEquipment",
-
+  
     //dashboard
     userUsage:"/book/bookStatistics",
     equipmentCount:"/equipmentcounts ",
@@ -35,6 +35,6 @@ const api = {
     userResetPwd:'/userInfo',
 
 
-    }
+}
 
 export default api
