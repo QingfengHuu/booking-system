@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react'
 import { Drawer, Form, Button, Col, Row, Input, Select, Switch, Card, Table, Popconfirm, Modal, Space, Divider, Descriptions, Checkbox, message  } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 import { TerminalCreateApi, TerminalDelApi, TerminalListApi } from '../../../services/terminal';
+import "./terminal.css"
 
 const { Option } = Select;
 
@@ -98,30 +99,17 @@ const TerminalList=(props) => {
         console.log(selected, selectedColumns, changeColumns);
       },
     };
-    //checkstrictly cancellation
-
-    // function TreeData() {
-    //   const [checkStrictly, setCheckStrictly] = React.useState(false);
-    //   return (
-    //     <>
-    //       <Space align="center" style={{ marginBottom: 16 }}>
-    //         CheckStrictly: <Switch checked={checkStrictly} onChange={setCheckStrictly} />
-    //       </Space>
-    //       <Table
-    //         columns={columns}
-    //         columnSelection={{ ...columnSelection, checkStrictly }}
-    //         dataSource={dataSource}
-    //       />
-    //     </>
-    //   );
-    // }
 
 
     // Table Collection Data
     const colomns = [{
       title: 'ID',
-      dataIndex: 'e_id',
-      key:'index'
+      key:'e_id',
+      render: (txt, record, index) => index + 1,
+    },{
+      title: 'E_ID',
+      className:'tableHidden',
+      dataIndex: 'e_id'
     },{
       title: 'Server Group',
       dataIndex: 'e_servergroup',
@@ -183,22 +171,17 @@ const TerminalList=(props) => {
             </Button>
           }
         >
-          {/*<>*/}
-          {/*  <Checkbox indeterminate={indeterminate} onChange={onCheckAllChange} checked={checkAll}>*/}
-          {/*    Check all*/}
-          {/*  </Checkbox>*/}
-          {/*  <Divider />*/}
-          {/*  <CheckboxGroup options={plainOptions} value={checkedList} onChange={onChange} />*/}
-          {/*</>*/}
-          {/*<Divider />*/}
-
-          {/*<Space align="center" style={{ marginBottom: 16 }}>*/}
-          {/*  CheckStrictly: <Switch checked={checkStrictly} onChange={setCheckStrictly} />*/}
-          {/*</Space>*/}
           <Table columns={colomns} 
+            rowKey= "e_id"
             columnSelection={{ ...columnSelection, checkStrictly }}
             //checkstrictly cancellation
-            bordered dataSource={dataSource} />
+            bordered 
+            pagination={{
+              onchange: ()=>{
+                loadData()
+              }
+            }}
+            dataSource={dataSource} />
         </Card>
 
 
@@ -207,6 +190,7 @@ const TerminalList=(props) => {
           title="Create a new user terminal"
           width={720}
           onClose={onClose}
+          destroyOnClose={true}
           visible={isFormVisible}
           bodyStyle={{ paddingBottom: 80 }}
           footer={
