@@ -158,11 +158,11 @@ const UserList=(props) => {
               console.log(values)
               if(res.data.code===200){
                 console.log('Add successful!')
-                message.info(res.data.message)
+                message.info(res.data.msg)
                 loadData()
                 onClose()
               }else if(res.data.code===400){
-                message.info(res.data.message)
+                message.info(res.data.msg)
               }
             })
     }} >
@@ -179,12 +179,12 @@ const UserList=(props) => {
 
               <Col span={12}>
                 <Form.Item
-                  name="email"
-                  label="Email"
-                  rules={[{ required: true, message: 'Please enter the email' }]}
+                  name="group_name"
+                  label="Group"
+                  rules={[{ required: true, message: 'Please enter the group' }]}
                 >
                   <Input
-                    placeholder="Please enter the email"
+                    placeholder="Please enter the group"
                   />
                 </Form.Item>
               </Col>
