@@ -97,56 +97,56 @@ function Frame(props) {
                 closable={false}
                 onClose={onClose}
                 visible={visible}
-                width={300}
+                width={400}
             >
-                    <Descriptions>
-                        <Descriptions.Item label="UserName"> XXX XXX
-                        </Descriptions.Item>
-                        <Descriptions.Item label="UserName"> XXX XXX
-                        </Descriptions.Item>
+                    <Descriptions bordered="true" column={1}>
+                        <Descriptions.Item label="UserName"> XXX XXX</Descriptions.Item>
+                        <Descriptions.Item label="Email"> XXXXXXXXXX@Dellteam.com</Descriptions.Item>
                     </Descriptions>
+
+                    <br />
 
                     <Button type="primary" onClick={showModal}>
                         Change Password
                     </Button>
                     <Modal title="Basic Modal" visible={isModalVisible} onOk={handleOk} onCancel={handleCancel}>
-                    <Form name="basic" labelCol={{span: 8,}}
-                wrapperCol={{span: 16,}}
-                initialValues={{remember: true,}}
-                onFinish={onFinish}
-                onFinishFailed={onFinishFailed}
-                >
-                    <Form.Item
-                        label="Username"
-                        name="username"
-                    >
-                        <Input disabled='true'/>
-                    </Form.Item>
+                        <Form name="basic" labelCol={{span: 8,}}
+                            wrapperCol={{span: 16,}}
+                            initialValues={{remember: true,}}
+                            onFinish={onFinish}
+                            onFinishFailed={onFinishFailed}
+                        >
+                            <Form.Item
+                                label="Username"
+                                name="username"
+                            >
+                                <Input disabled='true'/>
+                            </Form.Item>
 
-                    <Form.Item
-                        label="Password"
-                        name="password"
-                        rules={[
-                        {
-                            required: true,
-                            message: 'Please input your password!',
-                        },
-                        ]}
-                    >
-                        <Input.Password />
-                    </Form.Item>
+                            <Form.Item
+                                label="New Password"
+                                name="new_password"
+                                rules={[
+                                {
+                                    required: true,
+                                    message: 'Please the new password!',
+                                },
+                                ]}
+                            >
+                                <Input.Password />
+                            </Form.Item>
 
-                    <Form.Item
-                        wrapperCol={{
-                        offset: 8,
-                        span: 16,
-                        }}
-                    >
-                        <Button type="primary" htmlType="submit">
-                        Submit
-                        </Button>
-                    </Form.Item>
-                </Form>
+                            <Form.Item
+                                wrapperCol={{
+                                offset: 8,
+                                span: 16,
+                                }}
+                            >
+                                <Button type="primary" htmlType="submit">
+                                    Submit
+                                </Button>
+                            </Form.Item>
+                        </Form>
                     </Modal>
 
                 
