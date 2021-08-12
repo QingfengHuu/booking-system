@@ -31,6 +31,9 @@ const api = {
     userUsage:"/book/bookStatistics",
     equipmentCount:"/equipmentcounts ",
 
+    //User action
+    userResetPwd:'/userInfo',
+
 
 }
 

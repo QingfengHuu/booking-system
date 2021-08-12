@@ -47,7 +47,8 @@ const Index = () => {
         if (isNaN(occupied) || isNaN(total)) {
             percentage = "-";
         }
-        percentage = total <= 0 ? "0%" : (Math.round(occupied / total * 10000) / 100.00) + "%";
+        percentage = total <= 0 ? "0" : (Math.round(occupied / total * 10000) / 10000.00) ;
+        console.log(percentage)
 
         const gaugeConfig = {
             percent: percentage,
