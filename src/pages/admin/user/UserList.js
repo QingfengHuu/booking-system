@@ -164,10 +164,10 @@ const UserList=(props) => {
               console.log(values)
               if(res.data.code===200){
                 console.log('Add successful!')
-                message.info(res.data.message)
+                message.info(res.data.msg)
                 loadData()
               }else if(res.data.code===400){
-                message.info(res.data.message)
+                message.info(res.data.msg)
               }
             })
     }} >
