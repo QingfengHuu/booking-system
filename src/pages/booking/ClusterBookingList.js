@@ -9,69 +9,6 @@ import {getUsername} from '../../utils/auth';
 
 const {RangePicker} = DatePicker;
 
-const dataSource1 = [
-    {
-        e_cluster: "sdafs",
-        total: 2,
-        free: 1,
-        node_list: [{
-            e_id: 1,
-            e_team: 'HWSS',
-            e_servergroup: 'DELL 13G',
-            e_title: '13G R630',
-            e_location: 'DELL Server10',
-            e_iDrac_ip: '20.12.131.24',
-            e_tag: 'HBMNBD2',
-            e_status: 1,
-            booker: 'Cathy',
-            start_date: '7/15',
-            end_date: '7/20'
-        }, {
-            e_id: 2,
-            e_team: 'HWSS',
-            e_servergroup: 'DELL 13G',
-            e_title: '13G R630',
-            e_location: 'DELL Server10ACDSFG',
-            e_iDrac_ip: '20.12.131.24',
-            e_tag: 'HBMNBD2',
-            e_status: 2,
-            booker: 'LOL',
-            start_date: '7/15',
-            end_date: '7/20'
-        }
-        ]
-    },{
-      e_cluster: "sdafs",
-      total: 2,
-      free: 1,
-      node_list: [{
-          e_id: 1,
-          e_team: 'HWSS',
-          e_servergroup: 'DELL 13G',
-          e_title: '13G R630',
-          e_location: 'DELL Server10',
-          e_iDrac_ip: '20.12.131.24',
-          e_tag: 'HBMNBD2',
-          e_status: 1,
-          booker: 'Cathy',
-          start_date: '7/15',
-          end_date: '7/20'
-      }, {
-          e_id: 2,
-          e_team: 'HWSS',
-          e_servergroup: 'DELL 13G',
-          e_title: '13G R630',
-          e_location: 'DELL Server10ACDSFG',
-          e_iDrac_ip: '20.12.131.24',
-          e_tag: 'HBMNBD2',
-          e_status: 2,
-          booker: 'LOL',
-          start_date: '7/15',
-          end_date: '7/20'
-      }
-      ]
-  }
-]
 
 const BookingList = (props) => {
 
@@ -294,7 +231,7 @@ const BookingList = (props) => {
         return (
             <div>
                 <Table
-                    rowKey='index'
+                    rowKey={(index)=>index}
                     // pagination={{total,defaultPageSize:10, onChange: loadData}}
                     columns={colomns}
                     bordered
@@ -385,6 +322,7 @@ const BookingList = (props) => {
 
             <Table
                 className="components-table-demo-nested"
+                rowKey={(index)=>index}
                 columns={mainColumns}
                 expandable={{expandedRowRender}}
                 dataSource={dataSource}

@@ -21,41 +21,63 @@ import {getUsername} from "../../utils/auth";
 
 const Index = () => {
 
-    const [dataSource, setDataSource] = useState({ data_list: [], total_usage: [], user_usage: [] });
+    const [dataSource, setDataSource] = useState({data_list: [], total_usage: [], user_usage: []});
     const [allEquipmentUsage, setAllEquipmentUsage] = useState();
     const [avaEquipmentUsage, setAvaEquipmentUsage] = useState();
     const [occupiedEquipmentUsage, setOccupiedEquipmentUsage] = useState();
 
 
-    
-
-
     useEffect(() => {
         usageListApi({username: getUsername()}).then(res => {
-            console.log(res.data.data)
-            setDataSource(res.data.data);
-        }, 
-        equipmentCountApi().then(res => {
-          setAllEquipmentUsage(res.data.ALL_Equipment_usage);
-          setAvaEquipmentUsage(res.data.Available_Equipments);
-          setOccupiedEquipmentUsage(res.data.Occupied_Equipments);
-      })
+                console.log(res.data.data)
+                setDataSource(res.data.data);
+            },
+            equipmentCountApi().then(res => {
+                setAllEquipmentUsage(res.data.ALL_Equipment_usage);
+                setAvaEquipmentUsage(res.data.Available_Equipments);
+                setOccupiedEquipmentUsage(res.data.Occupied_Equipments);
+            })
         )
     }, [])
 
-    const calculatePercentage=(total, occupied)=>{
-      occupied = parseFloat(occupied);
-      total = parseFloat(total);
-      if (isNaN(occupied) || isNaN(total)) {
-          return "-";
-      }
-      return total <= 0 ? "0%" : (Math.round(occupied / total * 10000) / 100.00)+"%";
+    const calculatePercentage = (total, occupied) => {
+        occupied = parseFloat(occupied);
+        total = parseFloat(total);
+        let percentage;
+        if (isNaN(occupied) || isNaN(total)) {
+            percentage = "-";
+        }
+        percentage = total <= 0 ? "0%" : (Math.round(occupied / total * 10000) / 100.00) + "%";
+
+        const gaugeConfig = {
+            percent: percentage,
+            type: 'meter',
+            innerRadius: 0.75,
+            range: {
+                ticks: [0, 1 / 3, 2 / 3, 1],
+                color: ['#301c4d', '#51258f', '#ab7ae0'],
+            },
+            indicator: {
+                pointer: {style: {stroke: '#D0D0D0'}},
+                pin: {style: {stroke: '#D0D0D0'}},
+            },
+            statistic: {
+                content: {
+                    style: {
+                        fontSize: '36px',
+                        lineHeight: '36px',
+                    },
+                },
+            },
+        };
+
+        return  gaugeConfig;
     }
 
 
     const handleData = (data) => {
         var result = [];
-        if (data['data_list'].length > 0){
+        if (data['data_list'].length > 0) {
             var dateList = data["data_list"];
             var totalList = data["total_usage"];
             var userUsage = data["user_usage"];
@@ -182,29 +204,6 @@ const Index = () => {
     };
 
 
-
-    const gaugeConfig = {
-        percent: calculatePercentage(allEquipmentUsage,occupiedEquipmentUsage),
-        type: 'meter',
-        innerRadius: 0.75,
-        range: {
-            ticks: [0, 1 / 3, 2 / 3, 1],
-            color: ['#301c4d', '#51258f', '#ab7ae0'],
-        },
-        indicator: {
-            pointer: {style: {stroke: '#D0D0D0'}},
-            pin: {style: {stroke: '#D0D0D0'}},
-        },
-        statistic: {
-            content: {
-                style: {
-                    fontSize: '36px',
-                    lineHeight: '36px',
-                },
-            },
-        },
-    };
-
     const {Title} = Typography;
 
 
@@ -229,7 +228,7 @@ const Index = () => {
                                 <Title level={3}>Current Usage </Title>
                             </div>
                             <div className="data_shown">
-                                <Title level={2} >{allEquipmentUsage}</Title>
+                                <Title level={2}>{allEquipmentUsage}</Title>
                             </div>
                         </div>
 
@@ -291,7 +290,7 @@ const Index = () => {
             <div className="cardWrapperB">
                 <Card className="flow_chart_space"
                       style={{width: 560, background: "#FFFF", borderRadius: "10px", border: "false"}}>
-                    <Gauge {...gaugeConfig} />
+                    <Gauge {...calculatePercentage(allEquipmentUsage,occupiedEquipmentUsage)} />
                 </Card>
             </div>
 
