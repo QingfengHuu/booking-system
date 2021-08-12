@@ -83,6 +83,20 @@ function Frame(props) {
         console.log('Failed:', errorInfo);
       };
 
+      const [isModalVisible, setIsModalVisible] = useState(false);
+
+    const showModal = () => {
+        setIsModalVisible(true);
+    };
+
+    const handleOk = () => {
+        setIsModalVisible(false);
+    };
+
+    const handleCancel = () => {
+        setIsModalVisible(false);
+    };
+
     return (
         <Layout>
             <Header className="header" style={{background:"white", paddingLeft:"25px"}}>
@@ -114,29 +128,24 @@ function Frame(props) {
                 onClose={onClose}
                 visible={visible}
                 width={300}
-            >                
-                <Form
-                    name="basic"
-                    labelCol={{ span: 8 }}
-                    wrapperCol={{ span: 16 }}
-                    initialValues={{ remember: true }}
-                    onFinish={(values) => {
-                        PwdResetApi({
-                            u_id: getUsername(),
-                            pwd: values
-                        }).then(res => {
-                            // console.log(record.e_id + 'changed')
-                        })
-                        console.log('Success:', values);
-                    }}
-                    onFinishFailed={onFinishFailed}
-                    >
+            >
+                    <Descriptions>
+                        <Descriptions.Item label="UserName"> XXX XXX
+                        </Descriptions.Item>
+                        <Descriptions.Item label="UserName"> XXX XXX
+                        </Descriptions.Item>
+                    </Descriptions>
 
-                    <Tooltip title="Edit">
-                        <Button shape="circle" icon={<EditOutlined />} style={{float:'right'}} onClick={revealInput}/>
-                    </Tooltip>
-                        <br />
-                        <br />
+                    <Button type="primary" onClick={showModal}>
+                        Change Password
+                    </Button>
+                    <Modal title="Basic Modal" visible={isModalVisible} onOk={handleOk} onCancel={handleCancel}>
+                    <Form name="basic" labelCol={{span: 8,}}
+                wrapperCol={{span: 16,}}
+                initialValues={{remember: true,}}
+                onFinish={onFinish}
+                onFinishFailed={onFinishFailed}
+                >
                     <Form.Item
                         // label="Username"
                         name="username"
@@ -165,9 +174,10 @@ function Frame(props) {
                         Submit
                         </Button>
                     </Form.Item>
-                    </Form>
-                    
+                </Form>
+                    </Modal>
 
+                
 
             </Drawer>
             </Header>
