@@ -94,9 +94,9 @@ const BookingList = (props) => {
     }, [])
 
     const loadData=(()=>{
-      NodeBookingListApi().then(res => {
-          setDataSource(res.data.data);
-      })
+        ClusterBookingListApi().then(res => {
+            setDataSource(res.data.data);
+        })
   })
 
     const [form] = Form.useForm()
@@ -310,7 +310,11 @@ const BookingList = (props) => {
                 />
 
 
-                <Modal title="Reserve an equipment" visible={isModalVisible} onOk={handleOk} onCancel={handleCancel}>
+                <Modal title="Reserve an equipment" 
+                visible={isModalVisible} 
+                onOk={handleOk} 
+                onCancel={handleCancel}
+                destroyOnClose={true}>
                     <Form form={form}
                           name="basic"
                           labelCol={{span: 8}}
@@ -395,6 +399,11 @@ const BookingList = (props) => {
                 className="components-table-demo-nested"
                 columns={mainColumns}
                 expandable={{expandedRowRender}}
+                pagination={{
+                    onchange: ()=>{
+                      loadData()
+                    }
+                  }}
                 dataSource={dataSource}
             />
 

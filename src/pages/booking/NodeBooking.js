@@ -260,10 +260,18 @@ const NodeBookingList = (props) => {
                 // pagination={{total,defaultPageSize:10, onChange: loadData}}
                 columns={colomns}
                 bordered
+                pagination={{
+                    onchange: ()=>{
+                      loadData()
+                    }
+                  }}
                 dataSource={dataSource}
             />
-            <Modal title="Reserve an equipment" visible={isModalVisible} onOk={handleOk}
-                   onCancel={handleCancel}>
+            <Modal title="Reserve an equipment" 
+                visible={isModalVisible} 
+                onOk={handleOk}
+                onCancel={handleCancel}
+                destroyOnClose={true}>
                 <Form
                     form={form}
                     name="basic"
