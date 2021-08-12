@@ -133,7 +133,6 @@ const UserList=(props) => {
         >
           <Table rowKey='username' columns={colomns} bordered
           pagination={{
-            defaultPageSize: 5,
             onchange: ()=>{
               loadData()
             }
@@ -144,6 +143,7 @@ const UserList=(props) => {
         <Drawer
           title="Create a new user account"
           width={720}
+          destroyOnClose ={true}
           onClose={onClose}
           visible={isFormVisible}
           bodyStyle={{ paddingBottom: 80 }}

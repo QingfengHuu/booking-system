@@ -99,23 +99,6 @@ const TerminalList=(props) => {
         console.log(selected, selectedColumns, changeColumns);
       },
     };
-    //checkstrictly cancellation
-
-    // function TreeData() {
-    //   const [checkStrictly, setCheckStrictly] = React.useState(false);
-    //   return (
-    //     <>
-    //       <Space align="center" style={{ marginBottom: 16 }}>
-    //         CheckStrictly: <Switch checked={checkStrictly} onChange={setCheckStrictly} />
-    //       </Space>
-    //       <Table
-    //         columns={columns}
-    //         columnSelection={{ ...columnSelection, checkStrictly }}
-    //         dataSource={dataSource}
-    //       />
-    //     </>
-    //   );
-    // }
 
 
     // Table Collection Data
@@ -189,10 +172,16 @@ const TerminalList=(props) => {
           }
         >
           <Table columns={colomns} 
-            key= "e_id"
+            rowKey= "e_id"
             columnSelection={{ ...columnSelection, checkStrictly }}
             //checkstrictly cancellation
-            bordered dataSource={dataSource} />
+            bordered 
+            pagination={{
+              onchange: ()=>{
+                loadData()
+              }
+            }}
+            dataSource={dataSource} />
         </Card>
 
 
@@ -201,6 +190,7 @@ const TerminalList=(props) => {
           title="Create a new user terminal"
           width={720}
           onClose={onClose}
+          destroyOnClose={true}
           visible={isFormVisible}
           bodyStyle={{ paddingBottom: 80 }}
           footer={
