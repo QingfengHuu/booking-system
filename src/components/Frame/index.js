@@ -253,7 +253,7 @@ function Frame(props) {
                     )
                 })}
 
-                    <SubMenu key="admin" title="Admin" disabled={menuRevealed}>
+                    <SubMenu key="admin" title="Admin" disabled={!menuRevealed}>
                         {routesAdmin.map(route=>{
                             return(
                                 <MenuItem key={route.path} onClick={p=>props.history.push(p.key)}>

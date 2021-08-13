@@ -1,5 +1,5 @@
 
-import {Form, Input, DatePicker, Button, Card, Table, Popconfirm, Modal, Radio, Space, Divider, Drawer, message} from 'antd';
+import {Form, Input, DatePicker, Button, Card, Table, Descriptions, Modal, Badge, Space, Divider, Drawer, message} from 'antd';
 
 import React, {useState, useEffect} from 'react'
 import {NodeBookingListApi, NodeBookingListReserveApi} from '../../services/booking';
@@ -9,6 +9,7 @@ import moment from 'moment';
 import 'moment-timezone';
 import {getUsername} from '../../utils/auth';
 import "./Booking.css"
+import { TerminalGetOneById } from '../../services/terminal';
 
 
 moment.tz.setDefault("Asia/Shanghai");
@@ -17,24 +18,34 @@ moment.tz.setDefault("Asia/Shanghai");
 
 const {RangePicker} = DatePicker;
 
+const dataSource1=[{
+    e_id: 1,
+    e_team: 'HWSS',
+    e_servergroup: 'DELL 13G',
+    e_title: '13G R630',
+    e_location: 'DELL Server10',
+    e_iDrac_ip: '20.12.131.24',
+    e_tag: 'HBMNBD2',
+    e_status: 1,
+    booker: 'Cathy',
+    start_date: '7/15',
+    end_date: '7/20'
+}]
+
 
 const NodeBookingList = (props) => {
 
+    const [dataSource, setDataSource] = useState([]);
+    const [detailedSource, setDetailedSource] = useState([])
     const [isDetailedModalVisible, setIsDetailedModalVisible] =useState(false);
     const [isModalVisible, setIsModalVisible] = useState(false);
 
-    const [e_idValue, setE_idValue] = useState();
-    const [dataSource, setDataSource] = useState([]);
-
-    const [total, setTotal] = useState(0);
-    const [buttonDisabled, setButtonDisabled] = useState(false);
     //states for range picker
     const [dates, setDates] = useState([]);
     const [hackValue, setHackValue] = useState();
     const [value, setValue] = useState();
     const [searchedColumn, setSearchedColumn] = useState('');
     const [searchText, setSearchText] = useState('');
-    const [visible, setVisible] = useState(false);
 
     const dateFormat = 'YYYY-MM-DD';
 
@@ -54,10 +65,14 @@ const NodeBookingList = (props) => {
         })
     })
 
+    const [detailedForm] = Form.useForm()
     const [form] = Form.useForm()
 
     //Detail
     const showModalDetail = (record) => {
+        TerminalGetOneById(record.e_id).then(res => {
+            setDetailedSource(res.data.data)
+        })
         setIsDetailedModalVisible(true);
     }
 
@@ -67,9 +82,17 @@ const NodeBookingList = (props) => {
         setIsModalVisible(true);
     };
 
+    const handleDetOk = () =>{
+        setIsDetailedModalVisible(false);
+    }
+
     const handleOk = () => {
         setIsModalVisible(false);
     };
+
+    const handleDetCancel= () =>{
+        setIsDetailedModalVisible(false);
+    }
 
     const handleCancel = () => {
         setIsModalVisible(false);
@@ -239,10 +262,15 @@ const NodeBookingList = (props) => {
         render: (txt, record, index) => {
 
             return (<div>
+                <Space split={<Divider type="vertical"/>}>
+                    <Button type='primary' size='small' onClick={()=>{
+                        showModalDetail(record)
+                    }}>Detail</Button>
                     <Button type='primary' size='small' onClick={() => {
                         showModal(record)
                     }}>Reserve</Button>
-                </div>
+                </Space>
+            </div>
             )
         }
     }
@@ -265,8 +293,21 @@ const NodeBookingList = (props) => {
 
             <Modal title="Terminal Detailed Information"
                 visible={isDetailedModalVisible}
+                onOk={handleDetOk}
+                onCancel={handleDetCancel}
+                width="50%"
             >
-                
+                <Descriptions title="Terminal Info" bordered layout="horizontal">
+                    <Descriptions.Item label="Title" span={1}>{detailedSource.e_title}</Descriptions.Item>
+                    <Descriptions.Item label="Location" span={1}>{detailedSource.e_location}</Descriptions.Item>
+                    <Descriptions.Item label="iDrac_ip" span={1}>{detailedSource.e_iDrac_ip}</Descriptions.Item>
+                    <Descriptions.Item label="Server Tag" span={1}>{detailedSource.e_tag}</Descriptions.Item>
+                    <Descriptions.Item label="Server Group" span={1}>{detailedSource.e_servergroup}</Descriptions.Item>
+                    <Descriptions.Item label="GeoLocation" span={1}>{detailedSource.e_geolocation}</Descriptions.Item>
+                    <Descriptions.Item label="Configuration" span={3}>
+                    
+                    </Descriptions.Item>
+                </Descriptions>
             </Modal>
 
             <Modal title="Reserve an equipment" 
