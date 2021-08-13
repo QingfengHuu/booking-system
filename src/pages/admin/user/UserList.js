@@ -77,7 +77,7 @@ const UserList=(props) => {
       dataIndex: 'email',
     },{
       title: 'Access Level',
-      dataIndex: 'access'
+      dataIndex: 'is_staff'
     },{
       title: 'Operation',
       render: (txt,record,index) => {

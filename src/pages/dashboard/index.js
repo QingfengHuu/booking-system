@@ -27,32 +27,30 @@ const Index = () => {
     const [occupiedEquipmentUsage, setOccupiedEquipmentUsage] = useState();
 
 
-    
+
 
 
     useEffect(() => {
         usageListApi({username: getUsername()}).then(res => {
-            console.log(res.data.data)
-            setDataSource(res.data.data);
-        }, 
-        equipmentCountApi().then(res => {
-          setAllEquipmentUsage(res.data.ALL_Equipment_usage);
-          setAvaEquipmentUsage(res.data.Available_Equipments);
-          setOccupiedEquipmentUsage(res.data.Occupied_Equipments);
-      })
+                console.log(res.data.data)
+                setDataSource(res.data.data);
+            },
+            equipmentCountApi().then(res => {
+                setAllEquipmentUsage(res.data.ALL_Equipment_usage);
+                setAvaEquipmentUsage(res.data.Available_Equipments);
+                setOccupiedEquipmentUsage(res.data.Occupied_Equipments);
+            })
         )
     }, [])
 
-    const calculatePercentage = (total, occupied) => {
+    const calculatePercentage=(total, occupied)=>{
         occupied = parseFloat(occupied);
         total = parseFloat(total);
         let percentage;
         if (isNaN(occupied) || isNaN(total)) {
-            percentage = "-";
+            percentage= "-";
         }
-        percentage = total <= 0 ? "0" : (Math.round(occupied / total * 10000) / 10000.00) ;
-        console.log(percentage)
-
+        percentage=total <= 0 ? "0" : (Math.round(occupied / total * 10000) / 10000.00)+" ";
         const gaugeConfig = {
             percent: percentage,
             type: 'meter',
@@ -74,14 +72,14 @@ const Index = () => {
                 },
             },
         };
+        return gaugeConfig
 
-        return  gaugeConfig;
     }
 
 
     const handleData = (data) => {
         var result = [];
-        if (data['data_list'].length > 0) {
+        if (data['data_list'].length > 0){
             var dateList = data["data_list"];
             var totalList = data["total_usage"];
             var userUsage = data["user_usage"];
@@ -208,6 +206,8 @@ const Index = () => {
     };
 
 
+
+
     const {Title} = Typography;
 
 
@@ -232,7 +232,7 @@ const Index = () => {
                                 <Title level={3}>Current Usage </Title>
                             </div>
                             <div className="data_shown">
-                                <Title level={2}>{allEquipmentUsage}</Title>
+                                <Title level={2} >{allEquipmentUsage}</Title>
                             </div>
                         </div>
 
@@ -293,11 +293,13 @@ const Index = () => {
                     </Card>
                 </div>
 
-            <div className="cardWrapperB">
-                <Card className="flow_chart_space"
-                      style={{width: 560, background: "#FFFF", borderRadius: "10px", border: "false"}}>
-                    <Gauge {...calculatePercentage(allEquipmentUsage,occupiedEquipmentUsage)} />
-                </Card>
+                <div className="cardWrapperB" style={{width: '30%'}}>
+                    <Card className="flow_chart_space"
+                          style={{width: '90%', background: "#FFFF", borderRadius: "10px", border: "false"}}>
+                        <Gauge {...calculatePercentage(allEquipmentUsage,occupiedEquipmentUsage)} />
+                    </Card>
+                </div>
+
             </div>
 
 
@@ -308,6 +310,3 @@ const Index = () => {
 
 
 export default Index;
-
-
-
