@@ -343,7 +343,7 @@ const BookingList = (props) => {
                         <Button type='primary' size='small' onClick={()=>{
                             showModalDetail(record)
                         }}>Detail</Button>
-                        <Button type='primary' size='small' onClick={()=>{
+                        <Button type='primary' size='small' disabled={(record.e_status==1)?true:false} onClick={()=>{
                             showModal(record)
                         }}>Reserve</Button>
                     </Space>
@@ -389,29 +389,29 @@ const BookingList = (props) => {
                 onOk={handleOk} 
                 onCancel={handleCancel}
                 destroyOnClose={true}>
-                        <Form form={form}
-                            name="basic"
-                            labelCol={{span: 8}}
-                            wrapperCol={{span: 16}}
-                            initialValues={{remember: true}}
-                            preserve={false}
-                            onFinish={(values) => {
-                                NodeBookingListReserveApi({
-                                e_id: values.e_id,
-                                u_id: getUsername(),
-                                subscribe_date: moment(values.date[0]).format('YYYY-MM-DD HH:mm:ss'),
-                                expire_date: moment(values.date[1]).format('YYYY-MM-DD HH:mm:ss')
-                                }).then(res => {
-                                if(res.data.msg==200){
-                                    console.log(values.e_id + 'has been reserved!')
-                                    message.info(values.e_id + 'has been reserved!')
-                                    loadData()
-                                }else{
-                                    message.info(res.data.msg)
-                                }   
-                                })
-                            }}
-                            onFinishFailed={onFinishFailed}
+                    <Form form={form}
+                          name="basic"
+                          labelCol={{span: 8}}
+                          wrapperCol={{span: 16}}
+                          initialValues={{remember: true}}
+                          preserve={false}
+                          onFinish={(values) => {
+                            NodeBookingListReserveApi({
+                              e_id: values.e_id,
+                              u_id: getUsername(),
+                              subscribe_date: moment(values.date[0]).format('YYYY-MM-DD HH:mm:ss'),
+                              expire_date: moment(values.date[1]).format('YYYY-MM-DD HH:mm:ss')
+                            }).then(res => {
+                              if(res.data.code==200){
+                                  message.info(res.data.msg)
+                                  loadData()
+                                  handleCancel()
+                              }else{
+                                  message.info(res.data.msg)
+                              }   
+                            })
+                          }}
+                          onFinishFailed={onFinishFailed}
 
                     >
                         <Form.Item
@@ -480,7 +480,7 @@ const BookingList = (props) => {
                       loadData()
                     }
                   }}
-                dataSource={dataSource1}
+                dataSource={dataSource}
             />
 
         </Card>

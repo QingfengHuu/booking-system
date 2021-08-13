@@ -70,24 +70,23 @@ const OrderList=(props) => {
               <Popconfirm title= 'Extend for 3 days?' 
               onConfirm={()=>{
                 OrderExtendApi({b_id : record.b_id}).then(res=>{
-                  if(res.data.code==='200'){
-                    console.log(record.b_id+'extended!')
-                    message.info(res.msg)
+                  if(res.data.code===200){
+                    message.info(res.data.msg)
                     loadData()
                   }else{
-                    message.info(res.msg)
+                    message.info(res.data.msg)
                   }
                 })
               }}
               >
-                <Button type='primary' size='small' > Extend </Button>
+                <Button type='primary' size='small' disabled={(record.extend==0)?true:false} > Extend </Button>
               </Popconfirm>
               <Popconfirm title= 'Sure Release?'
               onConfirm={()=>{
                 OrderEndApi({b_id : record.b_id}).then(res=>{
                   if(res.data.code===200){
                     console.log(record.b_id+'ended!')
-                    message.info(res.msg)
+                    message.info(res.data.msg)
                     loadData()
                   }
                   })
