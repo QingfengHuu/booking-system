@@ -27,29 +27,53 @@ const Index = () => {
     const [occupiedEquipmentUsage, setOccupiedEquipmentUsage] = useState();
 
 
-    
+
 
 
     useEffect(() => {
         usageListApi({username: getUsername()}).then(res => {
-            console.log(res.data.data)
-            setDataSource(res.data.data);
-        }, 
-        equipmentCountApi().then(res => {
-          setAllEquipmentUsage(res.data.ALL_Equipment_usage);
-          setAvaEquipmentUsage(res.data.Available_Equipments);
-          setOccupiedEquipmentUsage(res.data.Occupied_Equipments);
-      })
+                console.log(res.data.data)
+                setDataSource(res.data.data);
+            },
+            equipmentCountApi().then(res => {
+                setAllEquipmentUsage(res.data.ALL_Equipment_usage);
+                setAvaEquipmentUsage(res.data.Available_Equipments);
+                setOccupiedEquipmentUsage(res.data.Occupied_Equipments);
+            })
         )
     }, [])
 
     const calculatePercentage=(total, occupied)=>{
-      occupied = parseFloat(occupied);
-      total = parseFloat(total);
-      if (isNaN(occupied) || isNaN(total)) {
-          return "-";
-      }
-      return total <= 0 ? "0%" : (Math.round(occupied / total * 10000) / 100.00)+"%";
+        occupied = parseFloat(occupied);
+        total = parseFloat(total);
+        let percentage;
+        if (isNaN(occupied) || isNaN(total)) {
+            percentage= "-";
+        }
+        percentage=total <= 0 ? "0" : (Math.round(occupied / total * 10000) / 10000.00)+" ";
+        const gaugeConfig = {
+            percent: percentage,
+            type: 'meter',
+            innerRadius: 0.75,
+            range: {
+                ticks: [0, 1 / 3, 2 / 3, 1],
+                color: ['#301c4d', '#51258f', '#ab7ae0'],
+            },
+            indicator: {
+                pointer: {style: {stroke: '#D0D0D0'}},
+                pin: {style: {stroke: '#D0D0D0'}},
+            },
+            statistic: {
+                content: {
+                    style: {
+                        fontSize: '36px',
+                        lineHeight: '36px',
+                    },
+                },
+            },
+        };
+        return gaugeConfig
+
     }
 
 
@@ -183,27 +207,6 @@ const Index = () => {
 
 
 
-    const gaugeConfig = {
-        percent: calculatePercentage(allEquipmentUsage,occupiedEquipmentUsage),
-        type: 'meter',
-        innerRadius: 0.75,
-        range: {
-            ticks: [0, 1 / 3, 2 / 3, 1],
-            color: ['#301c4d', '#51258f', '#ab7ae0'],
-        },
-        indicator: {
-            pointer: {style: {stroke: '#D0D0D0'}},
-            pin: {style: {stroke: '#D0D0D0'}},
-        },
-        statistic: {
-            content: {
-                style: {
-                    fontSize: '36px',
-                    lineHeight: '36px',
-                },
-            },
-        },
-    };
 
     const {Title} = Typography;
 
@@ -292,8 +295,8 @@ const Index = () => {
 
                 <div className="cardWrapperB" style={{width: '30%'}}>
                     <Card className="flow_chart_space"
-                        style={{width: '90%', background: "#FFFF", borderRadius: "10px", border: "false"}}>
-                        <Gauge {...gaugeConfig} />
+                          style={{width: '90%', background: "#FFFF", borderRadius: "10px", border: "false"}}>
+                        <Gauge {...calculatePercentage(allEquipmentUsage,occupiedEquipmentUsage)} />
                     </Card>
                 </div>
 
@@ -307,6 +310,3 @@ const Index = () => {
 
 
 export default Index;
-
-
-
