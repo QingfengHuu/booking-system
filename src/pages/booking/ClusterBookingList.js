@@ -1,4 +1,4 @@
-import {Form, Input, DatePicker, Button, Card, Table, Popconfirm, Modal, Radio, Space, message} from 'antd';
+import {Form, Input, DatePicker, Button, Card, Table, Descriptions, Modal, Divider, Space, message} from 'antd';
 import React, {useState, useEffect} from 'react'
 import Highlighter from 'react-highlight-words';
 import {SearchOutlined} from '@ant-design/icons';
@@ -6,6 +6,7 @@ import moment from 'moment'
 import {ClusterBookingListApi, NodeBookingListApi, NodeBookingListReserveApi} from '../../services/booking';
 import {getUsername} from '../../utils/auth';
 import "./Booking.css"
+import { TerminalGetOneById } from '../../services/terminal';
 
 
 const {RangePicker} = DatePicker;
@@ -78,6 +79,8 @@ const BookingList = (props) => {
 
     const [isModalVisible, setIsModalVisible] = useState(false);
     const [dataSource, setDataSource] = useState([]);
+    const [detailedSource, setDetailedSource] = useState([{}]);
+    const [isDetailedModalVisible, setIsDetailedModalVisible] =useState(false);
     //states for range picker
     const [dates, setDates] = useState([]);
     const [hackValue, setHackValue] = useState();
@@ -100,14 +103,31 @@ const BookingList = (props) => {
   })
 
     const [form] = Form.useForm()
+
+    //Detail
+    const showModalDetail = (record) => {
+        TerminalGetOneById(record.e_id).then(res => {
+            setDetailedSource(res.data.data)
+        })
+        setIsDetailedModalVisible(true);
+    }
+
     const showModal = (record) => {
         form.setFieldsValue(record)
         setIsModalVisible(true);
     };
 
+    const handleDetOk = () =>{
+        setIsDetailedModalVisible(false);
+    }
+
     const handleOk = () => {
         setIsModalVisible(false);
     };
+
+    const handleDetCancel= () =>{
+        setIsDetailedModalVisible(false);
+    }
 
     const handleCancel = () => {
         setIsModalVisible(false);
@@ -292,7 +312,16 @@ const BookingList = (props) => {
             title: 'Operation',
             render: (txt, record, index) => {
                 return (
-                    <Button type='primary' size='small' onClick={()=>{showModal(record)}}>Reserve</Button>
+                    <div>
+                    <Space split={<Divider type="vertical"/>}>
+                        <Button type='primary' size='small' onClick={()=>{
+                            showModalDetail(record)
+                        }}>Detail</Button>
+                        <Button type='primary' size='small' onClick={()=>{
+                            showModal(record)
+                        }}>Reserve</Button>
+                    </Space>
+                    </div>
                 )
 
             }
@@ -309,7 +338,26 @@ const BookingList = (props) => {
                     pagination={false}
                 />
 
+                <Modal title="Terminal Detailed Information"
+                visible={isDetailedModalVisible}
+                onOk={handleDetOk}
+                onCancel={handleDetCancel}
+                width="50%"
+                >
+                <Descriptions title="Terminal Info" bordered layout="horizontal">
+                    <Descriptions.Item label="Title" span={3}>{detailedSource[0].e_title}</Descriptions.Item>
+                    <Descriptions.Item label="Location" span={3}>{detailedSource[0].e_location}</Descriptions.Item>
+                    <Descriptions.Item label="iDrac_ip" span={3}>{detailedSource[0].e_iDrac_ip}</Descriptions.Item>
+                    <Descriptions.Item label="Server Tag" span={3}>{detailedSource[0].e_tag}</Descriptions.Item>
+                    <Descriptions.Item label="Server Group" span={3}>{detailedSource[0].e_servergroup}</Descriptions.Item>
+                    <Descriptions.Item label="Cluster" span={3}>{detailedSource[0].e_cluster}</Descriptions.Item>
+                    <Descriptions.Item label="GeoLocation" span={3}>{detailedSource[0].e_geolocation}</Descriptions.Item>
+                    <Descriptions.Item label="Configuration" span={3}>
+                        {detailedSource[0].e_configuration}
+                    </Descriptions.Item>
+                </Descriptions>
 
+            </Modal>
                 <Modal title="Reserve an equipment" 
                 visible={isModalVisible} 
                 onOk={handleOk} 
@@ -320,6 +368,7 @@ const BookingList = (props) => {
                           labelCol={{span: 8}}
                           wrapperCol={{span: 16}}
                           initialValues={{remember: true}}
+                          preserve={false}
                           onFinish={(values) => {
                             NodeBookingListReserveApi({
                               e_id: values.e_id,
@@ -392,7 +441,7 @@ const BookingList = (props) => {
     };
 
     return (
-        <Card title='Node BookingList' >
+        <Card title='Cluster BookingList' >
 
             <Table
                 rowKey="e_cluster"
@@ -404,7 +453,7 @@ const BookingList = (props) => {
                       loadData()
                     }
                   }}
-                dataSource={dataSource}
+                dataSource={dataSource1}
             />
 
         </Card>

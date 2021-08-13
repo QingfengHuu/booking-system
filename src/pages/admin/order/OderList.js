@@ -40,7 +40,7 @@ const OrderList=(props) => {
     // Table Collection Data
     const colomns = [{
       title: 'ID',
-      key:'index',
+      key:'b_id',
       render: (txt, record, index) => index + 1,
     },{
       title: 'Order ID',
@@ -72,10 +72,10 @@ const OrderList=(props) => {
                 OrderExtendApi({b_id : record.b_id}).then(res=>{
                   if(res.data.code==='200'){
                     console.log(record.b_id+'extended!')
-                    message.info(res.message)
+                    message.info(res.msg)
                     loadData()
                   }else{
-                    message.info(res.message)
+                    message.info(res.msg)
                   }
                 })
               }}
@@ -87,7 +87,7 @@ const OrderList=(props) => {
                 OrderEndApi({b_id : record.b_id}).then(res=>{
                   if(res.data.code===200){
                     console.log(record.b_id+'ended!')
-                    message.info(res.message)
+                    message.info(res.msg)
                     loadData()
                   }
                   })
@@ -107,7 +107,7 @@ const OrderList=(props) => {
     return (
         <div>
           <Card title='Order List'>
-            <Table rowKey='index' columns={colomns} bordered 
+            <Table rowKey='b_id' columns={colomns} bordered 
             pagination={{
               onchange: ()=>{
                 loadData()

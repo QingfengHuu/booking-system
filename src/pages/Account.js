@@ -100,22 +100,6 @@ const Account= (props) => {
     setIsModalVisible(true);
   };
 
-  const handleOk = () => {
-    setIsModalVisible(false);
-  };
-
-  const handleCancel = () => {
-    setIsModalVisible(false);
-  };
-
-  const onFinish = (values) => {
-    console.log('Success:', values);
-  };
-
-  const onFinishFailed = (errorInfo) => {
-    console.log('Failed:', errorInfo);
-  };
-
   const InputShown = (value) => {
     if (value != null && value === ''){
       return 'LOL'; 
@@ -239,16 +223,28 @@ const Account= (props) => {
     dataIndex: 'b_id',
     className:'tableHidden'
   },{
-    title: 'Booker ID',
-    dataIndex: 'u_id'
+    title: 'Titile',
+    dataIndex: 'e_title'
+  },{
+    title: 'Dell Server Number',
+    dataIndex: 'e_location'
   },{
     title: 'Server Tag',
-    dataIndex: 'e_id'
+    dataIndex: 'e_tag'
+  },{
+    title: 'iDrac_ip',
+    dataIndex: 'e_iDrac_ip'
+  },{
+    title: 'Cluster',
+    dataIndex: 'e_cluster'
+  },{
+    title: 'Booker',
+    dataIndex: 'u_id'
   },{
     title: 'Subscribe Date',
     dataIndex: 'subscribe_date',
   },{
-    title: 'Expire Date',
+    title: 'End Date',
     dataIndex: 'expire_date'
   },{
     title: 'Extend Time',
@@ -261,12 +257,12 @@ const Account= (props) => {
           <Popconfirm title= 'Extend for 3 days?'
           onConfirm={()=>{
             OrderExtendApi({b_id : record.b_id}).then(res=>{
-              if(res.code==='200'){
+              if(res.data.code==='200'){
                 console.log(record.b_id+'extended!')
-                message.info(res.message)
+                message.info(res.data.msg)
                 loadData()
               }else{
-                message.info(res.message)
+                message.info(res.data.msg)
               }
             }) 
           }}>
@@ -275,9 +271,9 @@ const Account= (props) => {
           <Popconfirm title= 'Sure release?'
           onConfirm={()=>{
             OrderEndApi({b_id : record.b_id}).then(res=>{
-              if(res.code===200){
+              if(res.data.code===200){
                 console.log(record.b_id+'ended!')
-                message.info(res.message)
+                message.info(res.data.msg)
                 loadData()
               }
               })
@@ -301,24 +297,36 @@ const Account= (props) => {
     dataIndex: 'b_id',
     className:'tableHidden'
   },{
-    title: 'Booker ID',
-    dataIndex: 'u_id'
+    title: 'Titile',
+    dataIndex: 'e_title'
+  },{
+    title: 'Dell Server Number',
+    dataIndex: 'e_location'
   },{
     title: 'Server Tag',
-    dataIndex: 'e_id'
+    dataIndex: 'e_tag'
+  },{
+    title: 'iDrac_ip',
+    dataIndex: 'e_iDrac_ip'
+  },{
+    title: 'Cluster',
+    dataIndex: 'e_cluster'
+  },{
+    title: 'Booker',
+    dataIndex: 'u_id'
   },{
     title: 'Subscribe Date',
     dataIndex: 'subscribe_date',
   },{
     title: 'End Date',
-    dataIndex: 'end_time'
+    dataIndex: 'expire_date'
   }
 
 ]
 
   return (
     <Card title='Account' >
-        <Card type='inner' title='Reserving terminal' >
+        <Card type='inner' title='Reserving' >
             <Table rowKey='index' columns={currColumns} bordered 
             pagination={{
               onchange: ()=>{
@@ -327,13 +335,9 @@ const Account= (props) => {
             }}
             dataSource={dataSource}/>
         </Card>
-        <Card type='inner' title='Reservation history' >
+        <Card type='inner' title='History' >
             <Table rowKey='index' columns={histColums} bordered 
-            pagination={{
-              onchange: ()=>{
-                loadData()
-              }
-            }}
+            pagination={false}
             dataSource={dataSourceHis}/>
         </Card>
     </Card>
