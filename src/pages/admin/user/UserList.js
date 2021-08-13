@@ -5,23 +5,23 @@ import { PlusOutlined } from '@ant-design/icons';
 import { UserListApi,UserCreateApi, UserDelApi, UserResetApi } from '../../../services/user';
 
 // Account DataSource: due to the disconnection with the backend
-const dataSource1 = [{
-  id:'1',
-  password:'********',
-  last_login:'2021/07/30',
-  is_superuser:'false',
-  username:'Javi3s',
-  first_name:'Javis',
-  last_name:'Huang',
-  email:'javis_huang@dell.com',
-  is_staff:'false',
-  is_active:'true',
-  date_joined:'2021/07/01',
-  group_name: 'VxRail Day0 Team',
-  location: 'Wu Jiao Chang',
+// const dataSource = [{
+//   id:'1',
+//   password:'********',
+//   last_login:'2021/07/30',
+//   is_superuser:'false',
+//   username:'Javis',
+//   first_name:'Javis',
+//   last_name:'Huang',
+//   email:'javis_huang@dell.com',
+//   is_staff:'false',
+//   is_active:'true',
+//   date_joined:'2021/07/01',
+//   group_name: 'VxRail Day0 Team',
+//   location: 'Wu Jiao Chang',
 
-  approver: 'Tom Liu'
-}]
+//   approver: 'Tom Liu'
+// }]
 
 const UserList=(props) => {
     // Drawer Trigger Setting
@@ -70,13 +70,14 @@ const UserList=(props) => {
       render: (txt, record, index) => index + 1,
     },{
       title: 'User Name',
+      key: 'username',
       dataIndex: 'username'
     },{
       title: 'Email',
       dataIndex: 'email',
     },{
       title: 'Access Level',
-      dataIndex: 'access'
+      dataIndex: 'is_staff'
     },{
       title: 'Operation',
       render: (txt,record,index) => {
@@ -130,7 +131,7 @@ const UserList=(props) => {
             </Button>
           }
         >
-          <Table rowKey='username' columns={colomns} bordered 
+          <Table rowKey='username' columns={colomns} bordered
           pagination={{
             onchange: ()=>{
               loadData()
@@ -166,6 +167,7 @@ const UserList=(props) => {
                 console.log('Add successful!')
                 message.info(res.data.msg)
                 loadData()
+                onClose()
               }else if(res.data.code===400){
                 message.info(res.data.msg)
               }

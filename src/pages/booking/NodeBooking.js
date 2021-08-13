@@ -1,5 +1,18 @@
-
-import {Form, Input, DatePicker, Button, Card, Table, Descriptions, Modal, Badge, Space, Divider, Drawer, message} from 'antd';
+import {
+    Form,
+    Input,
+    DatePicker,
+    Button,
+    Card,
+    Table,
+    Descriptions,
+    Modal,
+    Badge,
+    Space,
+    Divider,
+    Drawer,
+    message
+} from 'antd';
 
 import React, {useState, useEffect} from 'react'
 import {NodeBookingListApi, NodeBookingListReserveApi} from '../../services/booking';
@@ -9,7 +22,7 @@ import moment from 'moment';
 import 'moment-timezone';
 import {getUsername} from '../../utils/auth';
 import "./Booking.css"
-import { TerminalGetOneById } from '../../services/terminal';
+import {TerminalGetOneById} from '../../services/terminal';
 
 
 moment.tz.setDefault("Asia/Shanghai");
@@ -18,7 +31,7 @@ moment.tz.setDefault("Asia/Shanghai");
 
 const {RangePicker} = DatePicker;
 
-const dataSource1=[{
+const dataSource1 = [{
     e_id: 1,
     e_team: 'HWSS',
     e_servergroup: 'DELL 13G',
@@ -37,7 +50,8 @@ const NodeBookingList = (props) => {
 
     const [dataSource, setDataSource] = useState([]);
     const [detailedSource, setDetailedSource] = useState([{}])
-    const [isDetailedModalVisible, setIsDetailedModalVisible] =useState(false);
+
+    const [isDetailedModalVisible, setIsDetailedModalVisible] = useState(false);
     const [isModalVisible, setIsModalVisible] = useState(false);
 
     //states for range picker
@@ -50,7 +64,6 @@ const NodeBookingList = (props) => {
     const dateFormat = 'YYYY-MM-DD';
 
     let searchInput = '';
-
 
 
     useEffect(() => {
@@ -70,8 +83,10 @@ const NodeBookingList = (props) => {
     //Detail
     const showModalDetail = (record) => {
         TerminalGetOneById(record.e_id).then(res => {
+            console.log(res.data.data)
             setDetailedSource(res.data.data)
         })
+        console.log(detailedSource)
         setIsDetailedModalVisible(true);
     }
 
@@ -81,7 +96,7 @@ const NodeBookingList = (props) => {
         setIsModalVisible(true);
     };
 
-    const handleDetOk = () =>{
+    const handleDetOk = () => {
         setIsDetailedModalVisible(false);
     }
 
@@ -89,7 +104,7 @@ const NodeBookingList = (props) => {
         setIsModalVisible(false);
     };
 
-    const handleDetCancel= () =>{
+    const handleDetCancel = () => {
         setIsDetailedModalVisible(false);
     }
 
@@ -216,11 +231,11 @@ const NodeBookingList = (props) => {
 
     const colomns = [{
         title: 'ID',
-        key:'index',
+        key: 'index',
         render: (txt, record, index) => index + 1,
-      },{
+    }, {
         title: 'E_ID',
-        className:'tableHidden',
+        className: 'tableHidden',
         dataIndex: 'e_id',
         sorter: (a, b) => a.e_id - b.e_id,
         sortDirections: ['descend', 'ascend'],
@@ -260,17 +275,15 @@ const NodeBookingList = (props) => {
         render: (txt, record, index) => {
 
             return (<div>
-                <Space split={<Divider type="vertical"/>}>
-                    <Button type='primary' size='small' disabled={
-                        (record.e_status==0)?true:false
-                    } onClick={()=>{
-                        showModalDetail(record)
-                    }}>Detail</Button>
-                    <Button type='primary' size='small' onClick={() => {
-                        showModal(record)
-                    }}>Reserve</Button>
-                </Space>
-            </div>
+                    <Space split={<Divider type="vertical"/>}>
+                        <Button type='primary' size='small' onClick={() => {
+                            showModalDetail(record)
+                        }}>Detail</Button>
+                        <Button type='primary' size='small' disabled={(record.e_status==1)?true:false} onClick={() => {
+                            showModal(record)
+                        }}>Reserve</Button>
+                    </Space>
+                </div>
             )
         }
     }
@@ -284,18 +297,18 @@ const NodeBookingList = (props) => {
                 columns={colomns}
                 bordered
                 pagination={{
-                    onchange: ()=>{
-                      loadData()
+                    onchange: () => {
+                        loadData()
                     }
-                  }}
+                }}
                 dataSource={dataSource}
             />
 
             <Modal title="Terminal Detailed Information"
-                visible={isDetailedModalVisible}
-                onOk={handleDetOk}
-                onCancel={handleDetCancel}
-                width="50%"
+                   visible={isDetailedModalVisible}
+                   onOk={handleDetOk}
+                   onCancel={handleDetCancel}
+                   width="50%"
             >
                 <Descriptions title="Terminal Info" bordered layout="horizontal">
                 <Descriptions.Item label="Title" span={3}>{detailedSource[0].e_title}</Descriptions.Item>
@@ -311,11 +324,11 @@ const NodeBookingList = (props) => {
                 </Descriptions>
             </Modal>
 
-            <Modal title="Reserve an equipment" 
-                visible={isModalVisible} 
-                onOk={handleOk}
-                onCancel={handleCancel}
-                destroyOnClose={true}>
+            <Modal title="Reserve an equipment"
+                   visible={isModalVisible}
+                   onOk={handleOk}
+                   onCancel={handleCancel}
+                   destroyOnClose={true}>
                 <Form
                     form={form}
                     name="basic"

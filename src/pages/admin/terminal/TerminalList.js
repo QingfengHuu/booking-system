@@ -135,6 +135,7 @@ const TerminalList=(props) => {
           <div>
             <Space split={<Divider type="vertical"/>}>
               <Button type='primary' size='small' onClick={()=>{
+                  console.log(record)
                 props.history.push(`/admin/terminal/edit/${record.e_id}`)
               }} > Edit </Button>
               <Popconfirm title= 'Sure Delete?'
@@ -180,7 +181,7 @@ const TerminalList=(props) => {
                 loadData()
               }
             }}
-            dataSource={dataSource1} />
+            dataSource={dataSource} />
         </Card>
 
 
