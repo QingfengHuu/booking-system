@@ -1,4 +1,4 @@
-import {Form, Input, DatePicker, Button, Card, Table, Popconfirm, Modal, Radio, Space, message, Tooltip, Divider} from 'antd';
+import {Form, Input, DatePicker, Button, Card, Table, Popconfirm, Modal, Radio, Space, message, Descriptions, Tooltip, Divider} from 'antd';
 import React, {useState, useEffect} from 'react'
 import Highlighter from 'react-highlight-words';
 import {SearchOutlined, SyncOutlined} from '@ant-design/icons';
@@ -6,6 +6,7 @@ import moment from 'moment'
 import {ClusterBookingListApi, NodeBookingListApi, NodeBookingListReserveApi} from '../../services/booking';
 import {getUsername} from '../../utils/auth';
 import "./Booking.css"
+import { TerminalGetOneById } from '../../services/terminal';
 
 
 const {RangePicker} = DatePicker;
@@ -78,6 +79,8 @@ const BookingList = (props) => {
 
     const [isModalVisible, setIsModalVisible] = useState(false);
     const [dataSource, setDataSource] = useState([]);
+    const [detailedSource, setDetailedSource] = useState([{}]);
+    const [isDetailedModalVisible, setIsDetailedModalVisible] =useState(false);
     //states for range picker
     const [dates, setDates] = useState([]);
     const [hackValue, setHackValue] = useState();
@@ -126,14 +129,31 @@ const BookingList = (props) => {
   })
 
     const [form] = Form.useForm()
+
+    //Detail
+    const showModalDetail = (record) => {
+        TerminalGetOneById(record.e_id).then(res => {
+            setDetailedSource(res.data.data)
+        })
+        setIsDetailedModalVisible(true);
+    }
+
     const showModal = (record) => {
         form.setFieldsValue(record)
         setIsModalVisible(true);
     };
 
+    const handleDetOk = () =>{
+        setIsDetailedModalVisible(false);
+    }
+
     const handleOk = () => {
         setIsModalVisible(false);
     };
+
+    const handleDetCancel= () =>{
+        setIsDetailedModalVisible(false);
+    }
 
     const handleCancel = () => {
         setIsModalVisible(false);
@@ -318,12 +338,16 @@ const BookingList = (props) => {
             title: 'Operation',
             render: (txt, record, index) => {
                 return (
+                    <div>
                     <Space split={<Divider type="vertical"/>}>
-                        <Button type='primary' size='small' style={{borderRadius:'10px'}} onClick={()=>{showModal(record)} }>Reserve</Button>
-                        <Tooltip title="Update?">
-                            <Button type="dashed" shape="circle" icon={<SyncOutlined  />} />
-                        </Tooltip>
+                        <Button type='primary' size='small' onClick={()=>{
+                            showModalDetail(record)
+                        }}>Detail</Button>
+                        <Button type='primary' size='small' onClick={()=>{
+                            showModal(record)
+                        }}>Reserve</Button>
                     </Space>
+                    </div>
                 )
 
             }
@@ -340,34 +364,54 @@ const BookingList = (props) => {
                     pagination={false}
                 />
 
+                <Modal title="Terminal Detailed Information"
+                visible={isDetailedModalVisible}
+                onOk={handleDetOk}
+                onCancel={handleDetCancel}
+                width="50%"
+                >
+                <Descriptions title="Terminal Info" bordered layout="horizontal">
+                    <Descriptions.Item label="Title" span={3}>{detailedSource[0].e_title}</Descriptions.Item>
+                    <Descriptions.Item label="Location" span={3}>{detailedSource[0].e_location}</Descriptions.Item>
+                    <Descriptions.Item label="iDrac_ip" span={3}>{detailedSource[0].e_iDrac_ip}</Descriptions.Item>
+                    <Descriptions.Item label="Server Tag" span={3}>{detailedSource[0].e_tag}</Descriptions.Item>
+                    <Descriptions.Item label="Server Group" span={3}>{detailedSource[0].e_servergroup}</Descriptions.Item>
+                    <Descriptions.Item label="Cluster" span={3}>{detailedSource[0].e_cluster}</Descriptions.Item>
+                    <Descriptions.Item label="GeoLocation" span={3}>{detailedSource[0].e_geolocation}</Descriptions.Item>
+                    <Descriptions.Item label="Configuration" span={3}>
+                        {detailedSource[0].e_configuration}
+                    </Descriptions.Item>
+                </Descriptions>
 
+            </Modal>
                 <Modal title="Reserve an equipment" 
                 visible={isModalVisible} 
                 onOk={handleOk} 
                 onCancel={handleCancel}
                 destroyOnClose={true}>
-                    <Form form={form}
-                          name="basic"
-                          labelCol={{span: 8}}
-                          wrapperCol={{span: 16}}
-                          initialValues={{remember: true}}
-                          onFinish={(values) => {
-                            NodeBookingListReserveApi({
-                              e_id: values.e_id,
-                              u_id: getUsername(),
-                              subscribe_date: moment(values.date[0]).format('YYYY-MM-DD HH:mm:ss'),
-                              expire_date: moment(values.date[1]).format('YYYY-MM-DD HH:mm:ss')
-                            }).then(res => {
-                              if(res.data.msg==200){
-                                  console.log(values.e_id + 'has been reserved!')
-                                  message.info(values.e_id + 'has been reserved!')
-                                  loadData()
-                              }else{
-                                  message.info(res.data.msg)
-                              }   
-                            })
-                          }}
-                          onFinishFailed={onFinishFailed}
+                        <Form form={form}
+                            name="basic"
+                            labelCol={{span: 8}}
+                            wrapperCol={{span: 16}}
+                            initialValues={{remember: true}}
+                            preserve={false}
+                            onFinish={(values) => {
+                                NodeBookingListReserveApi({
+                                e_id: values.e_id,
+                                u_id: getUsername(),
+                                subscribe_date: moment(values.date[0]).format('YYYY-MM-DD HH:mm:ss'),
+                                expire_date: moment(values.date[1]).format('YYYY-MM-DD HH:mm:ss')
+                                }).then(res => {
+                                if(res.data.msg==200){
+                                    console.log(values.e_id + 'has been reserved!')
+                                    message.info(values.e_id + 'has been reserved!')
+                                    loadData()
+                                }else{
+                                    message.info(res.data.msg)
+                                }   
+                                })
+                            }}
+                            onFinishFailed={onFinishFailed}
 
                     >
                         <Form.Item

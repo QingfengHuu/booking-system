@@ -10,7 +10,7 @@ function TerminalEdit(props) {
     useLayoutEffect(()=>{
       if(props.match.params.id){
         TerminalGetOneById(props.match.params.id).then(res=>{
-          console.log(res.data.data[0])
+          console.log(res.data.data)
           form.setFieldsValue(res.data.data[0])
         })
       }
