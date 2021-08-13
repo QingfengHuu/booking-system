@@ -452,7 +452,7 @@ const BookingList = (props) => {
                       loadData()
                     }
                   }}
-                dataSource={dataSource1}
+                dataSource={dataSource}
             />
 
         </Card>

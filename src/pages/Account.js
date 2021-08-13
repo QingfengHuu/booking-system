@@ -233,19 +233,16 @@ const Account= (props) => {
     dataIndex: 'e_tag'
   },{
     title: 'iDrac_ip',
-    dataIndex: 'e_idrac_ip'
+    dataIndex: 'e_iDrac_ip'
   },{
     title: 'Cluster',
     dataIndex: 'e_cluster'
   },{
-    title: 'Booker',
-    dataIndex: 'u_id'
-  },{
     title: 'Subscribe Date',
     dataIndex: 'subscribe_date',
   },{
-    title: 'End Date',
-    dataIndex: 'end_date'
+    title: 'Expire Date',
+    dataIndex: 'expire_date'
   },{
     title: 'Extend Time',
     dataIndex: 'extend'
@@ -307,19 +304,16 @@ const Account= (props) => {
     dataIndex: 'e_tag'
   },{
     title: 'iDrac_ip',
-    dataIndex: 'e_idrac_ip'
+    dataIndex: 'e_iDrac_ip'
   },{
     title: 'Cluster',
     dataIndex: 'e_cluster'
-  },{
-    title: 'Booker',
-    dataIndex: 'u_id'
   },{
     title: 'Subscribe Date',
     dataIndex: 'subscribe_date',
   },{
     title: 'End Date',
-    dataIndex: 'end_date'
+    dataIndex: 'end_time'
   }
 
 ]
