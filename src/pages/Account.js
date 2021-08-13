@@ -223,17 +223,29 @@ const Account= (props) => {
     dataIndex: 'b_id',
     className:'tableHidden'
   },{
-    title: 'Booker ID',
-    dataIndex: 'u_id'
+    title: 'Titile',
+    dataIndex: 'e_title'
+  },{
+    title: 'Dell Server Number',
+    dataIndex: 'e_location'
   },{
     title: 'Server Tag',
-    dataIndex: 'e_id'
+    dataIndex: 'e_tag'
+  },{
+    title: 'iDrac_ip',
+    dataIndex: 'e_idrac_ip'
+  },{
+    title: 'Cluster',
+    dataIndex: 'e_cluster'
+  },{
+    title: 'Booker',
+    dataIndex: 'u_id'
   },{
     title: 'Subscribe Date',
     dataIndex: 'subscribe_date',
   },{
-    title: 'Expire Date',
-    dataIndex: 'expire_date'
+    title: 'End Date',
+    dataIndex: 'end_date'
   },{
     title: 'Extend Time',
     dataIndex: 'extend'
@@ -285,24 +297,36 @@ const Account= (props) => {
     dataIndex: 'b_id',
     className:'tableHidden'
   },{
-    title: 'Booker ID',
-    dataIndex: 'u_id'
+    title: 'Titile',
+    dataIndex: 'e_title'
+  },{
+    title: 'Dell Server Number',
+    dataIndex: 'e_location'
   },{
     title: 'Server Tag',
-    dataIndex: 'e_id'
+    dataIndex: 'e_tag'
+  },{
+    title: 'iDrac_ip',
+    dataIndex: 'e_idrac_ip'
+  },{
+    title: 'Cluster',
+    dataIndex: 'e_cluster'
+  },{
+    title: 'Booker',
+    dataIndex: 'u_id'
   },{
     title: 'Subscribe Date',
     dataIndex: 'subscribe_date',
   },{
     title: 'End Date',
-    dataIndex: 'end_time'
+    dataIndex: 'end_date'
   }
 
 ]
 
   return (
     <Card title='Account' >
-        <Card type='inner' title='Reserving terminal' >
+        <Card type='inner' title='Reserving' >
             <Table rowKey='index' columns={currColumns} bordered 
             pagination={{
               onchange: ()=>{
@@ -311,7 +335,7 @@ const Account= (props) => {
             }}
             dataSource={dataSource}/>
         </Card>
-        <Card type='inner' title='Reservation history' >
+        <Card type='inner' title='History' >
             <Table rowKey='index' columns={histColums} bordered 
             pagination={{
               onchange: ()=>{
