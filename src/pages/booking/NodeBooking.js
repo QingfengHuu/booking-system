@@ -31,20 +31,6 @@ moment.tz.setDefault("Asia/Shanghai");
 
 const {RangePicker} = DatePicker;
 
-const dataSource1 = [{
-    e_id: 1,
-    e_team: 'HWSS',
-    e_servergroup: 'DELL 13G',
-    e_title: '13G R630',
-    e_location: 'DELL Server10',
-    e_iDrac_ip: '20.12.131.24',
-    e_tag: 'HBMNBD2',
-    e_status: 1,
-    booker: 'Cathy',
-    start_date: '7/15',
-    end_date: '7/20'
-}]
-
 
 const NodeBookingList = (props) => {
 
@@ -74,7 +60,9 @@ const NodeBookingList = (props) => {
 
     const loadData = (() => {
         NodeBookingListApi().then(res => {
-            setDataSource(res.data.data);
+            var newData = dataSource.concat()
+            newData=res.data.data
+            setDataSource(newData);
         })
     })
 
@@ -335,6 +323,7 @@ const NodeBookingList = (props) => {
                     labelCol={{span: 8}}
                     wrapperCol={{span: 16}}
                     initialValues={{remember: true}}
+                    preserve={false}
                     onFinish={(values) => {
                         NodeBookingListReserveApi({
                             e_id: values.e_id,
@@ -370,8 +359,6 @@ const NodeBookingList = (props) => {
                     >
                         <Input/>
                     </Form.Item>
-
-
                     <Form.Item name="date" label="RangePicker" {...rangeConfig}>
                         <RangePicker
                             value={hackValue || value}

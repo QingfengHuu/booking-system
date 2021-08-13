@@ -238,10 +238,13 @@ const Account= (props) => {
     title: 'Cluster',
     dataIndex: 'e_cluster'
   },{
+    title: 'Booker',
+    dataIndex: 'u_id'
+  },{
     title: 'Subscribe Date',
     dataIndex: 'subscribe_date',
   },{
-    title: 'Expire Date',
+    title: 'End Date',
     dataIndex: 'expire_date'
   },{
     title: 'Extend Time',
@@ -309,11 +312,14 @@ const Account= (props) => {
     title: 'Cluster',
     dataIndex: 'e_cluster'
   },{
+    title: 'Booker',
+    dataIndex: 'u_id'
+  },{
     title: 'Subscribe Date',
     dataIndex: 'subscribe_date',
   },{
     title: 'End Date',
-    dataIndex: 'end_time'
+    dataIndex: 'expire_date'
   }
 
 ]
@@ -331,11 +337,7 @@ const Account= (props) => {
         </Card>
         <Card type='inner' title='History' >
             <Table rowKey='index' columns={histColums} bordered 
-            pagination={{
-              onchange: ()=>{
-                loadData()
-              }
-            }}
+            pagination={false}
             dataSource={dataSourceHis}/>
         </Card>
     </Card>
