@@ -1,7 +1,7 @@
-import {Form, Input, DatePicker, Button, Card, Table, Popconfirm, Modal, Radio, Space, message} from 'antd';
+import {Form, Input, DatePicker, Button, Card, Table, Popconfirm, Modal, Radio, Space, message, Tooltip, Divider} from 'antd';
 import React, {useState, useEffect} from 'react'
 import Highlighter from 'react-highlight-words';
-import {SearchOutlined} from '@ant-design/icons';
+import {SearchOutlined, SyncOutlined} from '@ant-design/icons';
 import moment from 'moment'
 import {ClusterBookingListApi, NodeBookingListApi, NodeBookingListReserveApi} from '../../services/booking';
 import {getUsername} from '../../utils/auth';
@@ -84,8 +84,34 @@ const BookingList = (props) => {
     const [value, setValue] = useState();
     const [searchedColumn, setSearchedColumn] = useState('');
     const [searchText, setSearchText] = useState('');
+    // const [loadingState, setloadingState] = useState([]);
 
     let searchInput = '';
+    //button time out section 
+    // const loadingState = {
+    //     loadings: [],
+    //   };
+    
+    // const enterLoading = index => {
+    //     setloadingState(({ loadings }) => {
+    //       const newLoadings = [...loadings];
+    //       newLoadings[index] = true;
+    
+    //       return {
+    //         loadings: newLoadings,
+    //       };
+    //     });
+    //     setTimeout(() => {
+    //         setloadingState(({ loadings }) => {
+    //         const newLoadings = [...loadings];
+    //         newLoadings[index] = false;
+    
+    //         return {
+    //           loadings: newLoadings,
+    //         };
+    //       });
+    //     }, 6000);
+    //   };
 
     useEffect(() => {
         ClusterBookingListApi().then(res => {
@@ -292,7 +318,12 @@ const BookingList = (props) => {
             title: 'Operation',
             render: (txt, record, index) => {
                 return (
-                    <Button type='primary' size='small' onClick={()=>{showModal(record)}}>Reserve</Button>
+                    <Space split={<Divider type="vertical"/>}>
+                        <Button type='primary' size='small' style={{borderRadius:'10px'}} onClick={()=>{showModal(record)} }>Reserve</Button>
+                        <Tooltip title="Update?">
+                            <Button type="dashed" shape="circle" icon={<SyncOutlined  />} />
+                        </Tooltip>
+                    </Space>
                 )
 
             }
@@ -392,7 +423,8 @@ const BookingList = (props) => {
     };
 
     return (
-        <Card title='Node BookingList' >
+        <Card title='Node BookingList' style={{marginTop:'1%', borderRadius:'10px'}} >
+
 
             <Table
                 rowKey="e_cluster"
@@ -404,7 +436,7 @@ const BookingList = (props) => {
                       loadData()
                     }
                   }}
-                dataSource={dataSource}
+                dataSource={dataSource1}
             />
 
         </Card>

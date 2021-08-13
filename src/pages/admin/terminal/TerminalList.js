@@ -164,9 +164,9 @@ const TerminalList=(props) => {
 
     return (
       <div>
-        <Card title='Terminal List' 
+        <Card title='Terminal List' style={{marginTop:'1%', borderRadius:'10px'}}
           extra={
-            <Button type="primary" onClick={showDrawer}>
+            <Button type="primary" onClick={showDrawer} style={{borderRadius:'10px'}}>
               <PlusOutlined /> New Terminal
             </Button>
           }

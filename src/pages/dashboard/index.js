@@ -226,10 +226,10 @@ const Index = () => {
 
                         <div className="dataGroupA">
                             <div className="Usage_data">
-                                <Title level={3}>Current Usage </Title>
+                                <Title level={3} ellipsis={true}>Current Usage</Title>
                             </div>
                             <div className="data_shown">
-                                <Title level={2} >{allEquipmentUsage}</Title>
+                                <Title level={2} ellipsis={true}>{allEquipmentUsage}</Title>
                             </div>
                         </div>
 
@@ -248,10 +248,10 @@ const Index = () => {
                         </div>
                         <div className="dataGroupB">
                             <div className="AE_data">
-                                <Title level={3}>Equipments Available </Title>
+                                <Title level={3} ellipsis={true}>Equipments Available </Title>
                             </div>
                             <div className="AE_data_shown">
-                                <Title level={2}>{avaEquipmentUsage} </Title>
+                                <Title level={2} ellipsis={true}>{avaEquipmentUsage} </Title>
                             </div>
                         </div>
 
@@ -271,10 +271,10 @@ const Index = () => {
 
                         <div className="dataGroupC">
                             <div className="OE_Usage_data">
-                                <Title level={3}>Equipments Occupied </Title>
+                                <Title level={3} ellipsis={true}>Equipments Occupied </Title>
                             </div>
                             <div className="OE_data_shown">
-                                <Title level={2}>{occupiedEquipmentUsage}</Title>
+                                <Title level={2} ellipsis={true}>{occupiedEquipmentUsage}</Title>
                             </div>
                         </div>
 

@@ -123,9 +123,9 @@ const UserList=(props) => {
 
     return (
         <div>
-        <Card title='Account List' 
+        <Card title='Account List' style={{marginTop:'1%', borderRadius:'10px'}}
           extra={
-            <Button type="primary" onClick={showDrawer}>
+            <Button type="primary" onClick={showDrawer} style={{borderRadius:'10px'}}>
               <PlusOutlined /> New Account
             </Button>
           }

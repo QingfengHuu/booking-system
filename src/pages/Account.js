@@ -317,7 +317,7 @@ const Account= (props) => {
 ]
 
   return (
-    <Card title='Account' >
+    <Card title='Account' style={{marginTop:'1%', borderRadius:'10px'}}>
         <Card type='inner' title='Reserving terminal' >
             <Table rowKey='index' columns={currColumns} bordered 
             pagination={{

@@ -74,7 +74,7 @@ function Frame(props) {
       };
 
     const checkUserRole =()=>{
-        if (getUserRole() == false){
+        if (getUserRole() === false){
             showMenu();
         }
     }
@@ -253,7 +253,7 @@ function Frame(props) {
                     )
                 })}
 
-                    <SubMenu key="admin" title="Admin" disabled={menuRevealed}>
+                    <SubMenu key="admin" title="Admin" >
                         {routesAdmin.map(route=>{
                             return(
                                 <MenuItem key={route.path} onClick={p=>props.history.push(p.key)}>
