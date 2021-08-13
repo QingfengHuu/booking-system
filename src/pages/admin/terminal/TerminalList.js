@@ -180,7 +180,7 @@ const TerminalList=(props) => {
                 loadData()
               }
             }}
-            dataSource={dataSource} />
+            dataSource={dataSource1} />
         </Card>
 
 

@@ -100,22 +100,6 @@ const Account= (props) => {
     setIsModalVisible(true);
   };
 
-  const handleOk = () => {
-    setIsModalVisible(false);
-  };
-
-  const handleCancel = () => {
-    setIsModalVisible(false);
-  };
-
-  const onFinish = (values) => {
-    console.log('Success:', values);
-  };
-
-  const onFinishFailed = (errorInfo) => {
-    console.log('Failed:', errorInfo);
-  };
-
   const InputShown = (value) => {
     if (value != null && value === ''){
       return 'LOL'; 
@@ -261,12 +245,12 @@ const Account= (props) => {
           <Popconfirm title= 'Extend for 3 days?'
           onConfirm={()=>{
             OrderExtendApi({b_id : record.b_id}).then(res=>{
-              if(res.code==='200'){
+              if(res.data.code==='200'){
                 console.log(record.b_id+'extended!')
-                message.info(res.message)
+                message.info(res.data.msg)
                 loadData()
               }else{
-                message.info(res.message)
+                message.info(res.data.msg)
               }
             }) 
           }}>
@@ -275,9 +259,9 @@ const Account= (props) => {
           <Popconfirm title= 'Sure release?'
           onConfirm={()=>{
             OrderEndApi({b_id : record.b_id}).then(res=>{
-              if(res.code===200){
+              if(res.data.code===200){
                 console.log(record.b_id+'ended!')
-                message.info(res.message)
+                message.info(res.data.msg)
                 loadData()
               }
               })
