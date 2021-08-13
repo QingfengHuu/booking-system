@@ -23,7 +23,7 @@ export const userRoutes=[{
     component: Account,
     exact: true,
     isShow: true,
-    title: 'My Account',
+    title: 'My Booking',
 }]
 
 export const DashboardRoutes = [
@@ -39,7 +39,7 @@ export const adminRoutes=[{
     component: TerminalList,
     exact: true,
     isShow: true,
-    title: 'Terminal Manage'
+    title: 'Terminal'
 },{
     path: '/admin/terminal/edit/:id?',
     component: TerminalEdit,
@@ -49,13 +49,13 @@ export const adminRoutes=[{
     component: OrderList,
     exact: true,
     isShow: true,
-    title: 'Order Manager'
+    title: 'Order'
 },{
     path: '/admin/user',
     component: UserList,
     exact: true,
     isShow: true,
-    title: 'User Manager'
+    title: 'User'
 }]
 
 export const bookingRoutes = [
@@ -64,11 +64,11 @@ export const bookingRoutes = [
     component: BookingList,
     exact: true,
     isShow: true,
-    title: 'Booking with Clusters',
+    title: 'Clusters',
 },
 {
     path: '/NodeBookingList',
     component: NormalBookingList,
     isShow: true,
-    title: 'Booking with Nodes',
+    title: 'Nodes',
 }]

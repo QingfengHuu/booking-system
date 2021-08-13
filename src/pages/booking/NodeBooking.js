@@ -50,6 +50,7 @@ const NodeBookingList = (props) => {
 
     const [dataSource, setDataSource] = useState([]);
     const [detailedSource, setDetailedSource] = useState([{}])
+
     const [isDetailedModalVisible, setIsDetailedModalVisible] = useState(false);
     const [isModalVisible, setIsModalVisible] = useState(false);
 
@@ -77,7 +78,6 @@ const NodeBookingList = (props) => {
         })
     })
 
-    const [detailedForm] = Form.useForm()
     const [form] = Form.useForm()
 
     //Detail
@@ -152,7 +152,6 @@ const NodeBookingList = (props) => {
             },
         ],
     };
-
 
     //search modules
     const getColumnSearchProps = dataIndex => ({
@@ -312,16 +311,15 @@ const NodeBookingList = (props) => {
                    width="50%"
             >
                 <Descriptions title="Terminal Info" bordered layout="horizontal">
-                    <Descriptions.Item label="Title" span={1}>{detailedSource[0].e_title}</Descriptions.Item>
-                    <Descriptions.Item label="Location" span={1}>{detailedSource[0].e_location}</Descriptions.Item>
-                    <Descriptions.Item label="iDrac_ip" span={1}>{detailedSource[0].e_iDrac_ip}</Descriptions.Item>
-                    <Descriptions.Item label="Server Tag" span={1}>{detailedSource[0].e_tag}</Descriptions.Item>
-                    <Descriptions.Item label="Server Group"
-                                       span={1}>{detailedSource[0].e_servergroup}</Descriptions.Item>
-                    <Descriptions.Item label="GeoLocation"
-                                       span={1}>{detailedSource[0].e_geolocation}</Descriptions.Item>
-                    <Descriptions.Item label="Configuration" span={3}>{detailedSource[0].e_configuration}
-
+                <Descriptions.Item label="Title" span={3}>{detailedSource[0].e_title}</Descriptions.Item>
+                    <Descriptions.Item label="Location" span={3}>{detailedSource[0].e_location}</Descriptions.Item>
+                    <Descriptions.Item label="iDrac_ip" span={3}>{detailedSource[0].e_iDrac_ip}</Descriptions.Item>
+                    <Descriptions.Item label="Server Tag" span={3}>{detailedSource[0].e_tag}</Descriptions.Item>
+                    <Descriptions.Item label="Server Group" span={3}>{detailedSource[0].e_servergroup}</Descriptions.Item>
+                    <Descriptions.Item label="Cluster" span={3}>{detailedSource[0].e_cluster}</Descriptions.Item>
+                    <Descriptions.Item label="GeoLocation" span={3}>{detailedSource[0].e_geolocation}</Descriptions.Item>
+                    <Descriptions.Item label="Configuration" span={3}>
+                        {detailedSource[0].e_configuration}
                     </Descriptions.Item>
                 </Descriptions>
             </Modal>
