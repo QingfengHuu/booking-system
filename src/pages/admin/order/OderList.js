@@ -105,8 +105,8 @@ const OrderList=(props) => {
 
     return (
         <div>
-          <Card title='Order List'>
-            <Table rowKey='b_id' columns={colomns} bordered 
+          <Card title='Order List' style={{marginTop:'1%', borderRadius:'10px'}}>
+            <Table rowKey='index' columns={colomns} bordered 
             pagination={{
               onchange: ()=>{
                 loadData()

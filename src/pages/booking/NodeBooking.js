@@ -279,7 +279,7 @@ const NodeBookingList = (props) => {
     ]
 
     return (
-        <Card title='BookingList'>
+        <Card title='BookingList' style={{marginTop:'1%', borderRadius:'10px'}}>
             <Table
                 rowKey='index'
                 // pagination={{total,defaultPageSize:10, onChange: loadData}}
