@@ -238,13 +238,10 @@ const Account= (props) => {
     title: 'Cluster',
     dataIndex: 'e_cluster'
   },{
-    title: 'Booker',
-    dataIndex: 'u_id'
-  },{
     title: 'Subscribe Date',
     dataIndex: 'subscribe_date',
   },{
-    title: 'End Date',
+    title: 'Expire Date',
     dataIndex: 'expire_date'
   },{
     title: 'Extend Time',
@@ -257,7 +254,7 @@ const Account= (props) => {
           <Popconfirm title= 'Extend for 3 days?'
           onConfirm={()=>{
             OrderExtendApi({b_id : record.b_id}).then(res=>{
-              if(res.data.code==='200'){
+              if(res.data.code===200){
                 console.log(record.b_id+'extended!')
                 message.info(res.data.msg)
                 loadData()
@@ -266,7 +263,7 @@ const Account= (props) => {
               }
             }) 
           }}>
-            <Button type='primary' size='small' onClick={showModal}> Extend </Button>
+            <Button type='primary' size='small' disabled={(record.extend==0)?true:false} onClick={showModal}> Extend </Button>
           </Popconfirm>
           <Popconfirm title= 'Sure release?'
           onConfirm={()=>{
@@ -312,14 +309,11 @@ const Account= (props) => {
     title: 'Cluster',
     dataIndex: 'e_cluster'
   },{
-    title: 'Booker',
-    dataIndex: 'u_id'
-  },{
     title: 'Subscribe Date',
     dataIndex: 'subscribe_date',
   },{
     title: 'End Date',
-    dataIndex: 'expire_date'
+    dataIndex: 'end_time'
   }
 
 ]
