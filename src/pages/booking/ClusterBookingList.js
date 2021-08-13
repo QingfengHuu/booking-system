@@ -376,10 +376,10 @@ const BookingList = (props) => {
                               subscribe_date: moment(values.date[0]).format('YYYY-MM-DD HH:mm:ss'),
                               expire_date: moment(values.date[1]).format('YYYY-MM-DD HH:mm:ss')
                             }).then(res => {
-                              if(res.data.msg==200){
-                                  console.log(values.e_id + 'has been reserved!')
-                                  message.info(values.e_id + 'has been reserved!')
+                              if(res.data.data==200){
+                                  message.info(res.data.msg)
                                   loadData()
+                                  handleCancel()
                               }else{
                                   message.info(res.data.msg)
                               }   
@@ -453,7 +453,7 @@ const BookingList = (props) => {
                       loadData()
                     }
                   }}
-                dataSource={dataSource1}
+                dataSource={dataSource}
             />
 
         </Card>
