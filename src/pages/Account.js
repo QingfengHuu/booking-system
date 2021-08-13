@@ -233,7 +233,7 @@ const Account= (props) => {
     dataIndex: 'e_tag'
   },{
     title: 'iDrac_ip',
-    dataIndex: 'e_idrac_ip'
+    dataIndex: 'e_iDrac_ip'
   },{
     title: 'Cluster',
     dataIndex: 'e_cluster'
@@ -245,7 +245,7 @@ const Account= (props) => {
     dataIndex: 'subscribe_date',
   },{
     title: 'End Date',
-    dataIndex: 'end_date'
+    dataIndex: 'expire_date'
   },{
     title: 'Extend Time',
     dataIndex: 'extend'
@@ -307,7 +307,7 @@ const Account= (props) => {
     dataIndex: 'e_tag'
   },{
     title: 'iDrac_ip',
-    dataIndex: 'e_idrac_ip'
+    dataIndex: 'e_iDrac_ip'
   },{
     title: 'Cluster',
     dataIndex: 'e_cluster'
@@ -319,7 +319,7 @@ const Account= (props) => {
     dataIndex: 'subscribe_date',
   },{
     title: 'End Date',
-    dataIndex: 'end_date'
+    dataIndex: 'expire_date'
   }
 
 ]
@@ -337,11 +337,7 @@ const Account= (props) => {
         </Card>
         <Card type='inner' title='History' >
             <Table rowKey='index' columns={histColums} bordered 
-            pagination={{
-              onchange: ()=>{
-                loadData()
-              }
-            }}
+            pagination={false}
             dataSource={dataSourceHis}/>
         </Card>
     </Card>
