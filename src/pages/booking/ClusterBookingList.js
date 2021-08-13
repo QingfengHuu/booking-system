@@ -368,6 +368,7 @@ const BookingList = (props) => {
                           labelCol={{span: 8}}
                           wrapperCol={{span: 16}}
                           initialValues={{remember: true}}
+                          preserve={false}
                           onFinish={(values) => {
                             NodeBookingListReserveApi({
                               e_id: values.e_id,
