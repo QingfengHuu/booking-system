@@ -85,9 +85,10 @@ function Frame(props) {
     const checkUserRole = () => {
         console.log("判断用户角色")
         console.log(getUserRole())
-        if (getUserRole() === false) {
+        if (getUserRole() === 'false') {
             console.log("不是管理员")
-            setMenuRevealed(0);
+            setMenuRevealed(0)
+
         }
     }
     const display=()=>{
@@ -308,5 +309,7 @@ function Frame(props) {
 </Layout>
 )
 }
+
+
 
 export default withRouter(Frame)
