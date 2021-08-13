@@ -215,14 +215,6 @@ const TerminalList=(props) => {
             }
             )
           }}>
-
-              <Form.Item
-                  name="e_id"
-                  label="E ID"
-                  rules={[{ required: true, message: 'Please enter the e_id' }]}
-              >
-                  <Input placeholder="Please enter the e_id" />
-              </Form.Item>
               <Form.Item
                   name="e_title"
                   label="Title"
