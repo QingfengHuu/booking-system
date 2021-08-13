@@ -346,6 +346,9 @@ const BookingList = (props) => {
                         <Button type='primary' size='small' disabled={(record.e_status==1)?true:false} onClick={()=>{
                             showModal(record)
                         }}>Reserve</Button>
+                        <Tooltip title="search">
+                            <Button type="dashed" shape="circle" icon={<SyncOutlined />} />
+                        </Tooltip>
                     </Space>
                     </div>
                 )
@@ -480,7 +483,7 @@ const BookingList = (props) => {
                       loadData()
                     }
                   }}
-                dataSource={dataSource}
+                dataSource={dataSource1}
             />
 
         </Card>
