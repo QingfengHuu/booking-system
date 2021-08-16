@@ -113,6 +113,15 @@ function TerminalEdit(props) {
           >
             <Input />
           </Form.Item>
+
+          <Form.Item
+                  name="e_configuration"
+                  label="Config"
+                  rules={[{ required: false, message: 'Please enter the Config' }]}
+                  initialValue={form.e_configuration}
+              >
+                  <Input.TextArea rows={3}/>
+          </Form.Item>
           
           <Form.Item>
           <Button htmlType="submit" type="primary" >

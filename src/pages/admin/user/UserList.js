@@ -21,7 +21,16 @@ import { UserListApi,UserCreateApi, UserDelApi, UserResetApi } from '../../../se
 //   location: 'Wu Jiao Chang',
 
 //   approver: 'Tom Liu'
+
+
 // }]
+
+
+const validateMessages = {
+  types: {
+    email: '${label} is not a valid email!',
+  },
+};
 
 const UserList=(props) => {
     // Drawer Trigger Setting
@@ -142,7 +151,7 @@ const UserList=(props) => {
 
         <Drawer
           title="Create a new user account"
-          width={720}
+          width={'20%'}
           destroyOnClose ={true}
           onClose={onClose}
           visible={isFormVisible}
@@ -160,7 +169,7 @@ const UserList=(props) => {
             </div>
           }
         >
-          <Form layout="vertical"  hideRequiredMark onFinish={(values) => {
+          <Form layout="vertical"  validateMessages={validateMessages} hideRequiredMark onFinish={(values) => {
             UserCreateApi(values).then(res=>{
               console.log(values)
               if(res.data.code===200){
@@ -173,18 +182,19 @@ const UserList=(props) => {
               }
             })
     }} >
-            <Row gutter={16}>
-              <Col span={12}>
+            
+             
+             
                 <Form.Item
                   name="username"
                   label="User Name"
-                  rules={[{ required: true, message: 'Please enter user name' }]}
+                  rules={[{ required: true, type: 'email', }]}
                 >
                   <Input placeholder="Please enter user name" />
                 </Form.Item>
-              </Col>
+          
 
-              <Col span={12}>
+             
                 <Form.Item
                   name="group_name"
                   label="Group Name"
@@ -194,20 +204,19 @@ const UserList=(props) => {
                     placeholder="Please enter the group name"
                   />
                 </Form.Item>
-              </Col>
-            </Row>
+             
+            
 
-            <Row gutter={16}>
-              <Col span={12}>
+            
+             <div style={{textAlign:'center'}}>
                 <Form.Item>
                     {/* <Popconfirm title= 'Sure add?'> */}
-                      <Button htmlType='submit'  type="primary" >
+                      <Button htmlType='submit'  style={{width: '100%', borderRadius:"10px"}} type="primary" >
                         Submit
                       </Button>
                     {/* </Popconfirm> */}
                 </Form.Item>
-              </Col>
-            </Row>
+              </div>
           </Form>
         </Drawer>
         </div>
