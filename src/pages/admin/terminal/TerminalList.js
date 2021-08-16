@@ -188,22 +188,12 @@ const TerminalList=(props) => {
 
         <Drawer
           title="Create a new user terminal"
-          width={720}
+          width={'20%'}
           onClose={onClose}
           destroyOnClose={true}
           visible={isFormVisible}
           bodyStyle={{ paddingBottom: 80 }}
-          footer={
-            <div
-              style={{
-                textAlign: 'right',
-              }}
-            >
-              <Button onClick={onClose} style={{ marginRight: 8 }}>
-                Cancel
-              </Button>
-            </div>
-          }
+          
         >
           <Form layout="vertical" hideRequiredMark onFinish={(value)=>{
             TerminalCreateApi(value).then(res=>{
@@ -264,11 +254,22 @@ const TerminalList=(props) => {
               >
                   <Input placeholder="Please enter the Cluster" />
               </Form.Item>
+
+              <Form.Item
+                  name="e_configuration"
+                  label="Config"
+                  rules={[{ required: false, message: 'Please enter the Config' }]}
+              >
+                  <Input.TextArea rows={3}/>
+              </Form.Item>
+
+              <div style={{textAlign:'center'}}>
               <Form.Item>
-                    <Button htmlType='submit'  type="primary" >
+                    <Button htmlType='submit' style={{width: '100%', borderRadius:"10px"}} type="primary" >
                       Submit
                     </Button>
-              </Form.Item>            
+              </Form.Item>   
+              </div>         
           </Form>
         </Drawer>
       </div>

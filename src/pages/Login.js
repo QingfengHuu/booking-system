@@ -7,27 +7,37 @@ import {Redirect} from 'react-router-dom';
 
 import {loginApi} from '../services/auth';
 
+const validateMessages = {
+    types: {
+      email: '${label} is not a valid email!',
+    },
+  };
+
 
 const Login = (props) => {
     const onFinish = (values) => {
-        loginApi({
-            username: values.username,
-            password: values.password
-        })
-            .then(res => {
-                if (res.data.code === 200) {
-                    message.success("Login successfully!")
-                    setToken(res.data.token, res.data.username, res.data.userRole)
-                    props.history.push('/dashboard')
-                } else {
-                    message.info(res.data.message)
-                }
-                console.log(res)
-            })
-            .catch(err => {
-                console.log(err)
-                message.info("Account doesn't exit!");
-            })
+        //DEBUGGING
+        setToken(values.username)
+        props.history.push('/dashboard')
+        //DEBUGGING
+        // loginApi({
+        //     username: values.username,
+        //     password: values.password
+        // })
+        //     .then(res => {
+        //         if (res.data.code === 200) {
+        //             message.success("Login successfully!")
+        //             setToken(res.data.token, res.data.username, res.data.userRole)
+        //             props.history.push('/dashboard')
+        //         } else {
+        //             message.info(res.data.message)
+        //         }
+        //         console.log(res)
+        //     })
+        //     .catch(err => {
+        //         console.log(err)
+        //         message.info("Account doesn't exit!");
+        //     })
     }
 
     return isLogined() ? (
@@ -41,17 +51,20 @@ const Login = (props) => {
                     remember: true,
                 }}
                 onFinish={onFinish}
+                validateMessages={validateMessages}
             >
                 <Form.Item
                     name="username"
+                    // label="Email" 
                     rules={[
                         {
                             required: true,
-                            message: 'Please input your Username!',
+                            type: 'email',
+                            // message: 'Please input your Username!',
                         },
                     ]}
                 >
-                    <Input prefix={<UserOutlined className="site-form-item-icon"/>} placeholder="Username"/>
+                    <Input prefix={<UserOutlined className="site-form-item-icon"/> }  placeholder="Username"/>
                 </Form.Item>
                 <Form.Item
                     name="password"
