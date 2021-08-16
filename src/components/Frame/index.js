@@ -21,7 +21,7 @@ import {withRouter} from 'react-router-dom';
 import {clearToken} from '../../utils/auth';
 import './frame.css';
 import React, {useEffect, useLayoutEffect, useState} from 'react'
-import {Avatar, Image} from 'antd';
+import {Avatar,Title, Image} from 'antd';
 import {InfoCircleOutlined, UserOutlined, EditOutlined, SearchOutlined, CheckOutlined} from '@ant-design/icons';
 
 import {adminRoutes, bookingRoutes, DashboardRoutes, userRoutes} from '../../routes';
@@ -132,6 +132,8 @@ function Frame(props) {
         </Menu>
     );
 
+    const {Title} = Typography;
+
     return (
         <Layout>
             <Header className="header" style={{background: "white", paddingLeft: "25px"}}>
@@ -142,6 +144,7 @@ function Frame(props) {
                             <img className={['centered']}
                                  src='https://www.ashdowngroup.com/wp-content/uploads/2019/06/Dell_EMC_logo.svg.png'
                                  width='140px'/>
+                             {/* <Title level={1} ellipsis={true}>Ferrule</Title>     */}
                         </Space>
                     </a>
                 </div>
@@ -157,6 +160,7 @@ function Frame(props) {
                 </Dropdown>
                 <Drawer
                     title="Profile Drawer"
+                    width={'20%'}
                     placement="right"
                     closable={false}
                     onClose={onClose}
@@ -197,6 +201,7 @@ function Frame(props) {
                         <br/>
                         <Form.Item
                             // label="Username"
+                            style={{width:"150%"}}
                             name="username"
                             rules={[{required: true, message: 'Please input your username!'}]}
                             initialValue={getUsername()}
@@ -207,16 +212,17 @@ function Frame(props) {
                                         <InfoCircleOutlined style={{color: 'rgba(0,0,0,.45)'}}/>
                                     </Tooltip>
                                 }
-                                style={{width: '205px'}}
+                                
                                 disabled={true}/>
                         </Form.Item>
 
                         <Form.Item
                             // label="Password"
+                            style={{width:"150%"}}
                             name="password"
                             rules={[{required: true, message: 'Please input your password!'}]}
                         >
-                            <Input.Password style={{width: '205px'}} placeholder='Type in old password here!'
+                            <Input.Password  placeholder='Type in old password here!'
                                             disabled={inputDisabled}/>
                         </Form.Item>
 
@@ -224,21 +230,24 @@ function Frame(props) {
                         <Form.Item
                             // label=" New Password"
                             name="newPassword"
-
+                            style={{width:"150%"}}
                             rules={[{required: true, message: 'Please input your password!'}]}
                         >
                             <Input.Password
                                 placeholder='Type in new password here!'
-                                style={{width: '205px'}} disabled={inputDisabled}/>
+                                disabled={inputDisabled}/>
                         </Form.Item>
 
-
+                        <div style={{paddingRight:'25%'}}>
                         <Form.Item wrapperCol={{offset: 8, span: 16}}>
-                            <Button type="primary" htmlType="submit" style={{float: 'right'}} onClick={hideInput}
+                            <Button type="primary" htmlType="submit" style={{width: '100%', borderRadius:"10px"}} onClick={hideInput}
                                     disabled={buttonRevealed}>
                                 Submit
                             </Button>
                         </Form.Item>
+                        </div>
+                        
+                        
                     </Form>
 
 
