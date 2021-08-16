@@ -1,7 +1,7 @@
-import {Form, Input, DatePicker, Button, Card, Table, Descriptions, Modal, Divider, Space, message} from 'antd';
+import {Form, Input, DatePicker, Button, Card, Table, Popconfirm, Modal, Radio, Space, message, Descriptions, Tooltip, Divider} from 'antd';
 import React, {useState, useEffect} from 'react'
 import Highlighter from 'react-highlight-words';
-import {SearchOutlined} from '@ant-design/icons';
+import {SearchOutlined, SyncOutlined} from '@ant-design/icons';
 import moment from 'moment'
 import {ClusterBookingListApi, NodeBookingListApi, NodeBookingListReserveApi} from '../../services/booking';
 import {getUsername} from '../../utils/auth';
@@ -87,8 +87,34 @@ const BookingList = (props) => {
     const [value, setValue] = useState();
     const [searchedColumn, setSearchedColumn] = useState('');
     const [searchText, setSearchText] = useState('');
+    // const [loadingState, setloadingState] = useState([]);
 
     let searchInput = '';
+    //button time out section 
+    // const loadingState = {
+    //     loadings: [],
+    //   };
+    
+    // const enterLoading = index => {
+    //     setloadingState(({ loadings }) => {
+    //       const newLoadings = [...loadings];
+    //       newLoadings[index] = true;
+    
+    //       return {
+    //         loadings: newLoadings,
+    //       };
+    //     });
+    //     setTimeout(() => {
+    //         setloadingState(({ loadings }) => {
+    //         const newLoadings = [...loadings];
+    //         newLoadings[index] = false;
+    
+    //         return {
+    //           loadings: newLoadings,
+    //         };
+    //       });
+    //     }, 6000);
+    //   };
 
     useEffect(() => {
         ClusterBookingListApi().then(res => {
@@ -320,6 +346,9 @@ const BookingList = (props) => {
                         <Button type='primary' size='small' disabled={(record.e_status==1)?true:false} onClick={()=>{
                             showModal(record)
                         }}>Reserve</Button>
+                        <Tooltip title="search">
+                            <Button type="dashed" shape="circle" icon={<SyncOutlined />} />
+                        </Tooltip>
                     </Space>
                     </div>
                 )
@@ -441,7 +470,8 @@ const BookingList = (props) => {
     };
 
     return (
-        <Card title='Cluster BookingList' >
+        <Card title='Node BookingList' style={{marginTop:'1%', borderRadius:'10px'}} >
+
 
             <Table
                 rowKey="e_cluster"
