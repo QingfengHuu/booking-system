@@ -317,7 +317,7 @@ const BookingList = (props) => {
                         <Button type='primary' size='small' onClick={()=>{
                             showModalDetail(record)
                         }}>Detail</Button>
-                        <Button type='primary' size='small' onClick={()=>{
+                        <Button type='primary' size='small' disabled={(record.e_status==1)?true:false} onClick={()=>{
                             showModal(record)
                         }}>Reserve</Button>
                     </Space>

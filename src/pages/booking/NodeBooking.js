@@ -97,6 +97,7 @@ const NodeBookingList = (props) => {
     }
 
     const handleCancel = () => {
+        console.log("handle cancel")
         setIsModalVisible(false);
     };
 
@@ -232,7 +233,7 @@ const NodeBookingList = (props) => {
         dataIndex: 'e_title',
         ...getColumnSearchProps('e_title'),
     }, {
-        title: 'Location',
+        title: 'Dell Number',
         dataIndex: 'e_location',
         ...getColumnSearchProps('e_location'),
     }, {
@@ -331,11 +332,8 @@ const NodeBookingList = (props) => {
                             subscribe_date: moment(values.date[0]).format('YYYY-MM-DD HH:mm:ss'),
                             expire_date: moment(values.date[1]).format('YYYY-MM-DD HH:mm:ss')
                         }).then(res => {
-                            if (res.data.data == 200) {
-                                message.info(res.data.msg)
-                                loadData()
+                            if (res.data.code=== 200) {
                                 handleCancel()
-                            } else {
                                 message.info(res.data.msg)
                             }
                         })

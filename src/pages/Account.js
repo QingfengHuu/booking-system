@@ -263,7 +263,7 @@ const Account= (props) => {
               }
             }) 
           }}>
-            <Button type='primary' size='small' onClick={showModal}> Extend </Button>
+            <Button type='primary' size='small' disabled={(record.extend==0)?true:false} onClick={showModal}> Extend </Button>
           </Popconfirm>
           <Popconfirm title= 'Sure release?'
           onConfirm={()=>{
