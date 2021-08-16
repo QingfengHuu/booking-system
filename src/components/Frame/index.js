@@ -142,7 +142,7 @@ function Frame(props) {
                     <a href='/dashboard'>
                         <Space split={<Divider type="vertical"/>}>
                             <img className={['centered']}
-                                 src='https://www.ashdowngroup.com/wp-content/uploads/2019/06/Dell_EMC_logo.svg.png'
+                                 src='https://www.coolgenerator.com/Data/Textdesign/202108/cc484ee7cb7ce3452df8b906c79231ab.png'
                                  width='140px'/>
                              {/* <Title level={1} ellipsis={true}>Ferrule</Title>     */}
                         </Space>
