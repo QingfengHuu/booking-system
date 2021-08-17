@@ -15,7 +15,7 @@ import {
 
 import MenuItem from 'antd/lib/menu/MenuItem';
 import {withRouter} from 'react-router-dom';
-import {clearToken} from '../../utils/auth';
+import {clearToken, isLogined} from '../../utils/auth';
 import './frame.css';
 import React, {useLayoutEffect, useState} from 'react'
 import {Avatar} from 'antd';
@@ -38,6 +38,7 @@ function Frame(props) {
     const [inputDisabled, setInputDisabled] = useState(true);
     const [buttonRevealed, setButtonRevealed] = useState(true);
     const [menuRevealed, setMenuRevealed] = useState(1);
+    const [menuRevealed1, setMenuRevealed1] =useState('');
 
 
     useLayoutEffect(()=>{
@@ -74,11 +75,14 @@ function Frame(props) {
 
     const checkUserRole = () => {
         console.log("判断用户角色")
+        if (!isLogined()){
+            setMenuRevealed1('none')
+            console.log("Need login in")
+        }
         console.log(getUserRole())
         if (getUserRole() === 'false') {
             console.log("不是管理员")
             setMenuRevealed(0)
-
         }
     }
     const display=()=>{
@@ -270,7 +274,7 @@ function Frame(props) {
 
                         {routesUserAccount.map(routesUserAccount => {
                             return (
-                                <MenuItem key={routesUserAccount.path} onClick={p => props.history.push(p.key)}>
+                                <MenuItem key={routesUserAccount.path} onClick={p => props.history.push(p.key)} style={{display:menuRevealed1}} >
                                     {routesUserAccount.title}
                                 </MenuItem>
                             )

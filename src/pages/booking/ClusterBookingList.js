@@ -7,12 +7,15 @@ import {ClusterBookingListApi, NodeBookingListReserveApi} from '../../services/b
 import {getUsername} from '../../utils/auth';
 import "./Booking.css"
 import { TerminalGetOneById } from '../../services/terminal';
+import { isLogined } from '../../utils/auth';
 
 
 const {RangePicker} = DatePicker;
 
-const dataSource1 = [
-    {
+const BookingList = (props) => {
+
+    const [isModalVisible, setIsModalVisible] = useState(false);
+    const [dataSource, setDataSource] = useState([{
         e_cluster: "sdsd",
         total: 2,
         free: 1,
@@ -72,13 +75,7 @@ const dataSource1 = [
           end_date: '7/20'
       }
       ]
-  }
-]
-
-const BookingList = (props) => {
-
-    const [isModalVisible, setIsModalVisible] = useState(false);
-    const [dataSource, setDataSource] = useState([]);
+  }]);
     const [detailedSource, setDetailedSource] = useState([{}]);
     const [isDetailedModalVisible, setIsDetailedModalVisible] =useState(false);
     //states for range picker
@@ -343,7 +340,7 @@ const BookingList = (props) => {
                         <Button type='primary' size='small' onClick={()=>{
                             showModalDetail(record)
                         }}>Detail</Button>
-                        <Button type='primary' size='small' disabled={(record.e_status==1)?true:false} onClick={()=>{
+                        <Button type='primary' size='small' disabled={isLogined()?((record.e_status==1)?true:false):true} onClick={()=>{
                             showModal(record)
                         }}>Reserve</Button>
                         <Tooltip title="search">

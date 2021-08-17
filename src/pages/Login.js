@@ -38,9 +38,7 @@ const Login = (props) => {
     //         })
     }
 
-    return isLogined() ? (
-        <Redirect to='/booking'/>
-    ) : (
+    return (
         <Card className='login_card' title='DELL EMC'>
             <Form
                 name="normal_login"
