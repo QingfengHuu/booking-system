@@ -18,9 +18,9 @@ import {
 
 import MenuItem from 'antd/lib/menu/MenuItem';
 import {withRouter} from 'react-router-dom';
-import {clearToken} from '../../utils/auth';
+import {clearToken, isLogined} from '../../utils/auth';
 import './frame.css';
-import React, {useEffect, useLayoutEffect, useState} from 'react'
+import React,{useEffect, useLayoutEffect, useState}from 'react'
 import {Avatar,Title, Image} from 'antd';
 import {InfoCircleOutlined, UserOutlined, EditOutlined, SearchOutlined, CheckOutlined} from '@ant-design/icons';
 
@@ -34,6 +34,7 @@ const routes = bookingRoutes.filter(route => route.isShow);
 const routesAdmin = adminRoutes.filter(routes => routes.isShow);
 const routesDashboard = DashboardRoutes.filter(routes => routes.isShow);
 const routesUserAccount = userRoutes.filter(routes => routes.isShow);
+const ColorList = ['#f56a00', '#7265e6', '#ffbf00', '#00a2ae']; 
 
 const {SubMenu} = Menu;
 const {Header, Content, Sider} = Layout;
@@ -98,6 +99,8 @@ function Frame(props) {
         return subStyle
 
     }
+
+    var randomColor = '#'+Math.floor(Math.random()*16777215).toString(16);
     // checkUserRole();
     // const checkEmpty = (str) =>{
     //     hideButton();
@@ -134,6 +137,14 @@ function Frame(props) {
 
     const {Title} = Typography;
 
+    const avatarIcon=(username)=>{
+        return username[0]
+    }
+    
+    function invertHex(hex) {
+        return (Number(`0x1${hex}`) ^ 0xFFFFFF).toString(16).substr(1).toUpperCase()
+      }
+
     return (
         <Layout>
             <Header className="header" style={{background: "white", paddingLeft: "25px"}}>
@@ -142,8 +153,8 @@ function Frame(props) {
                     <a href='/dashboard'>
                         <Space split={<Divider type="vertical"/>}>
                             <img className={['centered']}
-                                 src='https://www.coolgenerator.com/Data/Textdesign/202108/cc484ee7cb7ce3452df8b906c79231ab.png'
-                                 width='140px'/>
+                                 src={'../Ferrule-logos.png'}
+                                 width='200px'/>
                              {/* <Title level={1} ellipsis={true}>Ferrule</Title>     */}
                         </Space>
                     </a>
@@ -151,8 +162,8 @@ function Frame(props) {
 
                 <Dropdown overlay={menu} trigger={['click']}>
                 <span className="avatar place">
-                <Avatar className="avatarIcon" style={{color: '#f56a00', backgroundColor: '#fde3cf'}} size='large'
-                        onClick={e => e.preventDefault()}>U</Avatar>
+                <Avatar className="avatarIcon" style={{color: invertHex(randomColor), backgroundColor: randomColor}} size='large'
+                        onClick={e => e.preventDefault()}>{isLogined()?(avatarIcon(getUsername())):'U'}</Avatar>
                     {/* <a style={{color:'black'}} onClick={e => e.preventDefault()}>
                     User
                 </a> */}
@@ -322,3 +333,93 @@ function Frame(props) {
 
 
 export default withRouter(Frame)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//########ALALALALALALa########
+//YOU FOUND US HERE
+//#############################
+//QINGFENG_HU:)
+//PENGYUE_YANG:}
+//RUILIN_MA:>
+//#############################
+//OH YEAH DON'T DELETED US OR ... PLEASE
