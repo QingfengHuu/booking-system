@@ -1,10 +1,10 @@
-import { Form, Input, Button, DatePicker, Card, Table, Popconfirm, Modal, Space, Divider, message} from 'antd'
+import { Input, Button, Card, Table, Popconfirm, Space, Divider, message} from 'antd'
 import React, { useState, useEffect } from 'react'
 // import { listApi } from '../../services/terminal';
 import Highlighter from 'react-highlight-words';
 import { SearchOutlined } from '@ant-design/icons';
 
-import { OrderEndApi, OrderExtendApi, OrderHistoryListApi, OrderListApi, OrderNowListApi } from '../services/order';
+import { OrderEndApi, OrderExtendApi, OrderHistoryListApi,  OrderNowListApi } from '../services/order';
 
 import { getUsername } from '../utils/auth';
 
