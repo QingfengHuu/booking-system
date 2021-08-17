@@ -1,7 +1,6 @@
 import {
     Layout,
     Menu,
-    Breadcrumb,
     Dropdown,
     message,
     Drawer,
@@ -11,26 +10,23 @@ import {
     Form,
     Space,
     Divider,
-    Typography,
-    Descriptions,
-    Modal
+    Typography
 } from 'antd';
 
 import MenuItem from 'antd/lib/menu/MenuItem';
 import {withRouter} from 'react-router-dom';
 import {clearToken, isLogined} from '../../utils/auth';
 import './frame.css';
+
 import React,{useEffect, useLayoutEffect, useState}from 'react'
 import {Avatar,Title, Image} from 'antd';
 import {InfoCircleOutlined, UserOutlined, EditOutlined, SearchOutlined, CheckOutlined} from '@ant-design/icons';
 
+
 import {adminRoutes, bookingRoutes, DashboardRoutes, userRoutes} from '../../routes';
 import {getUsername, getUserRole} from '../../utils/auth';
 import {PwdResetApi} from '../../services/terminal';
-import {OrderListApi} from "../../services/order";
 
-
-const routes = bookingRoutes.filter(route => route.isShow);
 const routesAdmin = adminRoutes.filter(routes => routes.isShow);
 const routesDashboard = DashboardRoutes.filter(routes => routes.isShow);
 const routesUserAccount = userRoutes.filter(routes => routes.isShow);
@@ -45,15 +41,21 @@ function Frame(props) {
     const [inputDisabled, setInputDisabled] = useState(true);
     const [buttonRevealed, setButtonRevealed] = useState(true);
     const [menuRevealed, setMenuRevealed] = useState(1);
-    const [newPwdReveal, setnewPwdReveal] = useState(false);
+    const [menuRevealed1, setMenuRevealed1] =useState('');
+    const [avatarAccount, setAvatarAccount] =useState('');
+    const [loginVisible, setLoginVisible] =useState('');
+    const [logoutVisible, setLogoutVisible] =useState(''); 
 
 
     useLayoutEffect(()=>{
+        if(!isLogined()){
+            setAvatarAccount('none')
+            setLogoutVisible('none')
+        }else{
+            setLoginVisible('none')
+        }
        checkUserRole();
     },[])
-    const revealNewPwd = () => {
-        setnewPwdReveal(true);
-    }
 
     const showDrawer = () => {
         setVisible(true);
@@ -80,16 +82,21 @@ function Frame(props) {
         } else if (key === 'account') {
             showDrawer();
             // props.history.push('/user/account');
+        } else if (key === 'login'){
+            props.history.push('/login');
         }
     };
 
     const checkUserRole = () => {
         console.log("判断用户角色")
+        if (!isLogined()){
+            setMenuRevealed1('none')
+            console.log("Need login in")
+        }
         console.log(getUserRole())
         if (getUserRole() === 'false') {
             console.log("不是管理员")
             setMenuRevealed(0)
-
         }
     }
     const display=()=>{
@@ -129,9 +136,9 @@ function Frame(props) {
 
     const menu = (
         <Menu onClick={onClick}>
-            <Menu.Item key="account">Account Detail</Menu.Item>
-            {/* <Menu.Item key="2">2nd menu item</Menu.Item> */}
-            <Menu.Item key="logout">Log out</Menu.Item>
+            <Menu.Item key="account" style={{display:avatarAccount}}>Account Detail</Menu.Item>
+            <Menu.Item key="login" style={{display:loginVisible}}>Login</Menu.Item>
+            <Menu.Item key="logout" style={{display:logoutVisible}} >Logout</Menu.Item>
         </Menu>
     );
 
@@ -159,7 +166,7 @@ function Frame(props) {
                         </Space>
                     </a>
                 </div>
-
+                <b>{isLogined()?"":"Guest"}</b>
                 <Dropdown overlay={menu} trigger={['click']}>
                 <span className="avatar place">
                 <Avatar className="avatarIcon" style={{color: invertHex(randomColor), backgroundColor: randomColor}} size='large'
@@ -291,7 +298,7 @@ function Frame(props) {
 
                         {routesUserAccount.map(routesUserAccount => {
                             return (
-                                <MenuItem key={routesUserAccount.path} onClick={p => props.history.push(p.key)}>
+                                <MenuItem key={routesUserAccount.path} onClick={p => props.history.push(p.key)} style={{display:menuRevealed1}} >
                                     {routesUserAccount.title}
                                 </MenuItem>
                             )

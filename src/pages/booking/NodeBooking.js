@@ -7,10 +7,8 @@ import {
     Table,
     Descriptions,
     Modal,
-    Badge,
     Space,
     Divider,
-    Drawer,
     message
 } from 'antd';
 
@@ -20,7 +18,7 @@ import Highlighter from 'react-highlight-words';
 import {SearchOutlined} from '@ant-design/icons';
 import moment from 'moment';
 import 'moment-timezone';
-import {getUsername} from '../../utils/auth';
+import {getUsername, isLogined} from '../../utils/auth';
 import "./Booking.css"
 import {TerminalGetOneById} from '../../services/terminal';
 
@@ -34,11 +32,15 @@ const {RangePicker} = DatePicker;
 
 const NodeBookingList = (props) => {
 
-    const [dataSource, setDataSource] = useState([]);
+    const [dataSource, setDataSource] = useState([{
+        e_id:11,
+        e_title:"SADfsda"
+    }]);
     const [detailedSource, setDetailedSource] = useState([{}])
 
     const [isDetailedModalVisible, setIsDetailedModalVisible] = useState(false);
     const [isModalVisible, setIsModalVisible] = useState(false);
+    const [isReserveButtonDisable,setIsReserveButtonDisable] = useState(false);
 
     //states for range picker
     const [dates, setDates] = useState([]);
@@ -100,7 +102,6 @@ const NodeBookingList = (props) => {
         console.log("handle cancel")
         setIsModalVisible(false);
     };
-
 
     const onFinishFailed = (errorInfo) => {
         console.log('Failed:', errorInfo);
@@ -268,7 +269,7 @@ const NodeBookingList = (props) => {
                         <Button type='primary' size='small' onClick={() => {
                             showModalDetail(record)
                         }}>Detail</Button>
-                        <Button type='primary' size='small' disabled={(record.e_status==1)?true:false} onClick={() => {
+                        <Button type='primary' size='small' disabled={isLogined()?((record.e_status==1)?true:false):true} onClick={() => {
                             showModal(record)
                         }}>Reserve</Button>
                     </Space>
@@ -300,13 +301,13 @@ const NodeBookingList = (props) => {
                    width="50%"
             >
                 <Descriptions title="Terminal Info" bordered layout="horizontal">
-                <Descriptions.Item label="Title" span={3}>{detailedSource[0].e_title}</Descriptions.Item>
-                    <Descriptions.Item label="Location" span={3}>{detailedSource[0].e_location}</Descriptions.Item>
-                    <Descriptions.Item label="iDrac_ip" span={3}>{detailedSource[0].e_iDrac_ip}</Descriptions.Item>
-                    <Descriptions.Item label="Server Tag" span={3}>{detailedSource[0].e_tag}</Descriptions.Item>
-                    <Descriptions.Item label="Server Group" span={3}>{detailedSource[0].e_servergroup}</Descriptions.Item>
-                    <Descriptions.Item label="Cluster" span={3}>{detailedSource[0].e_cluster}</Descriptions.Item>
-                    <Descriptions.Item label="GeoLocation" span={3}>{detailedSource[0].e_geolocation}</Descriptions.Item>
+                <Descriptions.Item label="Title" span={3}>{detailedSource.e_title}</Descriptions.Item>
+                    <Descriptions.Item label="Location" span={3}>{detailedSource.e_location}</Descriptions.Item>
+                    <Descriptions.Item label="iDrac_ip" span={3}>{detailedSource.e_iDrac_ip}</Descriptions.Item>
+                    <Descriptions.Item label="Server Tag" span={3}>{detailedSource.e_tag}</Descriptions.Item>
+                    <Descriptions.Item label="Server Group" span={3}>{detailedSource.e_servergroup}</Descriptions.Item>
+                    <Descriptions.Item label="Cluster" span={3}>{detailedSource.e_cluster}</Descriptions.Item>
+                    <Descriptions.Item label="GeoLocation" span={3}>{detailedSource.e_geolocation}</Descriptions.Item>
                     <Descriptions.Item label="Configuration" span={3}>
                         {detailedSource[0].e_configuration}
                     </Descriptions.Item>
@@ -333,9 +334,7 @@ const NodeBookingList = (props) => {
                             expire_date: moment(values.date[1]).format('YYYY-MM-DD HH:mm:ss')
                         }).then(res => {
                             if (res.data.code=== 200) {
-                                loadData()
                                 handleCancel()
-                            } else {
                                 message.info(res.data.msg)
                             }
                         })
