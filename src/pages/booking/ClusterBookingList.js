@@ -1,18 +1,21 @@
-import {Form, Input, DatePicker, Button, Card, Table, Popconfirm, Modal, Radio, Space, message, Descriptions, Tooltip, Divider} from 'antd';
+import {Form, Input, DatePicker, Button, Card, Table, Modal, Space, message, Descriptions, Tooltip, Divider} from 'antd';
 import React, {useState, useEffect} from 'react'
 import Highlighter from 'react-highlight-words';
 import {SearchOutlined, SyncOutlined} from '@ant-design/icons';
 import moment from 'moment'
-import {ClusterBookingListApi, NodeBookingListApi, NodeBookingListReserveApi} from '../../services/booking';
+import {ClusterBookingListApi, NodeBookingListReserveApi} from '../../services/booking';
 import {getUsername} from '../../utils/auth';
 import "./Booking.css"
 import { TerminalGetOneById } from '../../services/terminal';
+import { isLogined } from '../../utils/auth';
 
 
 const {RangePicker} = DatePicker;
 
-const dataSource1 = [
-    {
+const BookingList = (props) => {
+
+    const [isModalVisible, setIsModalVisible] = useState(false);
+    const [dataSource, setDataSource] = useState([{
         e_cluster: "sdsd",
         total: 2,
         free: 1,
@@ -72,13 +75,7 @@ const dataSource1 = [
           end_date: '7/20'
       }
       ]
-  }
-]
-
-const BookingList = (props) => {
-
-    const [isModalVisible, setIsModalVisible] = useState(false);
-    const [dataSource, setDataSource] = useState([]);
+  }]);
     const [detailedSource, setDetailedSource] = useState([{}]);
     const [isDetailedModalVisible, setIsDetailedModalVisible] =useState(false);
     //states for range picker
@@ -343,7 +340,7 @@ const BookingList = (props) => {
                         <Button type='primary' size='small' onClick={()=>{
                             showModalDetail(record)
                         }}>Detail</Button>
-                        <Button type='primary' size='small' disabled={(record.e_status==1)?true:false} onClick={()=>{
+                        <Button type='primary' size='small' disabled={isLogined()?((record.e_status==1)?true:false):true} onClick={()=>{
                             showModal(record)
                         }}>Reserve</Button>
                         <Tooltip title="search">
@@ -405,7 +402,7 @@ const BookingList = (props) => {
                               subscribe_date: moment(values.date[0]).format('YYYY-MM-DD HH:mm:ss'),
                               expire_date: moment(values.date[1]).format('YYYY-MM-DD HH:mm:ss')
                             }).then(res => {
-                              if(res.data.code==200){
+                              if(res.data.data==200){
                                   message.info(res.data.msg)
                                   loadData()
                                   handleCancel()
