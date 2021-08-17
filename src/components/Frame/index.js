@@ -1,7 +1,6 @@
 import {
     Layout,
     Menu,
-    Breadcrumb,
     Dropdown,
     message,
     Drawer,
@@ -11,26 +10,21 @@ import {
     Form,
     Space,
     Divider,
-    Typography,
-    Descriptions,
-    Modal
+    Typography
 } from 'antd';
 
 import MenuItem from 'antd/lib/menu/MenuItem';
 import {withRouter} from 'react-router-dom';
 import {clearToken} from '../../utils/auth';
 import './frame.css';
-import React, {useEffect, useLayoutEffect, useState} from 'react'
-import {Avatar,Title, Image} from 'antd';
-import {InfoCircleOutlined, UserOutlined, EditOutlined, SearchOutlined, CheckOutlined} from '@ant-design/icons';
+import React, {useLayoutEffect, useState} from 'react'
+import {Avatar} from 'antd';
+import {InfoCircleOutlined, EditOutlined} from '@ant-design/icons';
 
 import {adminRoutes, bookingRoutes, DashboardRoutes, userRoutes} from '../../routes';
 import {getUsername, getUserRole} from '../../utils/auth';
 import {PwdResetApi} from '../../services/terminal';
-import {OrderListApi} from "../../services/order";
 
-
-const routes = bookingRoutes.filter(route => route.isShow);
 const routesAdmin = adminRoutes.filter(routes => routes.isShow);
 const routesDashboard = DashboardRoutes.filter(routes => routes.isShow);
 const routesUserAccount = userRoutes.filter(routes => routes.isShow);
@@ -44,15 +38,11 @@ function Frame(props) {
     const [inputDisabled, setInputDisabled] = useState(true);
     const [buttonRevealed, setButtonRevealed] = useState(true);
     const [menuRevealed, setMenuRevealed] = useState(1);
-    const [newPwdReveal, setnewPwdReveal] = useState(false);
 
 
     useLayoutEffect(()=>{
        checkUserRole();
     },[])
-    const revealNewPwd = () => {
-        setnewPwdReveal(true);
-    }
 
     const showDrawer = () => {
         setVisible(true);
@@ -142,7 +132,7 @@ function Frame(props) {
                     <a href='/dashboard'>
                         <Space split={<Divider type="vertical"/>}>
                             <img className={['centered']}
-                                 src='https://www.ashdowngroup.com/wp-content/uploads/2019/06/Dell_EMC_logo.svg.png'
+                                 src='https://www.coolgenerator.com/Data/Textdesign/202108/cc484ee7cb7ce3452df8b906c79231ab.png'
                                  width='140px'/>
                              {/* <Title level={1} ellipsis={true}>Ferrule</Title>     */}
                         </Space>
