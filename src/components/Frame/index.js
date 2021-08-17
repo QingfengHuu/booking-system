@@ -39,9 +39,18 @@ function Frame(props) {
     const [buttonRevealed, setButtonRevealed] = useState(true);
     const [menuRevealed, setMenuRevealed] = useState(1);
     const [menuRevealed1, setMenuRevealed1] =useState('');
+    const [avatarAccount, setAvatarAccount] =useState('');
+    const [loginVisible, setLoginVisible] =useState('');
+    const [logoutVisible, setLogoutVisible] =useState(''); 
 
 
     useLayoutEffect(()=>{
+        if(!isLogined()){
+            setAvatarAccount('none')
+            setLogoutVisible('none')
+        }else{
+            setLoginVisible('none')
+        }
        checkUserRole();
     },[])
 
@@ -70,6 +79,8 @@ function Frame(props) {
         } else if (key === 'account') {
             showDrawer();
             // props.history.push('/user/account');
+        } else if (key === 'login'){
+            props.history.push('/login');
         }
     };
 
@@ -120,9 +131,9 @@ function Frame(props) {
 
     const menu = (
         <Menu onClick={onClick}>
-            <Menu.Item key="account">Account Detail</Menu.Item>
-            {/* <Menu.Item key="2">2nd menu item</Menu.Item> */}
-            <Menu.Item key="logout">Log out</Menu.Item>
+            <Menu.Item key="account" style={{display:avatarAccount}}>Account Detail</Menu.Item>
+            <Menu.Item key="login" style={{display:loginVisible}}>Login</Menu.Item>
+            <Menu.Item key="logout" style={{display:logoutVisible}} >Logout</Menu.Item>
         </Menu>
     );
 
@@ -142,7 +153,7 @@ function Frame(props) {
                         </Space>
                     </a>
                 </div>
-
+                <b>{isLogined()?"":"Guest"}</b>
                 <Dropdown overlay={menu} trigger={['click']}>
                 <span className="avatar place">
                 <Avatar className="avatarIcon" style={{color: '#f56a00', backgroundColor: '#fde3cf'}} size='large'
