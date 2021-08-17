@@ -1,10 +1,10 @@
 import React from 'react'
-import {Form, Input, Button, Checkbox, Card} from 'antd';
+import {Form, Input, Button, Checkbox, Card, message} from 'antd';
 import {UserOutlined, LockOutlined} from '@ant-design/icons';
 import {setToken, isLogined} from '../utils/auth';
 import './login.css';
 import {Redirect} from 'react-router-dom';
-import { loginApi} from '../../../services/auth';
+import {loginApi} from "../services/auth"
 
 const validateMessages = {
     types: {
@@ -19,7 +19,6 @@ const Login = (props) => {
 //         setToken(values.username)
 //         props.history.push('/dashboard')
 //         //DEBUGGING
-
 
         loginApi({
             username: values.username,
