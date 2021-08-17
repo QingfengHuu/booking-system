@@ -1,5 +1,5 @@
-import React, { useState, useEffect, useLayoutEffect } from "react";
-import { Form, Card, Input, Button, message, Upload, Icon } from "antd";
+import React, {useLayoutEffect } from "react";
+import { Form, Card, Input, Button, message } from "antd";
 import { TerminalGetOneById, TerminalModifyApi } from "../../../services/terminal";
 
 

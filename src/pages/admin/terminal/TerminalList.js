@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 
-import { Drawer, Form, Button, Col, Row, Input, Select, Switch, Card, Table, Popconfirm, Modal, Space, Divider, Descriptions, Checkbox, message  } from 'antd';
+import { Drawer, Form, Button, Input, Select, Card, Table, Popconfirm,Space, Divider, Checkbox, message  } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 import { TerminalCreateApi, TerminalDelApi, TerminalListApi } from '../../../services/terminal';
 import "./terminal.css"
