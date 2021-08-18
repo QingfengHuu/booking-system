@@ -10,7 +10,8 @@ import {
     Form,
     Space,
     Divider,
-    Typography
+    Typography,
+    Popconfirm
 } from 'antd';
 
 import MenuItem from 'antd/lib/menu/MenuItem';
@@ -45,6 +46,7 @@ function Frame(props) {
     const [avatarAccount, setAvatarAccount] =useState('');
     const [loginVisible, setLoginVisible] =useState('');
     const [logoutVisible, setLogoutVisible] =useState(''); 
+    const [profileEditVisible, setProfileEditVisible] = useState('none')
 
 
     useLayoutEffect(()=>{
@@ -62,6 +64,7 @@ function Frame(props) {
     };
 
     const revealInput = () => {
+        setProfileEditVisible('');
         setInputDisabled(false);
         setButtonRevealed(false);
     }
@@ -74,6 +77,7 @@ function Frame(props) {
 
     const onClose = () => {
         setVisible(false);
+        setProfileEditVisible('none');
     };
     const onClick = ({key}) => {
         if (key === 'logout') {
@@ -166,18 +170,17 @@ function Frame(props) {
                         </Space>
                     </a>
                 </div>
-                <b>{isLogined()?"":"Guest"}</b>
                 <Dropdown overlay={menu} trigger={['click']}>
                 <span className="avatar place">
                 <Avatar className="avatarIcon" style={{color: invertHex(randomColor), backgroundColor: randomColor}} size='large'
-                        onClick={e => e.preventDefault()}>{isLogined()?(avatarIcon(getUsername())):'U'}</Avatar>
+                        onClick={e => e.preventDefault()}>{isLogined()?(avatarIcon(getUsername())):'Guest'}</Avatar>
                     {/* <a style={{color:'black'}} onClick={e => e.preventDefault()}>
                     User
                 </a> */}
                 </span>
                 </Dropdown>
                 <Drawer
-                    title="Profile Drawer"
+                    title="Profile"
                     width={'20%'}
                     placement="right"
                     closable={false}
@@ -210,11 +213,12 @@ function Frame(props) {
                         }}
                         // onFinishFailed={onFinishFailed}
                     >
-
-                        <Tooltip title="Edit">
-                            <Button shape="circle" icon={<EditOutlined/>} style={{float: 'right'}}
-                                    onClick={revealInput}/>
-                        </Tooltip>
+                        <Popconfirm title="Edit the passwords?" onConfirm={revealInput}>
+                            <Tooltip title="Edit">
+                                <Button shape="circle" icon={<EditOutlined/>} style={{float: 'right'}}
+                                        />
+                            </Tooltip>
+                        </Popconfirm>
                         <br/>
                         <br/>
                         <Form.Item
@@ -236,7 +240,7 @@ function Frame(props) {
 
                         <Form.Item
                             // label="Password"
-                            style={{width:"150%"}}
+                            style={{width:"150%", display:profileEditVisible}}
                             name="password"
                             rules={[{required: true, message: 'Please input your password!'}]}
                         >
@@ -248,7 +252,7 @@ function Frame(props) {
                         <Form.Item
                             // label=" New Password"
                             name="newPassword"
-                            style={{width:"150%"}}
+                            style={{width:"150%", display:profileEditVisible}}
                             rules={[{required: true, message: 'Please input your password!'}]}
                         >
                             <Input.Password
@@ -258,7 +262,7 @@ function Frame(props) {
 
                         <div style={{paddingRight:'25%'}}>
                         <Form.Item wrapperCol={{offset: 8, span: 16}}>
-                            <Button type="primary" htmlType="submit" style={{width: '100%', borderRadius:"10px"}} onClick={hideInput}
+                            <Button type="primary" htmlType="submit" style={{width: '100%', borderRadius:"10px", display:profileEditVisible}} onClick={hideInput}
                                     disabled={buttonRevealed}>
                                 Submit
                             </Button>
