@@ -15,29 +15,29 @@ const validateMessages = {
 
 const Login = (props) => {
     const onFinish = (values) => {
-//         //DEBUGGING
-//         setToken(values.username)
-//         props.history.push('/dashboard')
-//         //DEBUGGING
+        //DEBUGGING
+        setToken(values.username)
+        props.history.push('/dashboard')
+        //DEBUGGING
 
-        loginApi({
-            username: values.username,
-            password: values.password
-        })
-            .then(res => {
-                if (res.data.code === 200) {
-                    message.success("Login successfully!")
-                    setToken(res.data.token, res.data.username, res.data.userRole)
-                    props.history.push('/dashboard')
-                } else {
-                    message.info(res.data.message)
-                }
-                console.log(res)
-            })
-            .catch(err => {
-                console.log(err)
-                message.info("Account doesn't exit!");
-            })
+        // loginApi({
+        //     username: values.username,
+        //     password: values.password
+        // })
+        //     .then(res => {
+        //         if (res.data.code === 200) {
+        //             message.success("Login successfully!")
+        //             setToken(res.data.token, res.data.username, res.data.userRole)
+        //             props.history.push('/dashboard')
+        //         } else {
+        //             message.info(res.data.message)
+        //         }
+        //         console.log(res)
+        //     })
+        //     .catch(err => {
+        //         console.log(err)
+        //         message.info("Account doesn't exit!");
+        //     })
 
     }
 
