@@ -15,6 +15,7 @@ import {
     DashboardOutlined,
     SyncOutlined,
     ScheduleOutlined,
+    DatabaseOutlined,
 
 } from '@ant-design/icons';
 import {getUsername} from "../../utils/auth";
@@ -217,20 +218,20 @@ const Index = () => {
             <Title level={1} className="overviewHeader">Overview</Title>
             <Row className="UsageCard" gutter={16}>
                 <Col className="cardRow" span={8}>
-                    <Card title="All Equipment usage" bordered={true}
+                    <Card title="All" bordered={true}
                           headStyle={{backgroundColor: '#D7DBEC', borderRadius: 10, fontSize: 26}}
                           style={{borderRadius: 20}}
                     >
                         <div className="Usage_image">
                             <div className="icons-list">
-                                <DashboardOutlined style={{fontSize: '400%'}}/>
+                                <DatabaseOutlined style={{fontSize: '400%'}}/>
                             </div>
                         </div>
 
                         <div className="dataGroupA">
-                            <div className="Usage_data">
+                            {/* <div className="Usage_data">
                                 <Title level={3} ellipsis={true}>Current Usage</Title>
-                            </div>
+                            </div> */}
                             <div className="data_shown">
                                 <Title level={2} ellipsis={true}>{allEquipmentUsage}</Title>
                             </div>
@@ -240,7 +241,7 @@ const Index = () => {
                     </Card>
                 </Col>
                 <Col span={8}>
-                    <Card title="Available Equipments" bordered={true}
+                    <Card title="Available" bordered={true}
                           headStyle={{backgroundColor: '#D7DBEC', borderRadius: 10, fontSize: 26}}
                           style={{borderRadius: 20}}
                     >
@@ -250,9 +251,9 @@ const Index = () => {
                             </div>
                         </div>
                         <div className="dataGroupB">
-                            <div className="AE_data">
+                            {/* <div className="AE_data">
                                 <Title level={3} ellipsis={true}>Equipments Available </Title>
-                            </div>
+                            </div> */}
                             <div className="AE_data_shown">
                                 <Title level={2} ellipsis={true}>{avaEquipmentUsage} </Title>
                             </div>
@@ -262,7 +263,7 @@ const Index = () => {
                     </Card>
                 </Col>
                 <Col span={8}>
-                    <Card title="Occupied Equipments" bordered={true}
+                    <Card title="Occupied" bordered={true}
                           headStyle={{backgroundColor: '#D7DBEC', borderRadius: 10, fontSize: 26}}
                           style={{borderRadius: 20}}
                     >
@@ -273,9 +274,9 @@ const Index = () => {
                         </div>
 
                         <div className="dataGroupC">
-                            <div className="OE_Usage_data">
+                            {/* <div className="OE_Usage_data">
                                 <Title level={3} ellipsis={true}>Equipments Occupied </Title>
-                            </div>
+                            </div> */}
                             <div className="OE_data_shown">
                                 <Title level={2} ellipsis={true}>{occupiedEquipmentUsage}</Title>
                             </div>

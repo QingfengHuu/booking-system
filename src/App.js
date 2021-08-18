@@ -7,7 +7,7 @@ import React from 'react'
 
 
 function App() {
-  return isLogined()?(
+  return (
     <Frame>
       <Switch>
       {DashboardRoutes.map(route=>{
@@ -61,9 +61,7 @@ function App() {
         <Redirect to='/404' />
       </Switch>
     </Frame>
-  ) : (
-    <Redirect to='/login' />
-  )
+  ) 
 }
 
 export default App;

@@ -10,16 +10,19 @@ import {
     Form,
     Space,
     Divider,
-    Typography
+    Typography,
+    Popconfirm
 } from 'antd';
 
 import MenuItem from 'antd/lib/menu/MenuItem';
 import {withRouter} from 'react-router-dom';
-import {clearToken} from '../../utils/auth';
+import {clearToken, isLogined} from '../../utils/auth';
 import './frame.css';
-import React, {useLayoutEffect, useState} from 'react'
-import {Avatar} from 'antd';
-import {InfoCircleOutlined, EditOutlined} from '@ant-design/icons';
+
+import React,{useEffect, useLayoutEffect, useState}from 'react'
+import {Avatar,Title, Image} from 'antd';
+import {InfoCircleOutlined, UserOutlined, EditOutlined, SearchOutlined, CheckOutlined} from '@ant-design/icons';
+
 
 import {adminRoutes, bookingRoutes, DashboardRoutes, userRoutes} from '../../routes';
 import {getUsername, getUserRole} from '../../utils/auth';
@@ -28,6 +31,7 @@ import {PwdResetApi} from '../../services/terminal';
 const routesAdmin = adminRoutes.filter(routes => routes.isShow);
 const routesDashboard = DashboardRoutes.filter(routes => routes.isShow);
 const routesUserAccount = userRoutes.filter(routes => routes.isShow);
+const ColorList = ['#f56a00', '#7265e6', '#ffbf00', '#00a2ae']; 
 
 const {SubMenu} = Menu;
 const {Header, Content, Sider} = Layout;
@@ -38,9 +42,20 @@ function Frame(props) {
     const [inputDisabled, setInputDisabled] = useState(true);
     const [buttonRevealed, setButtonRevealed] = useState(true);
     const [menuRevealed, setMenuRevealed] = useState(1);
+    const [menuRevealed1, setMenuRevealed1] =useState('');
+    const [avatarAccount, setAvatarAccount] =useState('');
+    const [loginVisible, setLoginVisible] =useState('');
+    const [logoutVisible, setLogoutVisible] =useState(''); 
+    const [profileEditVisible, setProfileEditVisible] = useState('none')
 
 
     useLayoutEffect(()=>{
+        if(!isLogined()){
+            setAvatarAccount('none')
+            setLogoutVisible('none')
+        }else{
+            setLoginVisible('none')
+        }
        checkUserRole();
     },[])
 
@@ -49,6 +64,7 @@ function Frame(props) {
     };
 
     const revealInput = () => {
+        setProfileEditVisible('');
         setInputDisabled(false);
         setButtonRevealed(false);
     }
@@ -61,6 +77,7 @@ function Frame(props) {
 
     const onClose = () => {
         setVisible(false);
+        setProfileEditVisible('none');
     };
     const onClick = ({key}) => {
         if (key === 'logout') {
@@ -69,16 +86,21 @@ function Frame(props) {
         } else if (key === 'account') {
             showDrawer();
             // props.history.push('/user/account');
+        } else if (key === 'login'){
+            props.history.push('/login');
         }
     };
 
     const checkUserRole = () => {
         console.log("判断用户角色")
+        if (!isLogined()){
+            setMenuRevealed1('none')
+            console.log("Need login in")
+        }
         console.log(getUserRole())
         if (getUserRole() === 'false') {
             console.log("不是管理员")
             setMenuRevealed(0)
-
         }
     }
     const display=()=>{
@@ -88,6 +110,8 @@ function Frame(props) {
         return subStyle
 
     }
+
+    var randomColor = '#'+Math.floor(Math.random()*16777215).toString(16);
     // checkUserRole();
     // const checkEmpty = (str) =>{
     //     hideButton();
@@ -116,13 +140,21 @@ function Frame(props) {
 
     const menu = (
         <Menu onClick={onClick}>
-            <Menu.Item key="account">Account Detail</Menu.Item>
-            {/* <Menu.Item key="2">2nd menu item</Menu.Item> */}
-            <Menu.Item key="logout">Log out</Menu.Item>
+            <Menu.Item key="account" style={{display:avatarAccount}}>Account Detail</Menu.Item>
+            <Menu.Item key="login" style={{display:loginVisible}}>Login</Menu.Item>
+            <Menu.Item key="logout" style={{display:logoutVisible}} >Logout</Menu.Item>
         </Menu>
     );
 
     const {Title} = Typography;
+
+    const avatarIcon=(username)=>{
+        return username[0]
+    }
+    
+    function invertHex(hex) {
+        return (Number(`0x1${hex}`) ^ 0xFFFFFF).toString(16).substr(1).toUpperCase()
+      }
 
     return (
         <Layout>
@@ -132,24 +164,23 @@ function Frame(props) {
                     <a href='/dashboard'>
                         <Space split={<Divider type="vertical"/>}>
                             <img className={['centered']}
-                                 src='https://www.coolgenerator.com/Data/Textdesign/202108/cc484ee7cb7ce3452df8b906c79231ab.png'
-                                 width='140px'/>
+                                 src={'../Ferrule-logos.png'}
+                                 width='200px'/>
                              {/* <Title level={1} ellipsis={true}>Ferrule</Title>     */}
                         </Space>
                     </a>
                 </div>
-
                 <Dropdown overlay={menu} trigger={['click']}>
                 <span className="avatar place">
-                <Avatar className="avatarIcon" style={{color: '#f56a00', backgroundColor: '#fde3cf'}} size='large'
-                        onClick={e => e.preventDefault()}>U</Avatar>
+                <Avatar className="avatarIcon" style={{color: invertHex(randomColor), backgroundColor: randomColor}} size='large'
+                        onClick={e => e.preventDefault()}>{isLogined()?(avatarIcon(getUsername())):'Guest'}</Avatar>
                     {/* <a style={{color:'black'}} onClick={e => e.preventDefault()}>
                     User
                 </a> */}
                 </span>
                 </Dropdown>
                 <Drawer
-                    title="Profile Drawer"
+                    title="Profile"
                     width={'20%'}
                     placement="right"
                     closable={false}
@@ -182,11 +213,12 @@ function Frame(props) {
                         }}
                         // onFinishFailed={onFinishFailed}
                     >
-
-                        <Tooltip title="Edit">
-                            <Button shape="circle" icon={<EditOutlined/>} style={{float: 'right'}}
-                                    onClick={revealInput}/>
-                        </Tooltip>
+                        <Popconfirm title="Edit the passwords?" onConfirm={revealInput}>
+                            <Tooltip title="Edit">
+                                <Button shape="circle" icon={<EditOutlined/>} style={{float: 'right'}}
+                                        />
+                            </Tooltip>
+                        </Popconfirm>
                         <br/>
                         <br/>
                         <Form.Item
@@ -208,7 +240,7 @@ function Frame(props) {
 
                         <Form.Item
                             // label="Password"
-                            style={{width:"150%"}}
+                            style={{width:"150%", display:profileEditVisible}}
                             name="password"
                             rules={[{required: true, message: 'Please input your password!'}]}
                         >
@@ -220,7 +252,7 @@ function Frame(props) {
                         <Form.Item
                             // label=" New Password"
                             name="newPassword"
-                            style={{width:"150%"}}
+                            style={{width:"150%", display:profileEditVisible}}
                             rules={[{required: true, message: 'Please input your password!'}]}
                         >
                             <Input.Password
@@ -230,7 +262,7 @@ function Frame(props) {
 
                         <div style={{paddingRight:'25%'}}>
                         <Form.Item wrapperCol={{offset: 8, span: 16}}>
-                            <Button type="primary" htmlType="submit" style={{width: '100%', borderRadius:"10px"}} onClick={hideInput}
+                            <Button type="primary" htmlType="submit" style={{width: '100%', borderRadius:"10px", display:profileEditVisible}} onClick={hideInput}
                                     disabled={buttonRevealed}>
                                 Submit
                             </Button>
@@ -270,7 +302,7 @@ function Frame(props) {
 
                         {routesUserAccount.map(routesUserAccount => {
                             return (
-                                <MenuItem key={routesUserAccount.path} onClick={p => props.history.push(p.key)}>
+                                <MenuItem key={routesUserAccount.path} onClick={p => props.history.push(p.key)} style={{display:menuRevealed1}} >
                                     {routesUserAccount.title}
                                 </MenuItem>
                             )
@@ -312,3 +344,93 @@ function Frame(props) {
 
 
 export default withRouter(Frame)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//########ALALALALALALa########
+//YOU FOUND US HERE
+//#############################
+//QINGFENG_HU:)
+//PENGYUE_YANG:}
+//RUILIN_MA:>
+//#############################
+//OH YEAH DON'T DELETED US OR ... PLEASE
