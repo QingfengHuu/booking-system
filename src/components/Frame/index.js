@@ -158,7 +158,7 @@ function Frame(props) {
 
     return (
         <Layout>
-            <Header className="header" style={{background: "white", paddingLeft: "25px"}}>
+            <Header className="header" style={{background: "white", paddingLeft: "0"}}>
                 {/* <h1 style={{color:'white'}}>DELL EMC</h1> */}
                 <div className="white p2 flex a-center">
                     <a href='/dashboard'>

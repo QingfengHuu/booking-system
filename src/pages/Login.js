@@ -1,9 +1,8 @@
 import React from 'react'
 import {Form, Input, Button, Checkbox, Card, message} from 'antd';
 import {UserOutlined, LockOutlined} from '@ant-design/icons';
-import {setToken, isLogined} from '../utils/auth';
+import {setToken} from '../utils/auth';
 import './login.css';
-import {Redirect} from 'react-router-dom';
 import {loginApi} from "../services/auth"
 
 const validateMessages = {
@@ -15,29 +14,29 @@ const validateMessages = {
 
 const Login = (props) => {
     const onFinish = (values) => {
-        //DEBUGGING
-        setToken(values.username)
-        props.history.push('/dashboard')
-        //DEBUGGING
+        // DEBUGGING
+        // setToken(values.username,values.username)
+        // props.history.push('/dashboard')
+        // DEBUGGING
 
-        // loginApi({
-        //     username: values.username,
-        //     password: values.password
-        // })
-        //     .then(res => {
-        //         if (res.data.code === 200) {
-        //             message.success("Login successfully!")
-        //             setToken(res.data.token, res.data.username, res.data.userRole)
-        //             props.history.push('/dashboard')
-        //         } else {
-        //             message.info(res.data.message)
-        //         }
-        //         console.log(res)
-        //     })
-        //     .catch(err => {
-        //         console.log(err)
-        //         message.info("Account doesn't exit!");
-        //     })
+        loginApi({
+            username: values.username,
+            password: values.password
+        })
+            .then(res => {
+                if (res.data.code === 200) {
+                    message.success("Login successfully!")
+                    setToken(res.data.token, res.data.username, res.data.userRole)
+                    props.history.push('/dashboard')
+                } else {
+                    message.info(res.data.message)
+                }
+                console.log(res)
+            })
+            .catch(err => {
+                console.log(err)
+                message.info("Account doesn't exit!");
+            })
 
     }
 
