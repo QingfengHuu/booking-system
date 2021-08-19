@@ -65,12 +65,9 @@ const Account= (props) => {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [dataSource, setDataSource] = useState([]);
   const [dataSourceHis, setDataSourceHis]= useState([])
-  const [total,setTotal] = useState(0);
-  const [buttonDisabled,setButtonDisabled] = useState(false);
   //states for range picker
   const [dates, setDates] = useState([]);
   const [hackValue, setHackValue] = useState();
-  const [value, setValue] = useState();
   const [searchedColumn, setSearchedColumn] = useState('');
   const [searchText, setSearchText] = useState('');
 
@@ -96,9 +93,6 @@ const Account= (props) => {
     )
   }
 
-  const showModal = () => {
-    setIsModalVisible(true);
-  };
 
   const InputShown = (value) => {
     if (value != null && value === ''){
@@ -263,7 +257,7 @@ const Account= (props) => {
               }
             }) 
           }}>
-            <Button type='primary' size='small' disabled={(record.extend==0)?true:false} onClick={showModal}> Extend </Button>
+            <Button type='primary' size='small' disabled={(record.extend==0)?true:false} > Extend </Button>
           </Popconfirm>
           <Popconfirm title= 'Sure release?'
           onConfirm={()=>{
