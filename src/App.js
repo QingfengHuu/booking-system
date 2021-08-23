@@ -2,7 +2,6 @@ import './App.css';
 import { HashRouter as Router , Switch , Route, Redirect} from 'react-router-dom';
 import { bookingRoutes,adminRoutes, userRoutes, DashboardRoutes } from './routes'
 import Frame from './components/Frame/index'
-import { isLogined } from './utils/auth';
 import React from 'react'
 
 
