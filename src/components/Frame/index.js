@@ -95,6 +95,7 @@ function Frame(props) {
         console.log("判断用户角色")
         if (!isLogined()){
             setMenuRevealed1('none')
+            setMenuRevealed(0)
             console.log("Need login in")
         }
         console.log(getUserRole())
