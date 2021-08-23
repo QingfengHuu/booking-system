@@ -15,7 +15,7 @@ const validateMessages = {
 const Login = (props) => {
     const onFinish = (values) => {
         // DEBUGGING
-        // setToken(values.username,values.username)
+        // setToken(values.username,values.username,true)
         // props.history.push('/dashboard')
         // DEBUGGING
 
